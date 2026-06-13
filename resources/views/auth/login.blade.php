@@ -51,9 +51,9 @@
                     @csrf
 
                     <div>
-                        <label for="email" class="block text-sm font-bold text-[#1E293B] mb-1.5">Email atau NIM</label>
-                        <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#4298B4] focus:border-transparent transition-all" placeholder="email@kampus.ac.id atau NIM">
-                        <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-500 text-sm" />
+                        <label for="login" class="block text-sm font-bold text-[#1E293B] mb-1.5">Email atau NIM</label>
+                        <input id="login" type="text" name="login" value="{{ old('login') }}" required autofocus class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#4298B4] focus:border-transparent transition-all" placeholder="Masukkan NIM atau email">
+                        <x-input-error :messages="$errors->get('login')" class="mt-2 text-red-500 text-sm" />
                     </div>
 
                     <div>
