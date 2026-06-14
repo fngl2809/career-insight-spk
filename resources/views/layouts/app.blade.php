@@ -30,7 +30,7 @@
                     <span>Beranda</span>
                 </a>
 
-                <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 transition-colors">
+                <a href="{{ route('assessment.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl {{ request()->routeIs('assessment.index') ? 'bg-[#4298B4]/10 text-[#4298B4] font-bold' : 'text-slate-500 hover:bg-slate-50 transition-colors' }}">
                     <i class="fa-solid fa-pen-to-square text-base w-5 text-center"></i>
                     <span>Mulai Asesmen</span>
                 </a>
