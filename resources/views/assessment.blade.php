@@ -75,9 +75,9 @@
         </div>
 
         <div class="text-center">
-            <button class="px-20 py-6 bg-[#4298B4] hover:bg-[#327A94] text-white text-2xl font-extrabold rounded-[24px] transition-all shadow-2xl shadow-[#4298B4]/30 flex items-center justify-center gap-5 mx-auto group">
+            <button class="px-8 py-3.5 bg-[#4298B4] hover:bg-[#327A94] text-white text-base font-bold rounded-xl transition-all shadow-lg shadow-[#4298B4]/20 flex items-center justify-center gap-3 mx-auto group">
                 Mulai Asesmen 
-                <i class="fa-solid fa-arrow-right text-xl group-hover:translate-x-3 transition-transform"></i>
+                <i class="fa-solid fa-arrow-right text-sm group-hover:translate-x-1.5 transition-transform"></i>
             </button>
         </div>
 
