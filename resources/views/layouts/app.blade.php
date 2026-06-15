@@ -25,49 +25,59 @@
                 </div>
             </div>
 
-            <nav class="flex-grow px-4 space-y-1.5 text-sm font-medium"> <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl {{ request()->routeIs('dashboard') ? 'bg-[#4298B4]/10 text-[#4298B4] font-bold' : 'text-slate-500 hover:bg-slate-50 transition-colors' }}">
+            <nav class="flex-grow px-4 space-y-1.5 text-sm font-medium"> 
+                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl {{ request()->routeIs('dashboard') ? 'bg-[#4298B4]/10 text-[#4298B4] font-bold' : 'text-slate-500 hover:bg-slate-50 transition-colors' }}">
                     <i class="fa-solid fa-house text-base w-5 text-center"></i>
-                    <span>Beranda</span>
+                    <span x-show="sidebarOpen">Beranda</span>
                 </a>
 
                 <a href="{{ route('assessment.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl {{ request()->routeIs('assessment.index') ? 'bg-[#4298B4]/10 text-[#4298B4] font-bold' : 'text-slate-500 hover:bg-slate-50 transition-colors' }}">
                     <i class="fa-solid fa-pen-to-square text-base w-5 text-center"></i>
-                    <span>Mulai Asesmen</span>
+                    <span x-show="sidebarOpen">Mulai Asesmen</span>
                 </a>
 
                 <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 transition-colors">
                     <i class="fa-solid fa-chart-line text-base w-5 text-center"></i>
-                    <span>Hasil Rekomendasi</span>
+                    <span x-show="sidebarOpen">Hasil Rekomendasi</span>
                 </a>
 
                 <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 transition-colors">
                     <i class="fa-solid fa-history text-base w-5 text-center"></i>
-                    <span>Riwayat Asesmen</span>
+                    <span x-show="sidebarOpen">Riwayat Asesmen</span>
                 </a>
             </nav>
-
-            <div class="p-4 border-t border-gray-50">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="flex items-center gap-4 px-4 py-3 text-red-500 hover:bg-red-50 w-full rounded-xl transition-colors font-medium">
-                        <i class="fa-solid fa-right-from-bracket w-5"></i>
-                        <span x-show="sidebarOpen">Keluar</span>
-                    </button>
-                </form>
-            </div>
-        </aside>
+            </aside>
 
         <main class="flex-grow overflow-y-auto h-screen bg-[#F8FAFC]">
-            <header class="bg-white/80 backdrop-blur-md sticky top-0 z-10 px-8 py-4 flex justify-between items-center border-b border-gray-100">
-                <button @click="sidebarOpen = !sidebarOpen" class="text-slate-500 hover:text-[#4298B4] transition-colors">
+            <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 px-8 py-4 flex justify-between items-center border-b border-gray-100">
+                <button @click="sidebarOpen = !sidebarOpen" class="text-slate-500 hover:text-[#4298B4] transition-colors focus:outline-none">
                     <i class="fa-solid fa-bars-staggered text-xl"></i>
                 </button>
                 
-                <div class="flex items-center gap-4">
-                    <span class="text-sm font-medium text-slate-600 hidden sm:block">Halo, {{ Auth::user()->name }}!</span>
-                    <div class="h-8 w-8 rounded-full bg-[#4298B4] flex items-center justify-center text-white text-xs font-bold shadow-md shadow-[#4298B4]/20 cursor-pointer">
-                        {{ substr(Auth::user()->name, 0, 1) }}
-                    </div>
+                <div class="flex items-center gap-4 hidden sm:flex">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button class="flex items-center gap-3 hover:opacity-80 transition-opacity focus:outline-none">
+                                <span class="text-sm font-medium text-slate-600 hidden sm:block">Halo, {{ Auth::user()->name }}!</span>
+                                <div class="h-9 w-9 rounded-full bg-[#4298B4] flex items-center justify-center text-white text-sm font-bold shadow-md shadow-[#4298B4]/20">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('profile.edit')">
+                                <i class="fa-regular fa-user mr-2 text-slate-400"></i> Profil Saya
+                            </x-dropdown-link>
+
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();" class="text-red-500 hover:bg-red-50 transition-colors">
+                                    <i class="fa-solid fa-right-from-bracket mr-2"></i> Keluar
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
                 </div>
             </header>
 
