@@ -75,10 +75,10 @@
         </div>
 
         <div class="text-center">
-            <button class="px-8 py-3.5 bg-[#4298B4] hover:bg-[#327A94] text-white text-base font-bold rounded-xl transition-all shadow-lg shadow-[#4298B4]/20 flex items-center justify-center gap-3 mx-auto group">
+            <a href="{{ route('quiz.index') }}" class="inline-flex px-8 py-3.5 bg-[#4298B4] hover:bg-[#327A94] text-white text-base font-bold rounded-xl transition-all shadow-lg shadow-[#4298B4]/20 items-center justify-center gap-3 mx-auto group">
                 Mulai Asesmen 
                 <i class="fa-solid fa-arrow-right text-sm group-hover:translate-x-1.5 transition-transform"></i>
-            </button>
+            </a>
         </div>
 
     </div>
