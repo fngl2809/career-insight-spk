@@ -18,4 +18,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/assessment', function () {return view('assessment');})->name('assessment.index');
 });
 
+// Ini rute untuk halaman Panduan (Warning)
+Route::get('/assessment', function () {
+    return view('assessment');
+})->name('assessment.index');
+
+// TAMBAHKAN INI: Rute untuk halaman Kuesioner (Soal 1-135)
+Route::get('/quiz', function () {
+    return view('quiz');
+})->name('quiz.index');
+
 require __DIR__.'/auth.php';
