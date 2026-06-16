@@ -1,11 +1,11 @@
 <x-app-layout>
     <div x-data="assessmentForm()" x-init="initForm()" class="max-w-[95%] 2xl:max-w-[1400px] mx-auto pb-20 pt-6">
         
-        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-8 sticky top-[88px] z-30">
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-8">
             <div class="flex justify-between items-end mb-4">
                 <div>
                     <h2 class="text-xl font-bold text-[#4298B4]" x-text="`Eksplorasi Tahap ${currentStep} dari 9`"></h2>
-                    <p class="text-sm text-slate-500 mt-1" x-text="`Sesi ${currentStep}: Menemukan Potensimu`"></p>
+                    <p class="text-sm text-slate-500 mt-1" x-text="getJudulSesi()"></p>
                 </div>
                 <div class="text-sm font-bold text-slate-600" x-text="`${Math.round((currentStep - 1) * 11.11)}% selesai`"></div>
             </div>
@@ -20,71 +20,105 @@
             <div class="space-y-6">
                 
                 @php
-                    // Soal Sesi 1: 3D AR
-                    $pertanyaan_dummy = [
-                        "Saya memahami konsep koordinat 3D (X, Y, Z) dan pencahayaan objek",
-                        "Saya mampu merancang bagaimana objek digital harus muncul di kamera HP",
-                        "Saya memiliki imajinasi spasial yang baik dalam menata ruang virtual",
-                        "Saya mahir menggunakan tools pengembangan AR (seperti Vuforia, Spark AR, atau ARCore)",
-                        "Saya mampu membuat atau mengedit objek 3D (Blender, Maya, atau Cinema 4D)",
-                        "Saya mampu melakukan koding untuk interaksi objek AR di Unity",
-                        "Saya sangat memperhatikan detail visual dan estetika desain",
-                        "Saya mampu bekerja sama dengan desainer grafis dan programmer",
-                        "Saya sabar dalam melakukan testing pada berbagai perangkat kamera",
-                        "Saya sangat tertarik pada teknologi yang menggabungkan dunia maya dan nyata",
-                        "Saya senang mencoba filter-filter AR terbaru di Instagram atau TikTok",
-                        "Saya ingin menciptakan aplikasi inovatif berbasis Augmented Reality",
-                        "Saya pernah membuat filter AR sederhana atau aplikasi katalog AR",
-                        "Saya memiliki portofolio aset 3D yang pernah saya buat sendiri",
-                        "Saya pernah mengikuti pameran atau kompetisi karya digital"
+                    // WADAH AJAIB: Tempat nyimpen semua soal berdasarkan Sesi
+                    $semua_sesi = [
+                        // SESI 1: 3D AR
+                        1 => [
+                            "Saya memahami konsep koordinat 3D (X, Y, Z) dan pencahayaan objek",
+                            "Saya mampu merancang bagaimana objek digital harus muncul di kamera HP",
+                            "Saya memiliki imajinasi spasial yang baik dalam menata ruang virtual",
+                            "Saya mahir menggunakan tools pengembangan AR (seperti Vuforia, Spark AR, atau ARCore)",
+                            "Saya mampu membuat atau mengedit objek 3D (Blender, Maya, atau Cinema 4D)",
+                            "Saya mampu melakukan koding untuk interaksi objek AR di Unity",
+                            "Saya sangat memperhatikan detail visual dan estetika desain",
+                            "Saya mampu bekerja sama dengan desainer grafis dan programmer",
+                            "Saya sabar dalam melakukan testing pada berbagai perangkat kamera",
+                            "Saya sangat tertarik pada teknologi yang menggabungkan dunia maya dan nyata",
+                            "Saya senang mencoba filter-filter AR terbaru di Instagram atau TikTok",
+                            "Saya ingin menciptakan aplikasi inovatif berbasis Augmented Reality",
+                            "Saya pernah membuat filter AR sederhana atau aplikasi katalog AR",
+                            "Saya memiliki portofolio aset 3D yang pernah saya buat sendiri",
+                            "Saya pernah mengikuti pameran atau kompetisi karya digital"
+                        ],
+                        // SESI 2: 3D VR
+                        2 => [
+                            "Saya memahami konsep user experience (UX) di dalam ruang 360 derajat",
+                            "Saya mampu merancang alur interaksi tanpa tombol fisik (menggunakan motion controller)",
+                            "Saya mengerti prinsip fisika dasar untuk objek di dalam dunia virtual",
+                            "Saya mahir menggunakan Unity atau Unreal Engine untuk pengembangan VR",
+                            "Saya mampu mengintegrasikan perangkat VR (seperti Oculus Quest atau VR Box)",
+                            "Saya memahami teknik optimasi render agar aplikasi VR tidak menyebabkan pusing (motion sickness)",
+                            "Saya mampu menjelaskan konsep dunia virtual yang kompleks kepada orang lain",
+                            "Saya dapat bekerja sama dalam tim lintas media (suara, visual, koding)",
+                            "Saya memiliki dedikasi tinggi dalam riset kenyamanan pengguna",
+                            "Saya bermimpi menciptakan dunia virtual yang bisa dijelajahi banyak orang",
+                            "Saya sangat menikmati bermain game atau menonton konten VR",
+                            "Saya tertarik pada masa depan teknologi Metaverse",
+                            "Saya pernah membangun aplikasi tur virtual 360 atau simulasi VR",
+                            "Saya pernah mencoba dan mempelajari koding untuk VR controller",
+                            "Saya memiliki portofolio proyek VR yang bisa dijalankan di headset VR"
+                        ]
+                        // Nanti Sesi 3 (3D Game), Sesi 4, dll tinggal kamu tambahin koma dan lanjutin polanya di sini ya!
                     ];
                 @endphp
 
-                @foreach($pertanyaan_dummy as $index => $pertanyaan)
-                <div id="q-{{ $index + 1 }}" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:border-[#4298B4]/50 transition-colors question-card scroll-mt-[200px]">
-                    <h3 class="text-lg font-bold text-slate-800 mb-6 leading-relaxed">
-                        <span class="text-[#4298B4] mr-2">{{ $index + 1 }}.</span> {{ $pertanyaan }}
-                    </h3>
+                @foreach($semua_sesi as $nomor_sesi => $pertanyaan_sesi)
                     
-                    <div class="flex flex-wrap md:flex-nowrap gap-3 md:gap-0 justify-between items-center bg-slate-50 p-2 rounded-xl">
+                    <div x-show="currentStep === {{ $nomor_sesi }}" x-transition.opacity.duration.500ms style="display: {{ $nomor_sesi == 1 ? 'block' : 'none' }};" class="space-y-6">
                         
-                        <label class="flex-1 text-center cursor-pointer relative group">
-                            <input type="radio" name="q{{ $index + 1 }}" value="1" class="peer sr-only" @change="autoScroll({{ $index + 1 }})" required>
-                            <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-red-200 peer-checked:shadow-md peer-checked:text-red-500 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
-                                Sangat Tidak Setuju
-                            </div>
-                        </label>
+                        @foreach($pertanyaan_sesi as $index => $pertanyaan)
+                        @php
+                            // Rumus penomoran global (1-135)
+                            $nomor_global = (($nomor_sesi - 1) * 15) + $index + 1;
+                        @endphp
                         
-                        <label class="flex-1 text-center cursor-pointer relative group">
-                            <input type="radio" name="q{{ $index + 1 }}" value="2" class="peer sr-only" @change="autoScroll({{ $index + 1 }})">
-                            <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-orange-200 peer-checked:shadow-md peer-checked:text-orange-500 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
-                                Tidak Setuju
-                            </div>
-                        </label>
+                        <div id="q-{{ $nomor_global }}" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:border-[#4298B4]/50 transition-all duration-300 question-card scroll-mt-[100px]">
+                            <h3 class="text-lg font-bold text-slate-800 mb-6 leading-relaxed">
+                                <span class="text-[#4298B4] mr-2">{{ $nomor_global }}.</span> {{ $pertanyaan }}
+                            </h3>
+                            
+                            <div class="flex flex-wrap md:flex-nowrap gap-3 md:gap-0 justify-between items-center bg-slate-50 p-2 rounded-xl">
+                                
+                                <label class="flex-1 text-center cursor-pointer relative group">
+                                    <input type="radio" name="q{{ $nomor_global }}" value="1" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
+                                    <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-red-200 peer-checked:shadow-md peer-checked:text-red-500 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
+                                        Sangat Tidak Setuju
+                                    </div>
+                                </label>
+                                
+                                <label class="flex-1 text-center cursor-pointer relative group">
+                                    <input type="radio" name="q{{ $nomor_global }}" value="2" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
+                                    <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-orange-200 peer-checked:shadow-md peer-checked:text-orange-500 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
+                                        Tidak Setuju
+                                    </div>
+                                </label>
 
-                        <label class="flex-1 text-center cursor-pointer relative group">
-                            <input type="radio" name="q{{ $index + 1 }}" value="3" class="peer sr-only" @change="autoScroll({{ $index + 1 }})">
-                            <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-slate-300 peer-checked:shadow-md peer-checked:text-slate-700 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
-                                Netral
-                            </div>
-                        </label>
+                                <label class="flex-1 text-center cursor-pointer relative group">
+                                    <input type="radio" name="q{{ $nomor_global }}" value="3" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
+                                    <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-slate-300 peer-checked:shadow-md peer-checked:text-slate-700 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
+                                        Netral
+                                    </div>
+                                </label>
 
-                        <label class="flex-1 text-center cursor-pointer relative group">
-                            <input type="radio" name="q{{ $index + 1 }}" value="4" class="peer sr-only" @change="autoScroll({{ $index + 1 }})">
-                            <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-[#4298B4]/40 peer-checked:shadow-md peer-checked:text-[#4298B4] text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
-                                Setuju
-                            </div>
-                        </label>
+                                <label class="flex-1 text-center cursor-pointer relative group">
+                                    <input type="radio" name="q{{ $nomor_global }}" value="4" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
+                                    <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-[#4298B4]/40 peer-checked:shadow-md peer-checked:text-[#4298B4] text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
+                                        Setuju
+                                    </div>
+                                </label>
 
-                        <label class="flex-1 text-center cursor-pointer relative group">
-                            <input type="radio" name="q{{ $index + 1 }}" value="5" class="peer sr-only" @change="autoScroll({{ $index + 1 }})">
-                            <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-emerald-200 peer-checked:shadow-md peer-checked:text-emerald-600 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
-                                Sangat Setuju
-                            </div>
-                        </label>
+                                <label class="flex-1 text-center cursor-pointer relative group">
+                                    <input type="radio" name="q{{ $nomor_global }}" value="5" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
+                                    <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-emerald-200 peer-checked:shadow-md peer-checked:text-emerald-600 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
+                                        Sangat Setuju
+                                    </div>
+                                </label>
 
+                            </div>
+                        </div>
+
+                        @endforeach
                     </div>
-                </div>
                 @endforeach
 
             </div>
@@ -108,33 +142,80 @@
                     window.scrollTo(0, 0);
                 },
 
-                autoScroll(currentIndex) {
-                    let nextIndex = currentIndex + 1;
-                    let nextElement = document.getElementById('q-' + nextIndex);
-                    
-                    if (nextElement) {
-                        // Jeda dipersingkat jadi 150ms biar lebih responsif
-                        setTimeout(() => {
-                            // Menggunakan metode scrollIntoView bawaan browser yang lebih mulus
-                            nextElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            
-                            // Efek kedip biru penanda fokus
-                            nextElement.classList.add('ring-2', 'ring-[#4298B4]', 'ring-offset-2');
-                            setTimeout(() => {
-                                nextElement.classList.remove('ring-2', 'ring-[#4298B4]', 'ring-offset-2');
-                            }, 600);
+                getJudulSesi() {
+                    const judul = {
+                        1: "Sesi 1: Menemukan Potensimu (3D AR)",
+                        2: "Sesi 2: Menjelajah Dunia Virtual (3D VR)",
+                        // Nanti tambahin judul sesi lainnya di sini
+                        3: "Sesi 3: Kreativitas Interaktif",
+                        4: "Sesi 4: Logika Data",
+                        5: "Sesi 5: Analisis Mendalam",
+                        6: "Sesi 6: Ilmu Pengetahuan Data",
+                        7: "Sesi 7: Rekayasa Web",
+                        8: "Sesi 8: Kecerdasan Buatan",
+                        9: "Sesi 9: Pengembangan Mobile"
+                    };
+                    return judul[this.currentStep] || `Sesi ${this.currentStep}`;
+                },
 
-                        }, 150);
+                autoScroll(currentIndex, currentSesi) {
+                    let batasBawah = currentSesi * 15;
+                    
+                    // Kalau bukan nomor terakhir di halaman itu, baru auto-scroll ke bawah
+                    if (currentIndex < batasBawah) {
+                        let nextIndex = currentIndex + 1;
+                        let nextElement = document.getElementById('q-' + nextIndex);
+                        
+                        if (nextElement) {
+                            setTimeout(() => {
+                                nextElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                nextElement.classList.add('ring-2', 'ring-[#4298B4]', 'ring-offset-2');
+                                setTimeout(() => {
+                                    nextElement.classList.remove('ring-2', 'ring-[#4298B4]', 'ring-offset-2');
+                                }, 600);
+                            }, 150);
+                        }
                     }
                 },
 
                 nextStep() {
-                    if (this.currentStep < 9) {
-                        this.currentStep++;
-                        // Balik ke atas pas ganti tahap
-                        window.scrollTo({top: 0, behavior: 'smooth'}); 
-                    } else {
-                        alert("BINGO! Simulasi selesai. Di sini nanti Backend ngitung Profile Matching, AHP, & TOPSIS!");
+                    // FITUR SATPAM: Cek apakah 15 soal di halaman ini udah keisi semua
+                    let startIndex = ((this.currentStep - 1) * 15) + 1;
+                    let endIndex = this.currentStep * 15;
+                    let adaYangKosong = false;
+
+                    for (let i = startIndex; i <= endIndex; i++) {
+                        let dijawab = document.querySelector(`input[name="q${i}"]:checked`);
+                        
+                        if (!dijawab) {
+                            adaYangKosong = true;
+                            let elemenKosong = document.getElementById(`q-${i}`);
+                            
+                            if (elemenKosong) {
+                                // Auto-scroll ke soal yang belum dijawab
+                                elemenKosong.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                
+                                // Efek Merah Peringatan
+                                elemenKosong.classList.add('ring-2', 'ring-red-500', 'bg-red-50');
+                                setTimeout(() => {
+                                    elemenKosong.classList.remove('ring-2', 'ring-red-500', 'bg-red-50');
+                                }, 1500);
+                            }
+                            
+                            // Munculkan notifikasi alert
+                            alert(`Eitss, tunggu dulu! Soal nomor ${i} belum kamu isi tuh. Yuk lengkapi dulu!`);
+                            break; // Stop pengecekan karena ketemu yang kosong
+                        }
+                    }
+
+                    // Kalau semua aman dan terisi penuh, baru boleh lanjut
+                    if (!adaYangKosong) {
+                        if (this.currentStep < 9) {
+                            this.currentStep++;
+                            window.scrollTo({top: 0, behavior: 'smooth'}); 
+                        } else {
+                            alert("BINGO! Semua 135 soal selesai. Di sini nanti mesin SPK Backend beraksi memproses jawabanmu!");
+                        }
                     }
                 }
             }
