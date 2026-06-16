@@ -20,7 +20,7 @@
             
             <div class="space-y-6">
                 
-                @php
+               @php
                     $semua_sesi = [
                         // SESI 1: 3D AR
                         1 => [
@@ -57,6 +57,24 @@
                             "Saya pernah membangun aplikasi tur virtual 360 atau simulasi VR",
                             "Saya pernah mencoba dan mempelajari koding untuk VR controller",
                             "Saya memiliki portofolio proyek VR yang bisa dijalankan di headset VR"
+                        ],
+                        // SESI 3: 3D GAME
+                        3 => [
+                            "Saya mampu merancang gameplay yang menantang namun tetap seimbang",
+                            "Saya memahami logika matematika untuk sistem skor, nyawa, dan level",
+                            "Saya mampu menyusun skenario cerita atau misi yang menarik",
+                            "Saya menguasai bahasa pemrograman C# (untuk Unity) atau C++ (untuk Unreal)",
+                            "Saya mahir menggunakan Game Engine untuk mengatur assets dan animasi",
+                            "Saya mampu membuat sistem AI untuk karakter musuh atau NPC",
+                            "Saya mampu menerima masukan dari player untuk memperbaiki kualitas game",
+                            "Saya dapat bekerja dalam tim besar (Desainer, Musisi, Programmer)",
+                            "Saya memiliki ketekunan untuk memperbaiki ratusan bug yang muncul",
+                            "Saya sangat mencintai dunia game dan ingin tahu proses pembuatannya",
+                            "Saya ingin menciptakan game yang bisa dimainkan jutaan orang di dunia",
+                            "Saya senang mempelajari desain mekanisme game yang baru",
+                            "Saya pernah membuat minimal satu game sederhana (meskipun hanya tugas kuliah)",
+                            "Saya pernah mengikuti Game Jam atau komunitas pengembang game",
+                            "Saya memiliki akun di platform seperti Itch.io untuk memamerkan karya game"
                         ]
                     ];
                 @endphp
