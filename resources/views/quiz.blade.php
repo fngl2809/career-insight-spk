@@ -132,21 +132,21 @@
                         ],
                         // SESI 7: WEB (DUMMY SEMENTARA BIAR APLIKASI GAK ERROR)
                         7 => [
-                            "[SOAL WEB 1] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 2] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 3] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 4] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 5] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 6] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 7] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 8] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 9] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 10] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 11] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 12] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 13] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 14] Tulis pertanyaan WEB di sini...",
-                            "[SOAL WEB 15] Tulis pertanyaan WEB di sini..."
+                            "Saya memahami alur kerja pengiriman data dari browser ke server",
+                            "Saya mampu merancang skema database relasional yang optimal",
+                            "Saya memiliki logika kuat dalam menyelesaikan bug pada tampilan maupun sistem",
+                            "Saya mahir HTML, CSS, dan JavaScript tingkat lanjut",
+                            "Saya mampu menggunakan framework (seperti Laravel, React, atau Vite)",
+                            "Saya terbiasa melakukan deployment (mengunggah website agar bisa diakses online)",
+                            "Saya mampu bekerjasama antar tim (misal: tim desain ke tim database)",
+                            "Saya komunikatif dalam menjelaskan fitur web kepada klien",
+                            "Saya teliti dalam menjaga keamanan data pengguna di dalam website",
+                            "Saya senang menciptakan sistem yang memudahkan akses informasi banyak orang",
+                            "Saya selalu ingin tahu teknologi web terbaru yang muncul setiap bulan",
+                            "Saya berniat serius menjadi seorang Fullstack Web Developer",
+                            "Saya pernah membangun sistem informasi berbasis web dari awal sampai selesai",
+                            "Saya memiliki portofolio koding web di GitHub atau platform serupa",
+                            "Saya pernah mengikuti proyek pembuatan website secara profesional"
                         ],
                         // SESI 8: AI (Ini yang barusan kamu kirim)
                         8 => [
