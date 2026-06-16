@@ -20,9 +20,8 @@
             <div class="space-y-6">
                 
                 @php
-                    // WADAH AJAIB: Tempat nyimpen semua soal berdasarkan Sesi
                     $semua_sesi = [
-                        // SESI 1: 3D AR
+                        // SESI 1: 3D AR (Blind Text)
                         1 => [
                             "Saya memahami konsep koordinat 3D (X, Y, Z) dan pencahayaan objek",
                             "Saya mampu merancang bagaimana objek digital harus muncul di kamera HP",
@@ -40,7 +39,7 @@
                             "Saya memiliki portofolio aset 3D yang pernah saya buat sendiri",
                             "Saya pernah mengikuti pameran atau kompetisi karya digital"
                         ],
-                        // SESI 2: 3D VR
+                        // SESI 2: 3D VR (Blind Text)
                         2 => [
                             "Saya memahami konsep user experience (UX) di dalam ruang 360 derajat",
                             "Saya mampu merancang alur interaksi tanpa tombol fisik (menggunakan motion controller)",
@@ -58,7 +57,6 @@
                             "Saya pernah mencoba dan mempelajari koding untuk VR controller",
                             "Saya memiliki portofolio proyek VR yang bisa dijalankan di headset VR"
                         ]
-                        // Nanti Sesi 3 (3D Game), Sesi 4, dll tinggal kamu tambahin koma dan lanjutin polanya di sini ya!
                     ];
                 @endphp
 
@@ -68,7 +66,6 @@
                         
                         @foreach($pertanyaan_sesi as $index => $pertanyaan)
                         @php
-                            // Rumus penomoran global (1-135)
                             $nomor_global = (($nomor_sesi - 1) * 15) + $index + 1;
                         @endphp
                         
@@ -143,17 +140,17 @@
                 },
 
                 getJudulSesi() {
+                    // JUDUL BUTA (Misterius tapi elegan)
                     const judul = {
-                        1: "Sesi 1: Menemukan Potensimu (3D AR)",
-                        2: "Sesi 2: Menjelajah Dunia Virtual (3D VR)",
-                        // Nanti tambahin judul sesi lainnya di sini
-                        3: "Sesi 3: Kreativitas Interaktif",
-                        4: "Sesi 4: Logika Data",
-                        5: "Sesi 5: Analisis Mendalam",
-                        6: "Sesi 6: Ilmu Pengetahuan Data",
-                        7: "Sesi 7: Rekayasa Web",
-                        8: "Sesi 8: Kecerdasan Buatan",
-                        9: "Sesi 9: Pengembangan Mobile"
+                        1: "Sesi 1: Menemukan Potensimu",
+                        2: "Sesi 2: Menjelajah Dimensi Baru",
+                        3: "Sesi 3: Merancang Dinamika Interaktif",
+                        4: "Sesi 4: Membaca Pola Tersembunyi",
+                        5: "Sesi 5: Menggali Kedalaman Informasi",
+                        6: "Sesi 6: Memodelkan Masa Depan",
+                        7: "Sesi 7: Merangkai Arsitektur Digital",
+                        8: "Sesi 8: Mengeksplorasi Logika Sistem",
+                        9: "Sesi 9: Menghubungkan Dunia"
                     };
                     return judul[this.currentStep] || `Sesi ${this.currentStep}`;
                 },
@@ -161,7 +158,6 @@
                 autoScroll(currentIndex, currentSesi) {
                     let batasBawah = currentSesi * 15;
                     
-                    // Kalau bukan nomor terakhir di halaman itu, baru auto-scroll ke bawah
                     if (currentIndex < batasBawah) {
                         let nextIndex = currentIndex + 1;
                         let nextElement = document.getElementById('q-' + nextIndex);
@@ -192,27 +188,28 @@
                             let elemenKosong = document.getElementById(`q-${i}`);
                             
                             if (elemenKosong) {
-                                // Auto-scroll ke soal yang belum dijawab
                                 elemenKosong.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                
-                                // Efek Merah Peringatan
                                 elemenKosong.classList.add('ring-2', 'ring-red-500', 'bg-red-50');
                                 setTimeout(() => {
                                     elemenKosong.classList.remove('ring-2', 'ring-red-500', 'bg-red-50');
                                 }, 1500);
                             }
                             
-                            // Munculkan notifikasi alert
                             alert(`Eitss, tunggu dulu! Soal nomor ${i} belum kamu isi tuh. Yuk lengkapi dulu!`);
-                            break; // Stop pengecekan karena ketemu yang kosong
+                            break; 
                         }
                     }
 
-                    // Kalau semua aman dan terisi penuh, baru boleh lanjut
+                    // Kalau semua aman, lanjut ke sesi berikutnya
                     if (!adaYangKosong) {
                         if (this.currentStep < 9) {
                             this.currentStep++;
-                            window.scrollTo({top: 0, behavior: 'smooth'}); 
+                            
+                            // FIX SCROLL: Dikasih jeda 100ms biar soal baru dirender dulu, baru ditarik ke atas!
+                            setTimeout(() => {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }, 100);
+                            
                         } else {
                             alert("BINGO! Semua 135 soal selesai. Di sini nanti mesin SPK Backend beraksi memproses jawabanmu!");
                         }
