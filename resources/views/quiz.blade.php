@@ -1,5 +1,6 @@
 <x-app-layout>
-    <div x-data="assessmentForm()" x-init="initForm()" class="max-w-[95%] 2xl:max-w-[1400px] mx-auto pb-20 pt-6">
+    <!-- KAKAK TAMBAHIN id="top-area" SEBAGAI TARGET TEMBAK SCROLL KE ATAS -->
+    <div id="top-area" x-data="assessmentForm()" x-init="initForm()" class="max-w-[95%] 2xl:max-w-[1400px] mx-auto pb-20 pt-6">
         
         <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-8">
             <div class="flex justify-between items-end mb-4">
@@ -21,7 +22,7 @@
                 
                 @php
                     $semua_sesi = [
-                        // SESI 1: 3D AR (Blind Text)
+                        // SESI 1: 3D AR
                         1 => [
                             "Saya memahami konsep koordinat 3D (X, Y, Z) dan pencahayaan objek",
                             "Saya mampu merancang bagaimana objek digital harus muncul di kamera HP",
@@ -39,7 +40,7 @@
                             "Saya memiliki portofolio aset 3D yang pernah saya buat sendiri",
                             "Saya pernah mengikuti pameran atau kompetisi karya digital"
                         ],
-                        // SESI 2: 3D VR (Blind Text)
+                        // SESI 2: 3D VR
                         2 => [
                             "Saya memahami konsep user experience (UX) di dalam ruang 360 derajat",
                             "Saya mampu merancang alur interaksi tanpa tombol fisik (menggunakan motion controller)",
@@ -62,7 +63,7 @@
 
                 @foreach($semua_sesi as $nomor_sesi => $pertanyaan_sesi)
                     
-                    <div x-show="currentStep === {{ $nomor_sesi }}" x-transition.opacity.duration.500ms style="display: {{ $nomor_sesi == 1 ? 'block' : 'none' }};" class="space-y-6">
+                    <div x-show="currentStep === {{ $nomor_sesi }}" style="display: {{ $nomor_sesi == 1 ? 'block' : 'none' }};" class="space-y-6">
                         
                         @foreach($pertanyaan_sesi as $index => $pertanyaan)
                         @php
@@ -140,7 +141,6 @@
                 },
 
                 getJudulSesi() {
-                    // JUDUL BUTA (Misterius tapi elegan)
                     const judul = {
                         1: "Sesi 1: Menemukan Potensimu",
                         2: "Sesi 2: Menjelajah Dimensi Baru",
@@ -175,7 +175,6 @@
                 },
 
                 nextStep() {
-                    // FITUR SATPAM: Cek apakah 15 soal di halaman ini udah keisi semua
                     let startIndex = ((this.currentStep - 1) * 15) + 1;
                     let endIndex = this.currentStep * 15;
                     let adaYangKosong = false;
@@ -200,15 +199,17 @@
                         }
                     }
 
-                    // Kalau semua aman, lanjut ke sesi berikutnya
                     if (!adaYangKosong) {
                         if (this.currentStep < 9) {
+                            // Ganti Sesi-nya dulu
                             this.currentStep++;
                             
-                            // FIX SCROLL: Dikasih jeda 100ms biar soal baru dirender dulu, baru ditarik ke atas!
+                            // 🔥 FIX TARGET TEMBAK: Kasih waktu 150ms biar soal baru muncul, lalu tembak layarnya ke paling atas! 🔥
                             setTimeout(() => {
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                            }, 100);
+                                document.getElementById('top-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                // Backup buat browser yang bandel
+                                window.scrollTo(0, 0);
+                            }, 150);
                             
                         } else {
                             alert("BINGO! Semua 135 soal selesai. Di sini nanti mesin SPK Backend beraksi memproses jawabanmu!");
