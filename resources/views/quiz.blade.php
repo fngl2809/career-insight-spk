@@ -22,7 +22,7 @@
                 
                @php
                     $semua_sesi = [
-                        // SESI 1: 3D AR (Blind Text)
+                        // SESI 1: 3D AR
                         1 => [
                             "Saya memahami konsep koordinat 3D (X, Y, Z) dan pencahayaan objek",
                             "Saya mampu merancang bagaimana objek digital harus muncul di kamera HP",
@@ -40,7 +40,7 @@
                             "Saya memiliki portofolio aset 3D yang pernah saya buat sendiri",
                             "Saya pernah mengikuti pameran atau kompetisi karya digital"
                         ],
-                        // SESI 2: 3D VR (Blind Text)
+                        // SESI 2: 3D VR
                         2 => [
                             "Saya memahami konsep user experience (UX) di dalam ruang 360 derajat",
                             "Saya mampu merancang alur interaksi tanpa tombol fisik (menggunakan motion controller)",
@@ -58,7 +58,7 @@
                             "Saya pernah mencoba dan mempelajari koding untuk VR controller",
                             "Saya memiliki portofolio proyek VR yang bisa dijalankan di headset VR"
                         ],
-                        // SESI 3: 3D GAME (Blind Text)
+                        // SESI 3: 3D GAME
                         3 => [
                             "Saya mampu merancang gameplay yang menantang namun tetap seimbang",
                             "Saya memahami logika matematika untuk sistem skor, nyawa, dan level",
@@ -76,7 +76,7 @@
                             "Saya pernah mengikuti Game Jam atau komunitas pengembang game",
                             "Saya memiliki akun di platform seperti Itch.io untuk memamerkan karya game"
                         ],
-                        // SESI 4: DATA ANALYST (Blind Text)
+                        // SESI 4: DATA ANALYST
                         4 => [
                             "Saya mampu memahami konsep statistik dasar untuk menarik kesimpulan dari data",
                             "Saya memiliki ketelitian tinggi dalam memeriksa keaslian dan kebersihan data",
@@ -94,7 +94,7 @@
                             "Saya memiliki sertifikat pelatihan terkait Data Analytics",
                             "Saya memiliki portofolio laporan data yang tersusun rapi"
                         ],
-                        // SESI 5: DATA MINING (Blind Text)
+                        // SESI 5: DATA MINING
                         5 => [
                             "Saya memahami logika algoritma klasifikasi, asosiasi, dan clustering",
                             "Saya mampu melakukan preprocessing data (menghilangkan noise atau data hilang)",
@@ -112,7 +112,7 @@
                             "Saya pernah mempublikasikan hasil temuan pola data di blog teknis atau jurnal",
                             "Saya memiliki portofolio penggunaan tools seperti RapidMiner atau Python Mining"
                         ],
-                        // SESI 6: DATA SCIENCE (Blind Text)
+                        // SESI 6: DATA SCIENCE
                         6 => [
                             "Saya memahami konsep Supervised dan Unsupervised Learning secara mendalam",
                             "Saya mampu merancang eksperimen untuk menguji akurasi sebuah model prediktif",
@@ -129,6 +129,42 @@
                             "Saya pernah membangun model prediksi (seperti prediksi harga, klasifikasi gambar, dll)",
                             "Saya pernah mengikuti kompetisi data (seperti Kaggle atau Satria Data)",
                             "Saya memiliki portofolio koding data di GitHub yang aktif"
+                        ],
+                        // SESI 7: WEB (DUMMY SEMENTARA BIAR APLIKASI GAK ERROR)
+                        7 => [
+                            "[SOAL WEB 1] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 2] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 3] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 4] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 5] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 6] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 7] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 8] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 9] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 10] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 11] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 12] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 13] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 14] Tulis pertanyaan WEB di sini...",
+                            "[SOAL WEB 15] Tulis pertanyaan WEB di sini..."
+                        ],
+                        // SESI 8: AI (Ini yang barusan kamu kirim)
+                        8 => [
+                            "Saya memahami konsep dasar Jaringan Syaraf Tiruan (Neural Networks)",
+                            "Saya mampu merancang sistem yang bisa belajar sendiri dari kumpulan data",
+                            "Saya memiliki logika matematika yang sangat kuat untuk pengolahan matriks",
+                            "Saya mahir menggunakan bahasa Python untuk keperluan AI",
+                            "Saya mampu menggunakan tools seperti OpenCV (Computer Vision) atau NLTK (NLP)",
+                            "Saya menguasai teknik pelatihan model cerdas (Training Model)",
+                            "Saya memiliki cara berpikir kritis terhadap dampak etika dari kecerdasan buatan",
+                            "Saya mampu berkolaborasi dengan ahli di berbagai bidang untuk otomasi",
+                            "Saya senang bereksperimen dengan hal-hal baru yang belum pernah dilakukan sebelumnya",
+                            "Saya sangat bersemangat membuat mesin yang bisa \"berpikir\" seperti manusia",
+                            "Saya rutin mengikuti kabar perkembangan teknologi AI terbaru (seperti GPT, dll)",
+                            "Saya ingin berkarier sebagai AI Engineer atau Peneliti AI",
+                            "Saya pernah membuat sistem deteksi objek atau pengenalan suara",
+                            "Saya pernah mengikuti kursus sertifikasi AI dari platform kredibel",
+                            "Saya memiliki repositori GitHub yang berisi proyek implementasi AI"
                         ]
                     ];
                 @endphp
