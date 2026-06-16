@@ -111,6 +111,24 @@
                             "Saya pernah melakukan riset atau tugas kuliah menggunakan teknik Data Mining",
                             "Saya pernah mempublikasikan hasil temuan pola data di blog teknis atau jurnal",
                             "Saya memiliki portofolio penggunaan tools seperti RapidMiner atau Python Mining"
+                        ],
+                        // SESI 6: DATA SCIENCE (Blind Text)
+                        6 => [
+                            "Saya memahami konsep Supervised dan Unsupervised Learning secara mendalam",
+                            "Saya mampu merancang eksperimen untuk menguji akurasi sebuah model prediktif",
+                            "Saya memiliki logika matematika yang kuat untuk memahami rumus di balik model data",
+                            "Saya mahir koding menggunakan Python atau R untuk keperluan Machine Learning",
+                            "Saya mampu menggunakan library seperti Scikit-Learn, TensorFlow, atau Pandas",
+                            "Saya mampu mengolah data dalam jumlah sangat besar menggunakan teknologi Cloud atau Spark",
+                            "Saya memiliki kemampuan memecahkan masalah (problem solving) yang kreatif",
+                            "Saya mampu mendengarkan kebutuhan bisnis dan mengubahnya menjadi model data",
+                            "Saya dapat bekerja dalam tim lintas divisi (misal: tim marketing atau tim enginering)",
+                            "Saya sangat tertarik menciptakan sistem cerdas yang bisa memprediksi masa depan",
+                            "Saya senang terus belajar algoritma terbaru yang sedang tren di dunia IT",
+                            "Saya berminat kuat menjadi seorang Data Scientist profesional",
+                            "Saya pernah membangun model prediksi (seperti prediksi harga, klasifikasi gambar, dll)",
+                            "Saya pernah mengikuti kompetisi data (seperti Kaggle atau Satria Data)",
+                            "Saya memiliki portofolio koding data di GitHub yang aktif"
                         ]
                     ];
                 @endphp
