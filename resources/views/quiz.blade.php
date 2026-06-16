@@ -22,7 +22,7 @@
                 
                @php
                     $semua_sesi = [
-                        // SESI 1: 3D AR
+                        // SESI 1: 3D AR (Blind Text)
                         1 => [
                             "Saya memahami konsep koordinat 3D (X, Y, Z) dan pencahayaan objek",
                             "Saya mampu merancang bagaimana objek digital harus muncul di kamera HP",
@@ -40,7 +40,7 @@
                             "Saya memiliki portofolio aset 3D yang pernah saya buat sendiri",
                             "Saya pernah mengikuti pameran atau kompetisi karya digital"
                         ],
-                        // SESI 2: 3D VR
+                        // SESI 2: 3D VR (Blind Text)
                         2 => [
                             "Saya memahami konsep user experience (UX) di dalam ruang 360 derajat",
                             "Saya mampu merancang alur interaksi tanpa tombol fisik (menggunakan motion controller)",
@@ -58,7 +58,7 @@
                             "Saya pernah mencoba dan mempelajari koding untuk VR controller",
                             "Saya memiliki portofolio proyek VR yang bisa dijalankan di headset VR"
                         ],
-                        // SESI 3: 3D GAME
+                        // SESI 3: 3D GAME (Blind Text)
                         3 => [
                             "Saya mampu merancang gameplay yang menantang namun tetap seimbang",
                             "Saya memahami logika matematika untuk sistem skor, nyawa, dan level",
@@ -75,6 +75,42 @@
                             "Saya pernah membuat minimal satu game sederhana (meskipun hanya tugas kuliah)",
                             "Saya pernah mengikuti Game Jam atau komunitas pengembang game",
                             "Saya memiliki akun di platform seperti Itch.io untuk memamerkan karya game"
+                        ],
+                        // SESI 4: DATA ANALYST (Blind Text)
+                        4 => [
+                            "Saya mampu memahami konsep statistik dasar untuk menarik kesimpulan dari data",
+                            "Saya memiliki ketelitian tinggi dalam memeriksa keaslian dan kebersihan data",
+                            "Saya mampu mengubah data angka menjadi cerita atau narasi yang mudah dipahami",
+                            "Saya mahir menggunakan Microsoft Excel tingkat lanjut (Pivot, VLOOKUP, Macro)",
+                            "Saya mampu menggunakan bahasa SQL untuk mengambil data dari database",
+                            "Saya mampu membuat dashboard interaktif (Tableau, PowerBI, atau Google Looker)",
+                            "Saya percaya diri mempresentasikan hasil temuan data kepada atasan/klien",
+                            "Saya mampu bekerjasama dengan tim operasional untuk memahami kebutuhan data mereka",
+                            "Saya memiliki rasa ingin tahu yang besar terhadap penyebab di balik perubahan angka data",
+                            "Saya sangat tertarik bekerja dengan laporan dan grafik setiap hari",
+                            "Saya senang mencari solusi bisnis melalui analisis angka",
+                            "Saya ingin menjadi seorang ahli yang dipercaya dalam urusan validitas data",
+                            "Saya pernah mengerjakan proyek analisis data penjualan atau data akademik",
+                            "Saya memiliki sertifikat pelatihan terkait Data Analytics",
+                            "Saya memiliki portofolio laporan data yang tersusun rapi"
+                        ],
+                        // SESI 5: DATA MINING (Blind Text)
+                        5 => [
+                            "Saya memahami logika algoritma klasifikasi, asosiasi, dan clustering",
+                            "Saya mampu melakukan preprocessing data (menghilangkan noise atau data hilang)",
+                            "Saya memiliki logika kuat dalam menentukan variabel mana yang paling berpengaruh pada pola data",
+                            "Saya mampu mengoperasikan tools penambangan data (seperti RapidMiner, KNIME, atau Weka)",
+                            "Saya menguasai teknik pemrosesan data teks (Text Mining) atau data transaksi",
+                            "Saya mampu mengintegrasikan hasil mining ke dalam aplikasi atau sistem lain",
+                            "Saya sabar dalam melakukan iterasi/perulangan eksperimen data berkali-kali",
+                            "Saya mampu menjelaskan pola teknis yang rumit menjadi strategi yang sederhana",
+                            "Saya dapat bekerja sama dalam tim riset untuk menemukan insight tersembunyi",
+                            "Saya sangat tertarik menemukan rahasia atau pola yang tidak terlihat oleh orang biasa",
+                            "Saya senang mengeksplorasi kumpulan data besar (Big Data)",
+                            "Saya bercita-cita mengembangkan karier sebagai Data Mining Engineer",
+                            "Saya pernah melakukan riset atau tugas kuliah menggunakan teknik Data Mining",
+                            "Saya pernah mempublikasikan hasil temuan pola data di blog teknis atau jurnal",
+                            "Saya memiliki portofolio penggunaan tools seperti RapidMiner atau Python Mining"
                         ]
                     ];
                 @endphp
