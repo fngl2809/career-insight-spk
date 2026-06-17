@@ -325,16 +325,18 @@
                         }
                     }
 
-                   if (!adaYangKosong) {
+                    if (!adaYangKosong) {
                         if (this.currentStep < 9) {
                             this.currentStep++;
                             
+                            // 🔥 FIX TARGET TEMBAK KEMBALI BERAKSI! 🔥
                             setTimeout(() => {
-                                window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-                            }, 10);
+                                document.getElementById('top-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                window.scrollTo(0, 0);
+                            }, 150);
                             
                         } else {
-                            // 🔥 INI YANG DIUBAH: Alert dihapus, diganti jadi kirim form beneran! 🔥
+                            // 🔥 DATA RESMI DIKIRIM KE CONTROLLER (BACKEND) 🔥
                             document.getElementById('quizForm').submit();
                         }
                     }
