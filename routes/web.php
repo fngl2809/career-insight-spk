@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\QuizController;
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -27,5 +29,8 @@ Route::get('/assessment', function () {
 Route::get('/quiz', function () {
     return view('quiz');
 })->name('quiz.index');
+
+// 🔥 TAMBAHKAN INI: Rute POST buat nangkep kiriman jawaban form! 🔥
+Route::post('/quiz', [QuizController::class, 'store'])->name('quiz.store');
 
 require __DIR__.'/auth.php';
