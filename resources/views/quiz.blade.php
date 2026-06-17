@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <form id="quizForm" action="#" method="POST">
+        <form id="quizForm" action="{{ route('quiz.store') }}" method="POST">
             @csrf
             
             <div class="space-y-6">
@@ -325,20 +325,17 @@
                         }
                     }
 
-                    if (!adaYangKosong) {
+                   if (!adaYangKosong) {
                         if (this.currentStep < 9) {
-                            // Ganti Sesi-nya dulu
                             this.currentStep++;
                             
-                            // 🔥 FIX TARGET TEMBAK: Kasih waktu 150ms biar soal baru muncul, lalu tembak layarnya ke paling atas! 🔥
                             setTimeout(() => {
-                                document.getElementById('top-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                // Backup buat browser yang bandel
-                                window.scrollTo(0, 0);
-                            }, 150);
+                                window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                            }, 10);
                             
                         } else {
-                            alert("BINGO! Semua 135 soal selesai. Di sini nanti mesin SPK Backend beraksi memproses jawabanmu!");
+                            // 🔥 INI YANG DIUBAH: Alert dihapus, diganti jadi kirim form beneran! 🔥
+                            document.getElementById('quizForm').submit();
                         }
                     }
                 }
