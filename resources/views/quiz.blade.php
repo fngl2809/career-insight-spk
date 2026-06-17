@@ -199,7 +199,7 @@
                         <div id="q-{{ $nomor_global }}" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:border-[#4298B4]/50 transition-all duration-300 question-card scroll-mt-[100px]">
                             <h3 class="text-lg font-bold text-slate-800 mb-6 leading-relaxed">
                                 <span class="text-[#4298B4] mr-2">{{ $nomor_global }}.</span> {{ $pertanyaan }}
-                            </h3>
+                            </h3>g
                             
                             <div class="flex flex-wrap md:flex-nowrap gap-3 md:gap-0 justify-between items-center bg-slate-50 p-2 rounded-xl">
                                 
