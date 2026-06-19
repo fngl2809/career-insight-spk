@@ -209,7 +209,7 @@
                                         Sangat Tidak Setuju
                                     </div>
                                 </label>
-                                
+                            
                                 <label class="flex-1 text-center cursor-pointer relative group">
                                     <input type="radio" name="q{{ $nomor_global }}" value="2" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
                                     <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-orange-200 peer-checked:shadow-md peer-checked:text-orange-500 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
@@ -276,7 +276,7 @@
                         6: "Sesi 6: Memodelkan Masa Depan",
                         7: "Sesi 7: Merangkai Arsitektur Digital",
                         8: "Sesi 8: Mengeksplorasi Logika Sistem",
-                        9: "Sesi 9: Menghubungkan Dunia"
+                        9: "Sesi 9: Menghubungkan Dunia Digital"
                     };
                     return judul[this.currentStep] || `Sesi ${this.currentStep}`;
                 },
