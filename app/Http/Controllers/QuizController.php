@@ -88,31 +88,28 @@ class QuizController extends Controller
     // 4. FUNGSI INTI: EKSEKUSI PERHITUNGAN GABUNGAN (PM + AHP + TOPSIS)
     // ==============================================================
     // NAH INI DIA SARANG FUNGSI STORE YANG UDAH LENGKAP SAMA MESIN SPKNYA!
-    public function store(Request $request)
+   public function store(Request $request)
     {
-        // A. Ambil Data Jawaban User dari Kuesioner
         $data_jawaban = $request->except('_token');
         $data_jawaban['user_id'] = Auth::id();
         Assessment::create($data_jawaban);
 
-        // Daftar 9 Bidang & 5 Kriteria
         $alternatif = ['3d_ar', '3d_vr', '3d_game', 'data_analyst', 'data_mining', 'data_science', 'web', 'ai', 'mobile'];
         $kriteria = ['kognitif', 'hardskill', 'softskill', 'minat', 'pengalaman'];
-
-        // Pemetaan Awal Soal per Sesi
         $sesi_soal = [
             '3d_ar' => 1, '3d_vr' => 16, '3d_game' => 31, 'data_analyst' => 46, 'data_mining' => 61,
             'data_science' => 76, 'web' => 91, 'ai' => 106, 'mobile' => 121
         ];
 
-        // ----------------------------------------------------------
-        // METODE 1: PROFILE MATCHING (Cari Nilai Matriks Awal X)
-        // ----------------------------------------------------------
         $matriks_x = [];
+        $matriks_pm_total = []; // Wadah untuk Tabel Detail PM
+
         foreach ($sesi_soal as $nama_sesi => $start_soal) {
+            $session_total_cf = 0; $session_count_cf = 0;
+            $session_total_sf = 0; $session_count_sf = 0;
+
             foreach ($kriteria as $idx_kriteria => $nama_kriteria) {
                 $total_cf = 0; $count_cf = 0; $total_sf = 0; $count_sf = 0;
-                // Ambil 3 soal berurutan untuk setiap kriteria
                 for ($offset = 0; $offset < 3; $offset++) {
                     $q_id = 'q' . ($start_soal + ($idx_kriteria * 3) + $offset);
                     if (isset($data_jawaban[$q_id])) {
@@ -120,91 +117,87 @@ class QuizController extends Controller
                         $bobot = $this->gap_mapping[$gap] ?? 0;
                         if ($this->profile_targets[$q_id]['type'] == 'CF') {
                             $total_cf += $bobot; $count_cf++;
+                            $session_total_cf += $bobot; $session_count_cf++;
                         } else {
                             $total_sf += $bobot; $count_sf++;
+                            $session_total_sf += $bobot; $session_count_sf++;
                         }
                     }
                 }
                 $ncf = ($count_cf > 0) ? ($total_cf / $count_cf) : 0;
                 $nsf = ($count_sf > 0) ? ($total_sf / $count_sf) : 0;
-                // Rumus 60% + 40%
                 $matriks_x[$nama_sesi][$nama_kriteria] = ($this->persentase_cf * $ncf) + ($this->persentase_sf * $nsf);
             }
+
+            // Hitung rata-rata CF/SF untuk 15 soal di sesi ini (buat tabel detail PM)
+            $s_ncf = ($session_count_cf > 0) ? ($session_total_cf / $session_count_cf) : 0;
+            $s_nsf = ($session_count_sf > 0) ? ($session_total_sf / $session_count_sf) : 0;
+            $matriks_pm_total[$nama_sesi] = [
+                'ncf' => $s_ncf,
+                'nsf' => $s_nsf,
+                'total' => ($this->persentase_cf * $s_ncf) + ($this->persentase_sf * $s_nsf)
+            ];
         }
 
-        // ----------------------------------------------------------
-        // METODE 2: TOPSIS NORMALISASI (Matriks R)
-        // ----------------------------------------------------------
-        $matriks_r = [];
-        $pembagi = [];
+        // --- TOPSIS LOGIC (Normalisasi & Terbobot) ---
+        $matriks_r = []; $pembagi = [];
         foreach ($kriteria as $nama_kriteria) {
-            $jumlah_kuadrat = 0;
-            foreach ($alternatif as $alt) {
-                $jumlah_kuadrat += pow($matriks_x[$alt][$nama_kriteria], 2);
-            }
-            $pembagi[$nama_kriteria] = sqrt($jumlah_kuadrat);
+            $sum_sq = 0;
+            foreach ($alternatif as $alt) { $sum_sq += pow($matriks_x[$alt][$nama_kriteria], 2); }
+            $pembagi[$nama_kriteria] = sqrt($sum_sq);
         }
-
         foreach ($alternatif as $alt) {
             foreach ($kriteria as $nama_kriteria) {
-                $pembagi_nilai = $pembagi[$nama_kriteria] > 0 ? $pembagi[$nama_kriteria] : 1;
-                $matriks_r[$alt][$nama_kriteria] = $matriks_x[$alt][$nama_kriteria] / $pembagi_nilai;
+                $div = $pembagi[$nama_kriteria] > 0 ? $pembagi[$nama_kriteria] : 1;
+                $matriks_r[$alt][$nama_kriteria] = $matriks_x[$alt][$nama_kriteria] / $div;
             }
         }
 
-        // ----------------------------------------------------------
-        // METODE 3: TOPSIS x AHP (Matriks Y)
-        // ----------------------------------------------------------
         $matriks_y = [];
-        $mapping_bobot_ahp = [
+        $mapping_ahp = [
             '3d_ar' => 'bidang_3d', '3d_vr' => 'bidang_3d', '3d_game' => 'bidang_3d',
             'data_analyst' => 'bidang_data', 'data_mining' => 'bidang_data', 'data_science' => 'bidang_data',
             'web' => 'bidang_web', 'ai' => 'bidang_ai', 'mobile' => 'bidang_mobile',
         ];
 
         foreach ($alternatif as $alt) {
-            $key_ahp = $mapping_bobot_ahp[$alt];
+            $key_ahp = $mapping_ahp[$alt];
             foreach ($kriteria as $nama_kriteria) {
                 $bobot_ahp = $this->ahp_weights[$key_ahp][$nama_kriteria];
                 $matriks_y[$alt][$nama_kriteria] = $matriks_r[$alt][$nama_kriteria] * $bobot_ahp;
             }
         }
 
-        // ----------------------------------------------------------
-        // TAHAP AKHIR TOPSIS: SOLUSI IDEAL & PREFERENSI (V)
-        // ----------------------------------------------------------
-        $solusi_positif = []; $solusi_negatif = [];
-        foreach ($kriteria as $nama_kriteria) {
-            $kumpulan_nilai_y = [];
-            foreach ($alternatif as $alt) {
-                $kumpulan_nilai_y[] = $matriks_y[$alt][$nama_kriteria];
-            }
-            $solusi_positif[$nama_kriteria] = max($kumpulan_nilai_y);
-            $solusi_negatif[$nama_kriteria] = min($kumpulan_nilai_y);
+        // --- TOPSIS FINAL (Ideal & Jarak) ---
+        $s_pos = []; $s_neg = [];
+        foreach ($kriteria as $nk) {
+            $vals = []; foreach ($alternatif as $alt) { $vals[] = $matriks_y[$alt][$nk]; }
+            $s_pos[$nk] = max($vals); $s_neg[$nk] = min($vals);
         }
 
-        $jarak_positif = []; $jarak_negatif = [];
-        $hasil_preferensi = [];
+        $d_pos = []; $d_neg = []; $ranking = [];
         foreach ($alternatif as $alt) {
-            $jumlah_d_plus = 0; $jumlah_d_minus = 0;
-            foreach ($kriteria as $nama_kriteria) {
-                $jumlah_d_plus  += pow($matriks_y[$alt][$nama_kriteria] - $solusi_positif[$nama_kriteria], 2);
-                $jumlah_d_minus += pow($matriks_y[$alt][$nama_kriteria] - $solusi_negatif[$nama_kriteria], 2);
+            $sum_p = 0; $sum_n = 0;
+            foreach ($kriteria as $nk) {
+                $sum_p += pow($matriks_y[$alt][$nk] - $s_pos[$nk], 2);
+                $sum_n += pow($matriks_y[$alt][$nk] - $s_neg[$nk], 2);
             }
-            $jarak_positif[$alt] = sqrt($jumlah_d_plus);
-            $jarak_negatif[$alt] = sqrt($jumlah_d_minus);
-
-            $total_jarak = $jarak_positif[$alt] + $jarak_negatif[$alt];
-            $hasil_preferensi[$alt] = $total_jarak > 0 ? ($jarak_negatif[$alt] / $total_jarak) : 0;
+            $d_pos[$alt] = sqrt($sum_p); $d_neg[$alt] = sqrt($sum_n);
+            $total_d = $d_pos[$alt] + $d_neg[$alt];
+            $ranking[$alt] = $total_d > 0 ? ($d_neg[$alt] / $total_d) : 0;
         }
 
-        // Urutkan nilai V tertinggi (Ranking 1) ke terendah
-        arsort($hasil_preferensi);
+        arsort($ranking);
+        $juara1_key = array_key_first($ranking);
+        $bidang_ahp_pemenang = $mapping_ahp[$juara1_key];
 
-        // Selesai ngitung! Lempar data rankingnya ke halaman hasil (result.blade.php)
         return view('result', [
-            'ranking' => $hasil_preferensi,
-            'matriks_awal' => $matriks_x
+            'ranking' => $ranking,
+            'matriks_awal' => $matriks_x,
+            'detail_pm' => $matriks_pm_total,
+            'd_plus' => $d_pos,
+            'd_min' => $d_neg,
+            'ahp_final' => $this->ahp_weights[$bidang_ahp_pemenang]
         ]);
     }
 }
