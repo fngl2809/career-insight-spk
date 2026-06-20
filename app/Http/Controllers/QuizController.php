@@ -64,7 +64,24 @@ class QuizController extends Controller
         'q30' => ['target' => 3, 'type' => 'SF'],
 
         // --- SESI 3: 3D GAME (Soal q31 sampai q45) ---
-        // (Tempat buat naruh data Sesi 3 nanti)
+        'q31' => ['target' => 5, 'type' => 'CF'],
+        'q32' => ['target' => 4, 'type' => 'SF'],
+        'q33' => ['target' => 5, 'type' => 'CF'],
+        'q34' => ['target' => 4, 'type' => 'SF'],
+        'q35' => ['target' => 5, 'type' => 'CF'],
+        'q36' => ['target' => 5, 'type' => 'CF'],
+        'q37' => ['target' => 5, 'type' => 'SF'],
+        'q38' => ['target' => 4, 'type' => 'CF'],
+        'q39' => ['target' => 3, 'type' => 'CF'],
+        'q40' => ['target' => 5, 'type' => 'CF'],
+        'q41' => ['target' => 5, 'type' => 'CF'],
+        'q42' => ['target' => 5, 'type' => 'SF'],
+        'q43' => ['target' => 5, 'type' => 'CF'],
+        'q44' => ['target' => 5, 'type' => 'CF'],
+        'q45' => ['target' => 1, 'type' => 'SF'],
+
+        // --- SESI 4: DATA ANALYST (Soal q46 sampai q60) ---
+        // (Wadah untuk Sesi 4 standby di sini)
     ];
 
 
