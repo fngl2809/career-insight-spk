@@ -202,7 +202,7 @@ class QuizController extends Controller
         arsort($hasil_preferensi);
 
         // Selesai ngitung! Lempar data rankingnya ke halaman hasil (result.blade.php)
-        return view('quiz.result', [
+        return view('result', [
             'ranking' => $hasil_preferensi,
             'matriks_awal' => $matriks_x
         ]);
