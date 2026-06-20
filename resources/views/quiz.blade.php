@@ -276,7 +276,7 @@
                         6: "Sesi 6: Memodelkan Masa Depan",
                         7: "Sesi 7: Merangkai Arsitektur Digital",
                         8: "Sesi 8: Mengeksplorasi Logika Sistem",
-                        9: "Sesi 9: Menghubungkan Dunia Digital"
+                        9: "Sesi 9: Menghubungkan Dunia",
                     };
                     return judul[this.currentStep] || `Sesi ${this.currentStep}`;
                 },
