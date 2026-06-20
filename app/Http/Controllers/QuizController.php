@@ -9,14 +9,55 @@ use Illuminate\Support\Facades\Auth; // Buat ngecek siapa user yang lagi login
 class QuizController extends Controller
 {
     // ==============================================================
-    // 1. PAYUNG UTAMA: BAHAN BAKU AHP (5 BIDANG UTAMA)
+    // 1. PAYUNG UTAMA: BOBOT AHP (DARI PAK WID) UNTUK 5 KRITERIA
     // ==============================================================
+    // Catatan: K = Kognitif, H = Hardskill, S = Softskill, M = Minat, P = Pengalaman
     private $ahp_weights = [
-        'bidang_data'   => 0.0, 
-        'bidang_game'   => 0.0, 
-        'bidang_mobile' => 0.0, 
-        'bidang_web'    => 0.0, 
-        'bidang_ai'     => 0.0  
+        
+        // 1. Kelompok 3D (Dipakai buat ngaliin nilai Profile Matching Sesi AR, VR, Game)
+        'bidang_3d' => [
+            'kognitif'   => 0.1043,
+            'hardskill'  => 0.3130,
+            'softskill'  => 0.0519,
+            'minat'      => 0.2749,
+            'pengalaman' => 0.2558,
+        ],
+
+        // 2. Kelompok DATA (Dipakai buat Sesi Data Analyst, Data Mining, Data Science)
+        'bidang_data' => [
+            'kognitif'   => 0.0351,
+            'hardskill'  => 0.0685,
+            'softskill'  => 0.4698,
+            'minat'      => 0.1523,
+            'pengalaman' => 0.2744,
+        ],
+
+        // 3. Kelompok WEB (Dipakai buat Sesi Web)
+        'bidang_web' => [
+            'kognitif'   => 0.0678,
+            'hardskill'  => 0.5028,
+            'softskill'  => 0.0348,
+            'minat'      => 0.1344,
+            'pengalaman' => 0.2602,
+        ],
+
+        // 4. Kelompok AI (Dipakai buat Sesi AI)
+        'bidang_ai' => [
+            'kognitif'   => 0.0748,
+            'hardskill'  => 0.2397,
+            'softskill'  => 0.0352,
+            'minat'      => 0.1391,
+            'pengalaman' => 0.5112,
+        ],
+
+        // 5. Kelompok MOBILE (Dipakai buat Sesi Mobile)
+        'bidang_mobile' => [
+            'kognitif'   => 0.0870,
+            'hardskill'  => 0.5406,
+            'softskill'  => 0.0355,
+            'minat'      => 0.1030,
+            'pengalaman' => 0.2339,
+        ],
     ];
 
     // ==============================================================
