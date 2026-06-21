@@ -109,8 +109,8 @@ class QuizController extends Controller
 
         // Kalau belum pernah ngerjain sama sekali
         if (!$jawaban_db) {
-            // Tendang balik ke halaman kuesioner!
-            return redirect()->route('quiz.index');
+            // Tendang balik ke halaman PANDUAN / WARNING AWAL!
+            return redirect()->route('assessment.index')->with('error', 'Ups! Kamu harus baca panduan dan mengerjakan kuesioner terlebih dahulu.');
         }
 
         // Kalau lolos satpam, ubah data database jadi array untuk dihitung
