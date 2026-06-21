@@ -85,15 +85,38 @@ class QuizController extends Controller
     ];
 
     // ==============================================================
-    // 4. FUNGSI INTI: EKSEKUSI PERHITUNGAN GABUNGAN (PM + AHP + TOPSIS)
+    // 4. FUNGSI PENYIMPANAN DATA (Hanya Simpan, Lalu Pindah Halaman)
     // ==============================================================
-    // NAH INI DIA SARANG FUNGSI STORE YANG UDAH LENGKAP SAMA MESIN SPKNYA!
-   public function store(Request $request)
+    public function store(Request $request)
     {
         $data_jawaban = $request->except('_token');
         $data_jawaban['user_id'] = Auth::id();
+        
+        // Simpan jawaban baru ke Database
         Assessment::create($data_jawaban);
 
+        // Setelah simpan, langsung tendang ke rute Hasil Rekomendasi
+        return redirect()->route('result.index');
+    }
+
+    // ==============================================================
+    // 5. FUNGSI PERHITUNGAN SPK & MENAMPILKAN HASIL (Ada Satpamnya)
+    // ==============================================================
+    public function showResult()
+    {
+        // 🚨 SATPAM: Cek apakah user ini sudah pernah ngerjain kuesioner?
+        $jawaban_db = Assessment::where('user_id', Auth::id())->latest()->first();
+
+        // Kalau belum pernah ngerjain sama sekali
+        if (!$jawaban_db) {
+            // Tendang balik ke halaman kuesioner!
+            return redirect()->route('quiz.index');
+        }
+
+        // Kalau lolos satpam, ubah data database jadi array untuk dihitung
+        $data_jawaban = $jawaban_db->toArray();
+
+        // --- MULAI PERHITUNGAN SPK ---
         $alternatif = ['3d_ar', '3d_vr', '3d_game', 'data_analyst', 'data_mining', 'data_science', 'web', 'ai', 'mobile'];
         $kriteria = ['kognitif', 'hardskill', 'softskill', 'minat', 'pengalaman'];
         $sesi_soal = [
@@ -102,7 +125,7 @@ class QuizController extends Controller
         ];
 
         $matriks_x = [];
-        $matriks_pm_total = []; // Wadah untuk Tabel Detail PM
+        $matriks_pm_total = [];
 
         foreach ($sesi_soal as $nama_sesi => $start_soal) {
             $session_total_cf = 0; $session_count_cf = 0;
@@ -129,7 +152,6 @@ class QuizController extends Controller
                 $matriks_x[$nama_sesi][$nama_kriteria] = ($this->persentase_cf * $ncf) + ($this->persentase_sf * $nsf);
             }
 
-            // Hitung rata-rata CF/SF untuk 15 soal di sesi ini (buat tabel detail PM)
             $s_ncf = ($session_count_cf > 0) ? ($session_total_cf / $session_count_cf) : 0;
             $s_nsf = ($session_count_sf > 0) ? ($session_total_sf / $session_count_sf) : 0;
             $matriks_pm_total[$nama_sesi] = [
@@ -139,7 +161,6 @@ class QuizController extends Controller
             ];
         }
 
-        // --- TOPSIS LOGIC (Normalisasi & Terbobot) ---
         $matriks_r = []; $pembagi = [];
         foreach ($kriteria as $nama_kriteria) {
             $sum_sq = 0;
@@ -168,7 +189,6 @@ class QuizController extends Controller
             }
         }
 
-        // --- TOPSIS FINAL (Ideal & Jarak) ---
         $s_pos = []; $s_neg = [];
         foreach ($kriteria as $nk) {
             $vals = []; foreach ($alternatif as $alt) { $vals[] = $matriks_y[$alt][$nk]; }
