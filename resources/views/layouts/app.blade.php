@@ -82,6 +82,22 @@
             </header>
 
             <div class="p-8">
+                @if (session('error'))
+                    <div x-data="{ show: true }" x-show="show" class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg shadow-sm flex justify-between items-start animate-[fadeIn_0.5s_ease-out]">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-red-100 p-2 rounded-full">
+                                <i class="fa-solid fa-circle-exclamation text-red-500 text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-red-800 font-bold text-sm">Akses Ditolak!</h3>
+                                <p class="text-red-700 font-medium text-sm">{{ session('error') }}</p>
+                            </div>
+                        </div>
+                        <button @click="show = false" class="text-red-400 hover:text-red-600 focus:outline-none transition-colors p-1">
+                            <i class="fa-solid fa-xmark text-lg"></i>
+                        </button>
+                    </div>
+                @endif
                 {{ $slot }}
             </div>
         </main>
