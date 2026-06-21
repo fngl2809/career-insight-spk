@@ -1,4 +1,16 @@
 <x-app-layout>
+    <div id="loading-screen" class="fixed inset-0 z-[9999] bg-[#F8FAFC] flex flex-col justify-center items-center transition-opacity duration-700">
+        <div class="relative w-20 h-20 mb-6">
+            <div class="absolute inset-0 border-4 border-slate-200 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-[#4298B4] rounded-full border-t-transparent animate-spin"></div>
+            <img src="{{ asset('images/logo.png') }}" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-5 w-auto opacity-80" alt="Logo">
+        </div>
+        
+        <h2 class="text-xl font-bold text-slate-800 mb-2">Sedang menganalisis profilmu...</h2>
+        <p class="text-sm text-slate-500 text-center leading-relaxed">
+            Sistem SPK sedang memproses hasil dengan metode<br>Profile Matching, AHP & TOPSIS
+        </p>
+    </div>
     <style>
         .result-container {
             font-family: 'Poppins', sans-serif;
@@ -465,6 +477,21 @@
                 },
                 plugins: { legend: { position: 'bottom', labels: { font: { family: "'Poppins', sans-serif" } } } }
             }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Tahan layar loading selama 3 detik (3000 milidetik)
+            setTimeout(function() {
+                let loadingScreen = document.getElementById("loading-screen");
+                // Efek fade out (menghilang pelan-pelan)
+                loadingScreen.style.opacity = "0"; 
+                
+                // Hapus elemen dari layar setelah transisi selesai
+                setTimeout(function() {
+                    loadingScreen.style.display = "none";
+                }, 700);
+            }, 3000); // <-- Kamu bisa ganti angka 3000 ini kalau mau lebih lama atau lebih cepet
         });
     </script>
 </x-app-layout>
