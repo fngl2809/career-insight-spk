@@ -41,12 +41,12 @@
                     <span x-show="sidebarOpen">Hasil Rekomendasi</span>
                 </a>
 
-                <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-500 hover:bg-slate-50 transition-colors">
+                <a href="{{ route('assessment.history') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl {{ request()->routeIs('assessment.history') ? 'bg-[#4298B4]/10 text-[#4298B4] font-bold' : 'text-slate-500 hover:bg-slate-50 transition-colors' }}">
                     <i class="fa-solid fa-history text-base w-5 text-center"></i>
                     <span x-show="sidebarOpen">Riwayat Asesmen</span>
                 </a>
             </nav>
-            </aside>
+        </aside>
 
         <main class="flex-grow overflow-y-auto h-screen bg-[#F8FAFC]">
             <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 px-8 py-4 flex justify-between items-center border-b border-gray-100">

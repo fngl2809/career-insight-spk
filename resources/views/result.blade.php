@@ -351,16 +351,30 @@
             </div>
         </div>
 
+        <style>
+            details.detail-animasi summary i.arrow-icon { transition: transform 0.3s ease; }
+            details.detail-animasi[open] summary i.arrow-icon { transform: rotate(90deg); }
+            details.detail-animasi[open] summary { background-color: #F8FAFC; }
+            details.detail-animasi summary::-webkit-details-marker { display: none; }
+        </style>
+
         <div class="result-card" style="padding: 0; overflow: hidden; border: 1px solid #EAEDED;">
-            <details>
-                <summary style="padding: 20px; background: #F8F9F9; border-bottom: 1px solid #EAEDED; list-style: none;">
-                    <i class="fa-regular fa-file-lines" style="color: #5DADE2; font-size: 20px;"></i> 
-                    <div style="margin-left: 15px;">
-                        <span style="display: block; font-size: 15px; font-weight: 700;">Lihat Detail Perhitungan Transparan</span>
-                        <span style="font-size: 11px; color: #7F8C8D; font-weight: normal;">Bobot AHP • Matriks Profile Matching • Hasil TOPSIS</span>
+            <details class="detail-animasi">
+                <summary style="padding: 20px; background: #FFFFFF; list-style: none; display: flex; align-items: center; cursor: pointer; outline: none; border-bottom: 1px solid transparent;">
+                    
+                    <div style="background-color: #EBF5FB; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fa-regular fa-file-lines" style="color: #2980B9; font-size: 18px;"></i> 
                     </div>
-                    <i class="fa-solid fa-chevron-down" style="margin-left: auto; color: #7F8C8D;"></i>
+                    
+                    <div style="margin-left: 15px; flex-grow: 1;">
+                        <span style="display: block; font-size: 16px; font-weight: 700; color: #1E293B;">Lihat Detail Perhitungan</span>
+                        <span style="font-size: 13px; color: #64748B; font-weight: normal;">Bobot AHP • Nilai Profile Matching • Nilai TOPSIS</span>
+                    </div>
+                    
+                    <i class="fa-solid fa-chevron-right arrow-icon" style="color: #94A3B8; font-size: 16px; margin-left: auto;"></i>
                 </summary>
+
+                <div style="border-top: 1px solid #EAEDED;"></div>
 
                 <div style="padding: 0;">
                     <div style="display: flex; background: #fff; border-bottom: 1px solid #EAEDED;">

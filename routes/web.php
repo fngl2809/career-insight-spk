@@ -21,11 +21,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/assessment', function () { return view('assessment'); })->name('assessment.index');
     Route::get('/quiz', function () { return view('quiz'); })->name('quiz.index');
     
-    // Rute Submit Kuesioner (Cuma buat nyimpen data)
+    // Rute Submit Kuesioner
     Route::post('/quiz', [QuizController::class, 'store'])->name('quiz.store');
 
-    // 🔥 RUTE BARU: KAMAR KHUSUS HASIL REKOMENDASI (Ada Satpamnya) 🔥
+    // Rute Hasil Rekomendasi Terakhir
     Route::get('/result', [QuizController::class, 'showResult'])->name('result.index');
+
+    // 🔥 RUTE RIWAYAT & DETAIL HASIL MASA LALU (INI YANG TADI HILANG!) 🔥
+    Route::get('/history', [QuizController::class, 'history'])->name('assessment.history');
+    Route::get('/result/{id}', [QuizController::class, 'showSpecificResult'])->name('result.show');
 });
 
 require __DIR__.'/auth.php';

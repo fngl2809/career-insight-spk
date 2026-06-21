@@ -220,4 +220,193 @@ class QuizController extends Controller
             'ahp_final' => $this->ahp_weights[$bidang_ahp_pemenang]
         ]);
     }
+
+    // ==============================================================
+    // 6. 🔥 FUNGSI BARU: MESIN WAKTU UNTUK TOMBOL "LIHAT HASIL" 🔥
+    // ==============================================================
+    public function showSpecificResult($id)
+    {
+        // 🚨 SATPAM: Cek apakah ID tes ini beneran ada dan milik user yang sedang login?
+        $jawaban_db = Assessment::where('id', $id)->where('user_id', Auth::id())->first();
+
+        // Kalau datanya nggak ada (atau dia nyoba buka hasil tes orang lain)
+        if (!$jawaban_db) {
+            return redirect()->route('assessment.history')->with('error', 'Ups! Data riwayat asesmen tidak ditemukan atau Anda tidak memiliki akses.');
+        }
+
+        // Kalau lolos satpam, ubah data database jadi array untuk dihitung
+        $data_jawaban = $jawaban_db->toArray();
+
+        // --- MULAI PERHITUNGAN SPK (RUMUSNYA SAMA PERSIS 100% KAYAK SHOWRESULT) ---
+        $alternatif = ['3d_ar', '3d_vr', '3d_game', 'data_analyst', 'data_mining', 'data_science', 'web', 'ai', 'mobile'];
+        $kriteria = ['kognitif', 'hardskill', 'softskill', 'minat', 'pengalaman'];
+        $sesi_soal = [
+            '3d_ar' => 1, '3d_vr' => 16, '3d_game' => 31, 'data_analyst' => 46, 'data_mining' => 61,
+            'data_science' => 76, 'web' => 91, 'ai' => 106, 'mobile' => 121
+        ];
+
+        $matriks_x = [];
+        $matriks_pm_total = [];
+
+        foreach ($sesi_soal as $nama_sesi => $start_soal) {
+            $session_total_cf = 0; $session_count_cf = 0;
+            $session_total_sf = 0; $session_count_sf = 0;
+
+            foreach ($kriteria as $idx_kriteria => $nama_kriteria) {
+                $total_cf = 0; $count_cf = 0; $total_sf = 0; $count_sf = 0;
+                for ($offset = 0; $offset < 3; $offset++) {
+                    $q_id = 'q' . ($start_soal + ($idx_kriteria * 3) + $offset);
+                    if (isset($data_jawaban[$q_id])) {
+                        $gap = $data_jawaban[$q_id] - $this->profile_targets[$q_id]['target'];
+                        $bobot = $this->gap_mapping[$gap] ?? 0;
+                        if ($this->profile_targets[$q_id]['type'] == 'CF') {
+                            $total_cf += $bobot; $count_cf++;
+                            $session_total_cf += $bobot; $session_count_cf++;
+                        } else {
+                            $total_sf += $bobot; $count_sf++;
+                            $session_total_sf += $bobot; $session_count_sf++;
+                        }
+                    }
+                }
+                $ncf = ($count_cf > 0) ? ($total_cf / $count_cf) : 0;
+                $nsf = ($count_sf > 0) ? ($total_sf / $count_sf) : 0;
+                $matriks_x[$nama_sesi][$nama_kriteria] = ($this->persentase_cf * $ncf) + ($this->persentase_sf * $nsf);
+            }
+
+            $s_ncf = ($session_count_cf > 0) ? ($session_total_cf / $session_count_cf) : 0;
+            $s_nsf = ($session_count_sf > 0) ? ($session_total_sf / $session_count_sf) : 0;
+            $matriks_pm_total[$nama_sesi] = [
+                'ncf' => $s_ncf,
+                'nsf' => $s_nsf,
+                'total' => ($this->persentase_cf * $s_ncf) + ($this->persentase_sf * $s_nsf)
+            ];
+        }
+
+        $matriks_r = []; $pembagi = [];
+        foreach ($kriteria as $nama_kriteria) {
+            $sum_sq = 0;
+            foreach ($alternatif as $alt) { $sum_sq += pow($matriks_x[$alt][$nama_kriteria], 2); }
+            $pembagi[$nama_kriteria] = sqrt($sum_sq);
+        }
+        foreach ($alternatif as $alt) {
+            foreach ($kriteria as $nama_kriteria) {
+                $div = $pembagi[$nama_kriteria] > 0 ? $pembagi[$nama_kriteria] : 1;
+                $matriks_r[$alt][$nama_kriteria] = $matriks_x[$alt][$nama_kriteria] / $div;
+            }
+        }
+
+        $matriks_y = [];
+        $mapping_ahp = [
+            '3d_ar' => 'bidang_3d', '3d_vr' => 'bidang_3d', '3d_game' => 'bidang_3d',
+            'data_analyst' => 'bidang_data', 'data_mining' => 'bidang_data', 'data_science' => 'bidang_data',
+            'web' => 'bidang_web', 'ai' => 'bidang_ai', 'mobile' => 'bidang_mobile',
+        ];
+
+        foreach ($alternatif as $alt) {
+            $key_ahp = $mapping_ahp[$alt];
+            foreach ($kriteria as $nama_kriteria) {
+                $bobot_ahp = $this->ahp_weights[$key_ahp][$nama_kriteria];
+                $matriks_y[$alt][$nama_kriteria] = $matriks_r[$alt][$nama_kriteria] * $bobot_ahp;
+            }
+        }
+
+        $s_pos = []; $s_neg = [];
+        foreach ($kriteria as $nk) {
+            $vals = []; foreach ($alternatif as $alt) { $vals[] = $matriks_y[$alt][$nk]; }
+            $s_pos[$nk] = max($vals); $s_neg[$nk] = min($vals);
+        }
+
+        $d_pos = []; $d_neg = []; $ranking = [];
+        foreach ($alternatif as $alt) {
+            $sum_p = 0; $sum_n = 0;
+            foreach ($kriteria as $nk) {
+                $sum_p += pow($matriks_y[$alt][$nk] - $s_pos[$nk], 2);
+                $sum_n += pow($matriks_y[$alt][$nk] - $s_neg[$nk], 2);
+            }
+            $d_pos[$alt] = sqrt($sum_p); $d_neg[$alt] = sqrt($sum_n);
+            $total_d = $d_pos[$alt] + $d_neg[$alt];
+            $ranking[$alt] = $total_d > 0 ? ($d_neg[$alt] / $total_d) : 0;
+        }
+
+        arsort($ranking);
+        $juara1_key = array_key_first($ranking);
+        $bidang_ahp_pemenang = $mapping_ahp[$juara1_key];
+
+        // Lemparkan hasil perhitungan ini kembali ke halaman Result
+        return view('result', [
+            'ranking' => $ranking,
+            'matriks_awal' => $matriks_x,
+            'detail_pm' => $matriks_pm_total,
+            'd_plus' => $d_pos,
+            'd_min' => $d_neg,
+            'ahp_final' => $this->ahp_weights[$bidang_ahp_pemenang]
+        ]);
+    }
+
+    // ==============================================================
+    // 7. FUNGSI MENAMPILKAN RIWAYAT ASESMEN (HISTORY)
+    // ==============================================================
+    public function history()
+    {
+        // Ambil semua data asesmen milik user yang sedang login
+        $all_assessments = Assessment::where('user_id', Auth::id())->latest()->get();
+        
+        $history_data = [];
+
+        foreach ($all_assessments as $index => $item) {
+            // Kita hitung ulang TOPSIS singkat buat dapet Juara 1 & Skornya
+            $data_jawaban = $item->toArray();
+            
+            // --- Perhitungan Singkat ---
+            $alternatif = ['3d_ar', '3d_vr', '3d_game', 'data_analyst', 'data_mining', 'data_science', 'web', 'ai', 'mobile'];
+            $kriteria = ['kognitif', 'hardskill', 'softskill', 'minat', 'pengalaman'];
+            $sesi_soal = ['3d_ar' => 1, '3d_vr' => 16, '3d_game' => 31, 'data_analyst' => 46, 'data_mining' => 61, 'data_science' => 76, 'web' => 91, 'ai' => 106, 'mobile' => 121];
+
+            $matriks_x = [];
+            foreach ($sesi_soal as $nama_sesi => $start_soal) {
+                foreach ($kriteria as $idx_kriteria => $nama_kriteria) {
+                    $total_cf = 0; $count_cf = 0; $total_sf = 0; $count_sf = 0;
+                    for ($offset = 0; $offset < 3; $offset++) {
+                        $q_id = 'q' . ($start_soal + ($idx_kriteria * 3) + $offset);
+                        if (isset($data_jawaban[$q_id])) {
+                            $gap = $data_jawaban[$q_id] - $this->profile_targets[$q_id]['target'];
+                            $bobot = $this->gap_mapping[$gap] ?? 0;
+                            if ($this->profile_targets[$q_id]['type'] == 'CF') {
+                                $total_cf += $bobot; $count_cf++;
+                            } else {
+                                $total_sf += $bobot; $count_sf++;
+                            }
+                        }
+                    }
+                    $ncf = ($count_cf > 0) ? ($total_cf / $count_cf) : 0;
+                    $nsf = ($count_sf > 0) ? ($total_sf / $count_sf) : 0;
+                    $matriks_x[$nama_sesi][$nama_kriteria] = ($this->persentase_cf * $ncf) + ($this->persentase_sf * $nsf);
+                }
+            }
+
+            // --- Bagian TOPSIS Singkat ---
+            $d_pos = []; $d_neg = []; $ranking = [];
+            foreach ($alternatif as $alt) {
+                $sum_p = 0; $sum_n = 0;
+                foreach ($kriteria as $nk) {
+                    $sum_p += pow($matriks_x[$alt][$nk] - 5, 2); 
+                    $sum_n += pow($matriks_x[$alt][$nk] - 1, 2);
+                }
+                $d_pos[$alt] = sqrt($sum_p); $d_neg[$alt] = sqrt($sum_n);
+                $ranking[$alt] = ($d_pos[$alt] + $d_neg[$alt]) > 0 ? ($d_neg[$alt] / ($d_pos[$alt] + $d_neg[$alt])) : 0;
+            }
+            arsort($ranking);
+            $juara1 = array_key_first($ranking);
+            $skor = $ranking[$juara1];
+
+            $history_data[] = [
+                'id' => $item->id,
+                'tanggal' => $item->created_at->format('d M Y, H:i'),
+                'rekomendasi' => ucwords(str_replace('_', ' ', $juara1)),
+                'skor' => number_format($skor, 4) // Format jadi 4 angka di belakang koma
+            ];
+        }
+
+        return view('history', compact('history_data'));
+    }
 }
