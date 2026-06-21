@@ -1,15 +1,26 @@
 <x-app-layout>
-    <div id="loading-screen" class="fixed inset-0 z-[9999] bg-[#F8FAFC] flex flex-col justify-center items-center transition-opacity duration-700">
-        <div class="relative w-20 h-20 mb-6">
-            <div class="absolute inset-0 border-4 border-slate-200 rounded-full"></div>
-            <div class="absolute inset-0 border-4 border-[#4298B4] rounded-full border-t-transparent animate-spin"></div>
-            <img src="{{ asset('images/logo.png') }}" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-5 w-auto opacity-80" alt="Logo">
+    <div id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #F8FAFC; z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease;">
+        
+        <div style="position: relative; width: 80px; height: 80px; margin-bottom: 24px;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 6px solid #E2E8F0; border-radius: 50%;"></div>
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 6px solid #4298B4; border-top-color: transparent; border-radius: 50%; animation: muter 1s linear infinite;"></div>
+            <img src="{{ asset('images/logo.png') }}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 24px; opacity: 0.8;" alt="Logo">
         </div>
         
-        <h2 class="text-xl font-bold text-slate-800 mb-2">Sedang menganalisis profilmu...</h2>
-        <p class="text-sm text-slate-500 text-center leading-relaxed">
+        <h2 style="font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">Sedang menganalisis profilmu...</h2>
+        <p style="font-family: 'Poppins', sans-serif; font-size: 14px; color: #64748B; text-align: center; line-height: 1.6;">
             Sistem SPK sedang memproses hasil dengan metode<br>Profile Matching, AHP & TOPSIS
         </p>
+
+        <style>
+            /* Animasi putar spinner */
+            @keyframes muter {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            /* Sembunyikan konten hasil sementara loading */
+            .result-container { display: none; }
+        </style>
     </div>
     <style>
         .result-container {
@@ -479,19 +490,25 @@
             }
         });
     </script>
-    <script>
+   <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Tahan layar loading selama 3 detik (3000 milidetik)
             setTimeout(function() {
                 let loadingScreen = document.getElementById("loading-screen");
-                // Efek fade out (menghilang pelan-pelan)
+                let resultContainer = document.querySelector(".result-container");
+                
+                // 1. Munculkan hasil rekomendasinya
+                resultContainer.style.display = "block";
+                
+                // 2. Bikin efek loading screen-nya memudar (fade out)
                 loadingScreen.style.opacity = "0"; 
                 
-                // Hapus elemen dari layar setelah transisi selesai
+                // 3. Buang layar loading-nya dari tampilan setelah memudar
                 setTimeout(function() {
                     loadingScreen.style.display = "none";
-                }, 700);
-            }, 3000); // <-- Kamu bisa ganti angka 3000 ini kalau mau lebih lama atau lebih cepet
+                }, 800);
+                
+            }, 3000); // <-- Waktu delay: 3000 ms = 3 detik
         });
     </script>
 </x-app-layout>
