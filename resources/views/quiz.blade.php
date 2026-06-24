@@ -303,42 +303,57 @@
                 nextStep() {
                     let startIndex = ((this.currentStep - 1) * 15) + 1;
                     let endIndex = this.currentStep * 15;
-                    let adaYangKosong = false;
+                    
+                    // 🔥 Keranjang penampung nomor soal yang kosong
+                    let nomorKosong = [];
 
+                    // Cek semua soal dari awal sampai akhir sesi ini secara serentak
                     for (let i = startIndex; i <= endIndex; i++) {
                         let dijawab = document.querySelector(`input[name="q${i}"]:checked`);
                         
                         if (!dijawab) {
-                            adaYangKosong = true;
-                            let elemenKosong = document.getElementById(`q-${i}`);
+                            // Masukin nomor soal ke keranjang
+                            nomorKosong.push(i);
                             
+                            // Kasih efek merah ke semua kartu soal yang belum diisi
+                            let elemenKosong = document.getElementById(`q-${i}`);
                             if (elemenKosong) {
-                                elemenKosong.scrollIntoView({ behavior: 'smooth', block: 'center' });
                                 elemenKosong.classList.add('ring-2', 'ring-red-500', 'bg-red-50');
                                 setTimeout(() => {
                                     elemenKosong.classList.remove('ring-2', 'ring-red-500', 'bg-red-50');
-                                }, 1500);
+                                }, 2500); // Efek merah bertahan 2.5 detik biar user sempat melihat
                             }
-                            
-                            alert(`Eitss, tunggu dulu! Soal nomor ${i} belum kamu isi tuh. Yuk lengkapi dulu!`);
-                            break; 
                         }
                     }
 
-                    if (!adaYangKosong) {
-                        if (this.currentStep < 9) {
-                            this.currentStep++;
-                            
-                            // 🔥 FIX TARGET TEMBAK KEMBALI BERAKSI! 🔥
-                            setTimeout(() => {
-                                document.getElementById('top-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                window.scrollTo(0, 0);
-                            }, 150);
-                            
-                        } else {
-                            // 🔥 DATA RESMI DIKIRIM KE CONTROLLER (BACKEND) 🔥
-                            document.getElementById('quizForm').submit();
+                    // 🚨 Jika isi keranjang ada isinya (artinya ada soal yang kosong)
+                    if (nomorKosong.length > 0) {
+                        // Otomatis scroll layar ke soal kosong pertama yang paling atas
+                        let elemenPertamaKosong = document.getElementById(`q-${nomorKosong[0]}`);
+                        if (elemenPertamaKosong) {
+                            elemenPertamaKosong.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
+                        
+                        // Satukan nomor pakai koma (Contoh: "2, 5, 10")
+                        let daftarNomor = nomorKosong.join(', ');
+                        
+                        // Tampilkan pesan alert borongan sekaligus!
+                        alert(`Eitss, tunggu dulu! Soal nomor ${daftarNomor} belum kamu isi tuh. Yuk lengkapi dulu!`);
+                        return; // Hentikan proses, jangan lanjut ke sesi berikutnya dulu!
+                    }
+
+                    // JIKA SEMUA SOAL SUDAH TERISI AMAN, BARU BOLEH LANJUT
+                    if (this.currentStep < 9) {
+                        this.currentStep++;
+                        
+                        setTimeout(() => {
+                            document.getElementById('top-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            window.scrollTo(0, 0);
+                        }, 150);
+                        
+                    } else {
+                        // Jika sudah di sesi 9 dan semua terisi, langsung kirim ke backend
+                        document.getElementById('quizForm').submit();
                     }
                 }
             }
