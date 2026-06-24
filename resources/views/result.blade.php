@@ -102,10 +102,16 @@
 
         /* ALTERNATIF & PERINGKAT */
         .alt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .alt-card { border: 1px solid #EAEDED; border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 20px; }
-        .alt-rank { width: 50px; height: 50px; background: #EAEDED; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: 700; color: #7F8C8D; }
+        
+        /* 🔥 Kotaknya dibikin putih, dikasih bayangan, dan kalau dihover agak ngangkat! */
+        .alt-card { background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 24px; display: flex; align-items: center; gap: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: all 0.3s ease; }
+        .alt-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-color: #CBD5E1; }
+        
+        /* 🔥 Kotak angka #2 dan #3 nya dibikin lebih tegas */
+        .alt-rank { width: 55px; height: 55px; background: #F1F5F9; border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: 800; color: #64748B; box-shadow: inset 0 2px 4px rgba(0,0,0,0.03); flex-shrink: 0;}
+        
         .alt-info { flex-grow: 1; }
-        .alt-info h4 { margin: 0 0 5px 0; font-size: 16px; }
+        .alt-info h4 { margin: 0 0 5px 0; font-size: 17px; font-weight: 700; color: #1E293B; }
 
         .rank-list { width: 100%; border-collapse: collapse; }
         .rank-list td { padding: 15px 0; border-bottom: 1px solid #F2F3F4; vertical-align: middle; }
@@ -127,11 +133,16 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         details > summary::-webkit-details-marker { display: none; }
 
-        /* 🔥 CSS BARU UNTUK INSIGHT TAG PROFESI KERJA 🔥 */
+       /* 🔥 CSS BARU UNTUK INSIGHT TAG PROFESI KERJA 🔥 */
         .prospek-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
-        .tag-pill { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; letter-spacing: 0.5px; backdrop-filter: blur(5px); transition: 0.3s;}
-        .tag-pill:hover { background: rgba(255,255,255,0.3); }
-        .tag-pill-dark { background: #EBF5FB; color: #2980B9; border: 1px solid #D6EAF8; padding: 4px 10px; border-radius: 15px; font-size: 11px; font-weight: 500; margin-top: 5px; display: inline-block;}
+        
+        /* Tombol di Kotak Biru (Juara 1) */
+        .tag-pill { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.6); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; backdrop-filter: blur(5px); transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
+        .tag-pill:hover { background: rgba(255,255,255,0.3); transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        
+        /* Tombol di Kotak Putih (Juara 2 & 3) */
+        .tag-pill-dark { background: #FFFFFF; color: #2980B9; border: 1px solid #2980B9; padding: 5px 12px; border-radius: 15px; font-size: 11px; font-weight: 600; margin-top: 5px; margin-right: 5px; display: inline-flex; align-items: center; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(41,128,185,0.15); cursor: pointer;}
+        .tag-pill-dark:hover { background: #2980B9; color: #FFFFFF; transform: translateY(-3px); box-shadow: 0 5px 10px rgba(41,128,185,0.25); }
     </style>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -173,9 +184,57 @@
             'ai' => ['AI Engineer', 'Machine Learning Engineer', 'Deep Learning Specialist'],
             'mobile' => ['Android Developer', 'iOS Developer', 'Mobile App Engineer']
         ];
+
+        // 🔥 TAMBAHKAN KAMUS DESKRIPSI INI PERSIS DI BAWAHNYA 🔥
+        $deskripsi_profesi = [
+            // MOBILE
+            'Android Developer' => 'Peran ini sangat pas untukmu karena kamu menguasai logika bahasa Java/Kotlin, terbiasa menggunakan alat pengembangan Android Studio, dan mampu menyambungkan aplikasi dengan API dari internet.',
+            'iOS Developer' => 'Cocok untukmu yang sangat memahami siklus hidup aplikasi mobile (Life Cycle) serta mampu berkolaborasi merancang navigasi aplikasi yang simpel namun sangat intuitif bagi pengguna.',
+            'Mobile App Engineer' => 'Karier ini tepat dengan tingkat kesabaranmu yang tinggi dalam menguji dan memperbaiki bug agar aplikasi tidak force close, serta keahlianmu mengelola penyimpanan data lokal di memori HP.',
+            
+            // WEB
+            'Fullstack Developer' => 'Sesuai dengan logikamu merancang database relasional dan penguasaan fondasi HTML, CSS, JS tingkat lanjut serta framework modern seperti Laravel atau React.',
+            'Frontend Engineer' => 'Cocok karena ketelitian dan kepedulianmu merancang UI/UX, menyelesaikan bug tampilan, dan memastikan kenyamanan alur data pengguna di dalam browser.',
+            'Backend Developer' => 'Sangat pas dengan kemampuanmu memproses alur pengiriman data di server, merancang logika rute API, dan ketelitianmu menjaga keamanan sistem website.',
+            
+            // AI
+            'AI Engineer' => 'Relevan dengan pemahamanmu soal Neural Networks, logika pengolahan matriks yang kuat, dan penggunaan alat cerdas seperti OpenCV atau NLTK.',
+            'Machine Learning Engineer' => 'Cocok karena kemampuanmu merancang sistem yang bisa belajar sendiri dari data dan menguasai teknik pelatihan model (Training Model) menggunakan Python.',
+            'Deep Learning Specialist' => 'Pas banget dengan antusiasmemu mengeksplorasi hal baru untuk membuat mesin yang bisa "berpikir" dan caramu menimbang dampak etika kecerdasan buatan.',
+            
+            // DATA ANALYST
+            'Data Analyst' => 'Pas dengan kemampuanmu mengolah data menggunakan Microsoft Excel tingkat lanjut (Pivot/VLOOKUP) dan bahasa SQL untuk menarik data langsung dari database.',
+            'Business Intelligence' => 'Relevan dengan keahlianmu merancang dashboard interaktif (seperti Tableau/PowerBI) dan rasa percaya dirimu mempresentasikan temuan angka kepada klien.',
+            'Product Analyst' => 'Cocok dengan ketelitianmu menjaga kebersihan data dan kemampuan magismu mengubah angka-angka mentah menjadi narasi cerita penyelesaian bisnis.',
+            
+            // DATA SCIENCE
+            'Data Scientist' => 'Sesuai dengan keahlianmu memahami konsep Supervised/Unsupervised Learning secara mendalam dan merancang model prediktif menggunakan Python atau R.',
+            'Machine Learning Scientist' => 'Relevan dengan logikamu memecahkan masalah tingkat tinggi menggunakan library seperti Scikit-Learn atau TensorFlow untuk memprediksi masa depan.',
+            'AI Researcher' => 'Pas banget dengan minat risetmu merancang eksperimen untuk menguji akurasi model serta semangatmu mengikuti kompetisi data skala besar (seperti Kaggle).',
+            
+            // DATA MINING
+            'Data Mining Engineer' => 'Sesuai karena kamu paham logika algoritma klasifikasi/clustering dan telaten melakukan preprocessing (menghilangkan noise data) memakai tools seperti RapidMiner.',
+            'Big Data Specialist' => 'Relevan dengan kemampuanmu mengeksplorasi kumpulan data berjumlah raksasa (Big Data) dan keahlianmu menguasai teknik pemrosesan teks (Text Mining).',
+            'Data Engineer' => 'Cocok dengan kesabaranmu melakukan iterasi eksperimen data berkali-kali dan kemampuanmu mengintegrasikan hasil penambangan ke dalam aplikasi lain.',
+            
+            // 3D AR
+            'AR Developer' => 'Pas dengan keahlianmu mengelola koordinat 3D, memanipulasi pencahayaan, dan menggunakan alat pengembangan AR modern seperti Vuforia atau Spark AR.',
+            'XR Engineer' => 'Relevan dengan kemampuan koding interaksi objekmu di Unity dan kesabaranmu melakukan pengujian komprehensif pada berbagai perangkat kamera.',
+            'Creative Technologist' => 'Sesuai karena kamu bisa membuat dan mengedit aset 3D sendiri (seperti di Blender/Maya) serta memiliki imajinasi spasial yang sangat baik.',
+            
+            // 3D VR
+            'VR Developer' => 'Cocok dengan pemahamanmu soal User Experience (UX) di ruang 360 derajat dan keahlianmu menggunakan Unity/Unreal Engine untuk ekosistem VR.',
+            'Metaverse Architect' => 'Pas banget dengan impian besarmu menciptakan dan menjelaskan dunia virtual kompleks yang bisa dijelajahi oleh banyak orang secara simultan.',
+            'Simulation Engineer' => 'Relevan dengan pemahaman prinsip fisikamu untuk benda di dunia virtual dan keahlianmu merancang interaksi menggunakan motion controller tanpa tombol fisik.',
+            
+            // 3D GAME
+            'Game Programmer' => 'Sesuai dengan penguasaan bahasa pemprogramanmu (C#/C++) dalam Game Engine dan logikamu merancang sistem skor, nyawa, serta AI musuh.',
+            'Gameplay Engineer' => 'Cocok dengan kemampuan kreatifmu merancang mekanik permainan yang seimbang, menantang, sekaligus mampu menyusun skenario misi yang seru.',
+            'Technical Artist' => 'Relevan dengan ketelatenanmu mengatur aset animasi dan keluwesanmu bekerja sama dalam tim lintas media (desainer, musisi, programmer).'
+        ];
     @endphp
 
-    <div class="result-container py-6">
+    <div class="result-container py-6" x-data="{ showDetail: false, detailTitle: '', detailText: '' }">
         
         <div class="hero-card">
             <div class="hero-badge"><i class="fa-solid fa-ranking-star"></i> Rekomendasi Karier Utama - Peringkat #1</div>
@@ -194,9 +253,13 @@
             </div>
 
             <div class="prospek-tags">
-                <span style="font-size: 12px; opacity: 0.9; width: 100%; margin-bottom: 2px;"><i class="fa-solid fa-lightbulb" style="color: #F1C40F;"></i> Prospek Jabatan Relevan:</span>
+                <span style="font-size: 12px; opacity: 0.9; width: 100%; margin-bottom: 2px; font-weight: 500;">
+                    <i class="fa-solid fa-lightbulb" style="color: #F1C40F;"></i> Prospek Jabatan Relevan <em style="opacity: 0.8;">(Klik profesi untuk melihat detail)</em>:
+                </span>
                 @foreach($insight_profesi[$juara1] as $profesi)
-                    <span class="tag-pill"><i class="fa-solid fa-briefcase" style="opacity: 0.7; margin-right: 5px;"></i> {{ $profesi }}</span>
+                    <button type="button" @click="showDetail = true; detailTitle = '{{ $profesi }}'; detailText = '{{ addslashes($deskripsi_profesi[$profesi]) }}'" class="tag-pill cursor-pointer hover:scale-105 transition-transform flex items-center outline-none">
+                        <i class="fa-solid fa-briefcase" style="opacity: 0.7; margin-right: 5px;"></i> {{ $profesi }}
+                    </button>
                 @endforeach
             </div>
 
@@ -302,7 +365,9 @@
                         
                         <div style="margin-top: 5px;">
                             @foreach($insight_profesi[$alt_id] as $profesi)
-                                <span class="tag-pill-dark"><i class="fa-solid fa-briefcase" style="font-size: 10px;"></i> {{ $profesi }}</span>
+                                <button type="button" @click="showDetail = true; detailTitle = '{{ $profesi }}'; detailText = '{{ addslashes($deskripsi_profesi[$profesi]) }}'" class="tag-pill-dark cursor-pointer hover:scale-105 transition-transform text-left outline-none border-none">
+                                    <i class="fa-solid fa-briefcase" style="font-size: 10px; margin-right: 3px;"></i> {{ $profesi }}
+                                </button>
                             @endforeach
                         </div>
                     </div>
@@ -452,7 +517,36 @@
                 </div>
             </details>
         </div>
-    </div>
+
+        <!-- 🔥 POP-UP MODAL DESKRIPSI PROFESI 🔥 -->
+        <div x-show="showDetail" class="fixed inset-0 z-[99999] flex items-center justify-center px-4" style="display: none;">
+            <div x-show="showDetail" x-transition.opacity.duration.300ms @click="showDetail = false" class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
+            
+            <div x-show="showDetail" x-transition.scale.80.duration.300ms class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 overflow-hidden border border-slate-100">
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#1F618D] to-[#4298B4]"></div>
+                
+                <button @click="showDetail = false" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-slate-50 hover:bg-red-50 h-8 w-8 rounded-full flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div class="flex items-start gap-4 mt-2">
+                    <div class="bg-[#EBF5FB] h-12 w-12 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-user-tie text-[#2980B9] text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-[#2980B9] uppercase tracking-wider mb-1">Insight Profesi</p>
+                        <h3 class="text-xl font-extrabold text-slate-800 leading-tight mb-3" x-text="detailTitle"></h3>
+                        <p class="text-sm text-slate-600 leading-relaxed font-medium" x-text="detailText"></p>
+                    </div>
+                </div>
+
+                <button @click="showDetail = false" class="mt-6 w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl transition-colors">
+                    Mengerti
+                </button>
+            </div>
+        </div>
+
+    </div> <!-- Penutup dari result-container x-data -->
 
     <script>
         function openTab(evt, tabName) {
@@ -504,7 +598,7 @@
             }
         });
     </script>
-   <script>
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Tahan layar loading selama 3 detik (3000 milidetik)
             setTimeout(function() {
