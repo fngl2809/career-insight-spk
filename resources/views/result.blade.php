@@ -1,129 +1,63 @@
 <x-app-layout>
+    <!-- LAYAR LOADING -->
     <div id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #F8FAFC; z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease;">
-        
         <div style="position: relative; width: 80px; height: 80px; margin-bottom: 24px;">
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 6px solid #E2E8F0; border-radius: 50%;"></div>
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 6px solid #4298B4; border-top-color: transparent; border-radius: 50%; animation: muter 1s linear infinite;"></div>
             <img src="{{ asset('images/logo.png') }}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 24px; opacity: 0.8;" alt="Logo">
         </div>
-        
         <h2 style="font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">Sedang menganalisis profilmu...</h2>
         <p style="font-family: 'Poppins', sans-serif; font-size: 14px; color: #64748B; text-align: center; line-height: 1.6;">
             Sistem SPK sedang memproses hasil dengan metode<br>Profile Matching, AHP & TOPSIS
         </p>
-
         <style>
-            /* Animasi putar spinner */
-            @keyframes muter {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-            /* Sembunyikan konten hasil sementara loading */
+            @keyframes muter { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
             .result-container { display: none; }
         </style>
     </div>
+
+    <!-- CSS UTAMA -->
     <style>
-        .result-container {
-            font-family: 'Poppins', sans-serif;
-            color: #2C3E50;
-            line-height: 1.6;
-            max-width: 900px; 
-            margin: 0 auto;
-            padding: 20px 0;
-        }
-
-        /* Card Master */
-        .result-card {
-            background: #FFFFFF;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            margin-bottom: 25px;
-            border: 1px solid #EAEDED;
-        }
-
-        /* HERO HEADER */
-        .hero-card {
-            background: linear-gradient(135deg, #1F618D, #2980B9);
-            color: #FFFFFF;
-            border-radius: 16px;
-            padding: 40px 30px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(41, 128, 185, 0.3);
-            margin-bottom: 25px;
-        }
+        .result-container { font-family: 'Poppins', sans-serif; color: #2C3E50; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px 0; }
+        .result-card { background: #FFFFFF; border-radius: 16px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 25px; border: 1px solid #EAEDED; }
+        .hero-card { background: linear-gradient(135deg, #1F618D, #2980B9); color: #FFFFFF; border-radius: 16px; padding: 40px 30px; position: relative; overflow: hidden; box-shadow: 0 10px 25px rgba(41, 128, 185, 0.3); margin-bottom: 25px; }
         .hero-badge { background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 12px; display: inline-block; margin-bottom: 15px;}
         .hero-title { font-size: 36px; font-weight: 700; margin: 0 0 10px 0; display: flex; align-items: center; gap: 15px; }
         .hero-subtitle { font-size: 14px; opacity: 0.9; margin-bottom: 25px; }
-        
-        .circle-score {
-            position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
-            width: 120px; height: 120px;
-            background: rgba(255,255,255,0.15);
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
-        }
+        .circle-score { position: absolute; right: 40px; top: 50%; transform: translateY(-50%); width: 120px; height: 120px; background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .circle-score h2 { font-size: 38px; margin: 0; line-height: 1; }
         .circle-score span { font-size: 12px; opacity: 0.9; }
-
         .hero-progress-bg { background: rgba(255,255,255,0.2); height: 12px; border-radius: 10px; width: 60%; position: relative; margin-top: 10px;}
         .hero-progress-fill { background: #F1C40F; height: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(241, 196, 15, 0.5); }
         .hero-progress-labels { display: flex; width: 60%; justify-content: space-between; font-size: 11px; margin-top: 5px; opacity: 0.8; }
-
         .section-header { font-size: 13px; color: #2980B9; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px;}
         .section-title { font-size: 22px; font-weight: 700; margin-top: 0; margin-bottom: 20px; color: #2C3E50; }
-
-        /* REASONS GRID */
         .reasons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .reason-box { background: #E9F7EF; border: 1px solid #D5F5E3; padding: 15px; border-radius: 10px; display: flex; gap: 15px; align-items: flex-start; }
         .reason-box i { color: #27AE60; font-size: 18px; margin-top: 3px;}
         .reason-box p { margin: 0; font-size: 14px; color: #1E8449; }
-
-        /* PROGRESS KOMPETENSI */
         .kompetensi-row { margin-bottom: 20px; }
         .kompetensi-header { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center;}
         .kompetensi-title { font-weight: 600; display: flex; align-items: center; gap: 10px; font-size: 15px;}
         .k-icon { width: 25px; height: 25px; border-radius: 6px; display: flex; justify-content: center; align-items: center; font-size: 12px; font-weight: bold; color: white;}
         .k-stats { font-size: 13px; color: #7F8C8D; }
         .k-stats strong { color: #1F618D; font-size: 15px;}
-        
         .bar-bg { background: #EAEDED; height: 10px; border-radius: 10px; overflow: hidden; width: 100%;}
         .bar-fill { height: 100%; border-radius: 10px; }
         .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-left: 10px;}
-
         .c-kognitif { background-color: #5DADE2; }
         .c-hard { background-color: #8E44AD; }
         .c-soft { background-color: #3498DB; }
         .c-minat { background-color: #F39C12; }
         .c-pengalaman { background-color: #27AE60; }
-
-        /* ALTERNATIF & PERINGKAT */
-        .alt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        
-        /* 🔥 Kotaknya dibikin putih, dikasih bayangan, dan kalau dihover agak ngangkat! */
-        .alt-card { background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 24px; display: flex; align-items: center; gap: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: all 0.3s ease; }
-        .alt-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-color: #CBD5E1; }
-        
-        /* 🔥 Kotak angka #2 dan #3 nya dibikin lebih tegas */
-        .alt-rank { width: 55px; height: 55px; background: #F1F5F9; border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: 800; color: #64748B; box-shadow: inset 0 2px 4px rgba(0,0,0,0.03); flex-shrink: 0;}
-        
-        .alt-info { flex-grow: 1; }
-        .alt-info h4 { margin: 0 0 5px 0; font-size: 17px; font-weight: 700; color: #1E293B; }
-
         .rank-list { width: 100%; border-collapse: collapse; }
         .rank-list td { padding: 15px 0; border-bottom: 1px solid #F2F3F4; vertical-align: middle; }
         .rank-list tr:last-child td { border-bottom: none; }
-        
         .legend-box { background: #F4F6F7; padding: 15px 20px; border-radius: 10px; margin-top: 20px; }
         .legend-title { font-size: 12px; font-weight: 700; color: #7F8C8D; margin-bottom: 10px; display: block; }
         .legend-items { display: flex; gap: 15px; flex-wrap: wrap; }
         .l-item { font-size: 12px; display: flex; align-items: center; gap: 5px; font-weight: 500;}
         .l-dot { width: 12px; height: 12px; border-radius: 50%; }
-
-        /* TAB DETAILS */
         .tab-btn { flex: 1; padding: 15px; border: none; background: none; cursor: pointer; font-size: 13px; font-weight: 600; color: #7F8C8D; border-bottom: 3px solid transparent; transition: 0.3s; }
         .tab-btn.active { color: #2980B9; border-bottom: 3px solid #2980B9; background: #F4F9FD; }
         .tab-content { display: none; padding: 25px; animation: fadeIn 0.4s; }
@@ -132,15 +66,22 @@
         .table-detail td { padding: 12px; border-bottom: 1px solid #F2F3F4; white-space: nowrap;}
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         details > summary::-webkit-details-marker { display: none; }
+        details.detail-animasi summary i.arrow-icon { transition: transform 0.3s ease; }
+        details.detail-animasi[open] summary i.arrow-icon { transform: rotate(90deg); }
+        details.detail-animasi[open] summary { background-color: #F8FAFC; }
 
-       /* 🔥 CSS BARU UNTUK INSIGHT TAG PROFESI KERJA 🔥 */
+        /* 🔥 CSS ALTERNATIF PERINGKAT 2 & 3 (UDAH TIMBUL!) 🔥 */
+        .alt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .alt-card { background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 24px; display: flex; align-items: center; gap: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: all 0.3s ease; }
+        .alt-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-color: #CBD5E1; }
+        .alt-rank { width: 55px; height: 55px; background: #F1F5F9; border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: 800; color: #64748B; box-shadow: inset 0 2px 4px rgba(0,0,0,0.03); flex-shrink: 0;}
+        .alt-info { flex-grow: 1; }
+        .alt-info h4 { margin: 0 0 5px 0; font-size: 17px; font-weight: 700; color: #1E293B; }
+
+        /* 🔥 CSS TAG PROFESI (POP-OUT & CLICKABLE) 🔥 */
         .prospek-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
-        
-        /* Tombol di Kotak Biru (Juara 1) */
         .tag-pill { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.6); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; backdrop-filter: blur(5px); transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
         .tag-pill:hover { background: rgba(255,255,255,0.3); transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-        
-        /* Tombol di Kotak Putih (Juara 2 & 3) */
         .tag-pill-dark { background: #FFFFFF; color: #2980B9; border: 1px solid #2980B9; padding: 5px 12px; border-radius: 15px; font-size: 11px; font-weight: 600; margin-top: 5px; margin-right: 5px; display: inline-flex; align-items: center; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(41,128,185,0.15); cursor: pointer;}
         .tag-pill-dark:hover { background: #2980B9; color: #FFFFFF; transform: translateY(-3px); box-shadow: 0 5px 10px rgba(41,128,185,0.25); }
     </style>
@@ -172,7 +113,6 @@
         $persen_j1 = formatPersen($ranking[$juara1]);
         $kategori_j1 = getKategori($persen_j1);
 
-        // 🔥 KAMUS BARU: INSIGHT PROSPEK LOWONGAN KERJA TOP 3 🔥
         $insight_profesi = [
             '3d_ar' => ['AR Developer', 'XR Engineer', 'Creative Technologist'],
             '3d_vr' => ['VR Developer', 'Metaverse Architect', 'Simulation Engineer'],
@@ -185,57 +125,41 @@
             'mobile' => ['Android Developer', 'iOS Developer', 'Mobile App Engineer']
         ];
 
-        // 🔥 TAMBAHKAN KAMUS DESKRIPSI INI PERSIS DI BAWAHNYA 🔥
         $deskripsi_profesi = [
-            // MOBILE
             'Android Developer' => 'Peran ini sangat pas untukmu karena kamu menguasai logika bahasa Java/Kotlin, terbiasa menggunakan alat pengembangan Android Studio, dan mampu menyambungkan aplikasi dengan API dari internet.',
             'iOS Developer' => 'Cocok untukmu yang sangat memahami siklus hidup aplikasi mobile (Life Cycle) serta mampu berkolaborasi merancang navigasi aplikasi yang simpel namun sangat intuitif bagi pengguna.',
             'Mobile App Engineer' => 'Karier ini tepat dengan tingkat kesabaranmu yang tinggi dalam menguji dan memperbaiki bug agar aplikasi tidak force close, serta keahlianmu mengelola penyimpanan data lokal di memori HP.',
-            
-            // WEB
             'Fullstack Developer' => 'Sesuai dengan logikamu merancang database relasional dan penguasaan fondasi HTML, CSS, JS tingkat lanjut serta framework modern seperti Laravel atau React.',
             'Frontend Engineer' => 'Cocok karena ketelitian dan kepedulianmu merancang UI/UX, menyelesaikan bug tampilan, dan memastikan kenyamanan alur data pengguna di dalam browser.',
             'Backend Developer' => 'Sangat pas dengan kemampuanmu memproses alur pengiriman data di server, merancang logika rute API, dan ketelitianmu menjaga keamanan sistem website.',
-            
-            // AI
             'AI Engineer' => 'Relevan dengan pemahamanmu soal Neural Networks, logika pengolahan matriks yang kuat, dan penggunaan alat cerdas seperti OpenCV atau NLTK.',
             'Machine Learning Engineer' => 'Cocok karena kemampuanmu merancang sistem yang bisa belajar sendiri dari data dan menguasai teknik pelatihan model (Training Model) menggunakan Python.',
             'Deep Learning Specialist' => 'Pas banget dengan antusiasmemu mengeksplorasi hal baru untuk membuat mesin yang bisa "berpikir" dan caramu menimbang dampak etika kecerdasan buatan.',
-            
-            // DATA ANALYST
             'Data Analyst' => 'Pas dengan kemampuanmu mengolah data menggunakan Microsoft Excel tingkat lanjut (Pivot/VLOOKUP) dan bahasa SQL untuk menarik data langsung dari database.',
             'Business Intelligence' => 'Relevan dengan keahlianmu merancang dashboard interaktif (seperti Tableau/PowerBI) dan rasa percaya dirimu mempresentasikan temuan angka kepada klien.',
             'Product Analyst' => 'Cocok dengan ketelitianmu menjaga kebersihan data dan kemampuan magismu mengubah angka-angka mentah menjadi narasi cerita penyelesaian bisnis.',
-            
-            // DATA SCIENCE
             'Data Scientist' => 'Sesuai dengan keahlianmu memahami konsep Supervised/Unsupervised Learning secara mendalam dan merancang model prediktif menggunakan Python atau R.',
             'Machine Learning Scientist' => 'Relevan dengan logikamu memecahkan masalah tingkat tinggi menggunakan library seperti Scikit-Learn atau TensorFlow untuk memprediksi masa depan.',
             'AI Researcher' => 'Pas banget dengan minat risetmu merancang eksperimen untuk menguji akurasi model serta semangatmu mengikuti kompetisi data skala besar (seperti Kaggle).',
-            
-            // DATA MINING
             'Data Mining Engineer' => 'Sesuai karena kamu paham logika algoritma klasifikasi/clustering dan telaten melakukan preprocessing (menghilangkan noise data) memakai tools seperti RapidMiner.',
             'Big Data Specialist' => 'Relevan dengan kemampuanmu mengeksplorasi kumpulan data berjumlah raksasa (Big Data) dan keahlianmu menguasai teknik pemrosesan teks (Text Mining).',
             'Data Engineer' => 'Cocok dengan kesabaranmu melakukan iterasi eksperimen data berkali-kali dan kemampuanmu mengintegrasikan hasil penambangan ke dalam aplikasi lain.',
-            
-            // 3D AR
             'AR Developer' => 'Pas dengan keahlianmu mengelola koordinat 3D, memanipulasi pencahayaan, dan menggunakan alat pengembangan AR modern seperti Vuforia atau Spark AR.',
             'XR Engineer' => 'Relevan dengan kemampuan koding interaksi objekmu di Unity dan kesabaranmu melakukan pengujian komprehensif pada berbagai perangkat kamera.',
             'Creative Technologist' => 'Sesuai karena kamu bisa membuat dan mengedit aset 3D sendiri (seperti di Blender/Maya) serta memiliki imajinasi spasial yang sangat baik.',
-            
-            // 3D VR
             'VR Developer' => 'Cocok dengan pemahamanmu soal User Experience (UX) di ruang 360 derajat dan keahlianmu menggunakan Unity/Unreal Engine untuk ekosistem VR.',
             'Metaverse Architect' => 'Pas banget dengan impian besarmu menciptakan dan menjelaskan dunia virtual kompleks yang bisa dijelajahi oleh banyak orang secara simultan.',
             'Simulation Engineer' => 'Relevan dengan pemahaman prinsip fisikamu untuk benda di dunia virtual dan keahlianmu merancang interaksi menggunakan motion controller tanpa tombol fisik.',
-            
-            // 3D GAME
             'Game Programmer' => 'Sesuai dengan penguasaan bahasa pemprogramanmu (C#/C++) dalam Game Engine dan logikamu merancang sistem skor, nyawa, serta AI musuh.',
             'Gameplay Engineer' => 'Cocok dengan kemampuan kreatifmu merancang mekanik permainan yang seimbang, menantang, sekaligus mampu menyusun skenario misi yang seru.',
             'Technical Artist' => 'Relevan dengan ketelatenanmu mengatur aset animasi dan keluwesanmu bekerja sama dalam tim lintas media (desainer, musisi, programmer).'
         ];
     @endphp
 
+    <!-- 🌟 WRAPPER ALPINE UNTUK POP-UP MODAL 🌟 -->
     <div class="result-container py-6" x-data="{ showDetail: false, detailTitle: '', detailText: '' }">
         
+        <!-- JUARA 1 HERO CARD -->
         <div class="hero-card">
             <div class="hero-badge"><i class="fa-solid fa-ranking-star"></i> Rekomendasi Karier Utama - Peringkat #1</div>
             <h1 class="hero-title"><i class="fa-solid fa-trophy" style="color: #F1C40F;"></i> {{ formatNama($juara1) }}</h1>
@@ -294,6 +218,7 @@
             </div>
         </div>
 
+        <!-- 🔥 ANALISIS KOMPETENSI (YANG KEMARIN DOUBLE, SEKARANG UDAH RAPI!) 🔥 -->
         <div class="result-card">
             <div class="section-header">Detail Penilaian</div>
             <h2 class="section-title">Analisis Kompetensi</h2>
@@ -301,14 +226,80 @@
 
             @php
                 $bar_config = [
-                    'kognitif' => ['L' => 'K', 'C' => 'c-kognitif', 'N' => 'Kognitif', 'Id' => 90],
-                    'hardskill' => ['L' => 'H', 'C' => 'c-hard', 'N' => 'Hard Skills', 'Id' => 85],
-                    'softskill' => ['L' => 'S', 'C' => 'c-soft', 'N' => 'Soft Skills', 'Id' => 80],
-                    'minat' => ['L' => 'M', 'C' => 'c-minat', 'N' => 'Minat', 'Id' => 88],
-                    'pengalaman' => ['L' => 'P', 'C' => 'c-pengalaman', 'N' => 'Pengalaman', 'Id' => 75],
+                    'kognitif' => ['L' => 'K', 'C' => 'c-kognitif', 'N' => 'Kognitif', 'Id' => 90, 'Hex' => '#5DADE2'],
+                    'hardskill' => ['L' => 'H', 'C' => 'c-hard', 'N' => 'Hard Skills', 'Id' => 85, 'Hex' => '#8E44AD'],
+                    'softskill' => ['L' => 'S', 'C' => 'c-soft', 'N' => 'Soft Skills', 'Id' => 80, 'Hex' => '#3498DB'],
+                    'minat' => ['L' => 'M', 'C' => 'c-minat', 'N' => 'Minat', 'Id' => 88, 'Hex' => '#F39C12'],
+                    'pengalaman' => ['L' => 'P', 'C' => 'c-pengalaman', 'N' => 'Pengalaman', 'Id' => 75, 'Hex' => '#27AE60'],
                 ];
                 $radar_user = [];
                 $radar_ideal = [];
+
+                $deskripsi_kriteria = [
+                    'mobile' => [
+                        'kognitif' => 'Pemahaman tentang siklus hidup aplikasi (Activity Life Cycle), penyimpanan data lokal, dan perancangan navigasi.',
+                        'hardskill' => 'Keahlian pemrograman Java/Kotlin, penggunaan Android Studio, dan integrasi aplikasi dengan API internet.',
+                        'softskill' => 'Kesabaran menangani bug force close, kolaborasi UI/UX, dan kemampuan menjelaskan cara kerja ke user awam.',
+                        'minat' => 'Antusiasme menciptakan aplikasi saku praktis dan memantau pembaruan sistem Google Android Developer.',
+                        'pengalaman' => 'Pembuatan aplikasi Android yang sukses di-build ke HP, publikasi kode, dan kepemilikan sertifikasi mobile.'
+                    ],
+                    'web' => [
+                        'kognitif' => 'Logika perancangan skema database relasional dan alur pengiriman data dari browser menuju server.',
+                        'hardskill' => 'Penguasaan HTML/CSS/JS, framework modern (Laravel/React), dan keterampilan deployment website.',
+                        'softskill' => 'Ketelitian menjaga keamanan data, penyelesaian bug tampilan, dan komunikasi fitur dengan klien.',
+                        'minat' => 'Semangat menciptakan sistem publik yang mudah diakses dan rasa ingin tahu pada teknologi web terbaru.',
+                        'pengalaman' => 'Portofolio koding web di GitHub, pembuatan sistem informasi utuh, dan proyek website profesional.'
+                    ],
+                    'ai' => [
+                        'kognitif' => 'Pemahaman arsitektur Neural Networks dan logika matriks untuk sistem yang mampu belajar sendiri.',
+                        'hardskill' => 'Keahlian Python, implementasi teknik Training Model, dan penggunaan tools seperti OpenCV atau NLTK.',
+                        'softskill' => 'Berpikir kritis terhadap etika AI, senang bereksperimen dengan hal baru, dan kolaborasi otomasi tim.',
+                        'minat' => 'Hasrat tinggi menciptakan mesin yang bisa "berpikir" dan memantau perkembangan teknologi GPT.',
+                        'pengalaman' => 'Pembuatan sistem deteksi objek/suara, kepemilikan repositori AI aktif, dan sertifikat kursus kredibel.'
+                    ],
+                    'data_analyst' => [
+                        'kognitif' => 'Pemahaman konsep statistik dasar dan kemampuan mengubah angka mentah menjadi narasi bisnis logis.',
+                        'hardskill' => 'Penguasaan Excel lanjutan (Pivot/Macro), SQL database, dan pembuatan dashboard (Tableau/PowerBI).',
+                        'softskill' => 'Ketelitian tinggi memeriksa kebersihan data dan kepercayaan diri mempresentasikan temuan ke atasan.',
+                        'minat' => 'Ketertarikan bekerja dengan laporan grafik harian dan mencari solusi permasalahan lewat angka.',
+                        'pengalaman' => 'Pengerjaan proyek analisis data penjualan/akademik dan kepemilikan sertifikasi Data Analytics.'
+                    ],
+                    'data_science' => [
+                        'kognitif' => 'Pemahaman mendalam tentang Supervised/Unsupervised Learning dan perancangan eksperimen akurasi.',
+                        'hardskill' => 'Koding Python/R, pemanfaatan library Scikit-Learn/TensorFlow, dan pengolahan Big Data (Spark/Cloud).',
+                        'softskill' => 'Kemampuan problem solving kreatif dan menerjemahkan kebutuhan bisnis menjadi bahasa model data.',
+                        'minat' => 'Antusiasme menciptakan sistem cerdas prediktif dan konsisten mempelajari algoritma tren terbaru.',
+                        'pengalaman' => 'Partisipasi di kompetisi (Kaggle/Satria Data) dan rekam jejak pembangunan model prediksi aktif.'
+                    ],
+                    'data_mining' => [
+                        'kognitif' => 'Pemahaman algoritma klasifikasi/clustering dan penentuan variabel yang paling berpengaruh pada data.',
+                        'hardskill' => 'Keahlian preprocessing data, Text Mining, dan pengoperasian tools seperti RapidMiner atau KNIME.',
+                        'softskill' => 'Kesabaran iterasi eksperimen berkali-kali dan kemampuan menyederhanakan pola teknis yang rumit.',
+                        'minat' => 'Rasa penasaran menemukan rahasia tersembunyi dari Big Data dan eksplorasi kumpulan data besar.',
+                        'pengalaman' => 'Riset penambangan data akademik, publikasi jurnal, dan portofolio penggunaan tools mining.'
+                    ],
+                    '3d_ar' => [
+                        'kognitif' => 'Pemahaman koordinat 3D, manipulasi pencahayaan, dan imajinasi spasial penataan ruang virtual.',
+                        'hardskill' => 'Keahlian tools AR (Vuforia/Spark AR), pembuatan objek 3D (Blender), dan koding interaksi Unity.',
+                        'softskill' => 'Perhatian tinggi pada detail estetika, kolaborasi dengan desainer, dan kesabaran saat testing perangkat.',
+                        'minat' => 'Ketertarikan menggabungkan dunia maya/nyata dan senang bereksperimen dengan filter AR terbaru.',
+                        'pengalaman' => 'Pembuatan filter AR/aplikasi katalog dan kepemilikan portofolio aset 3D buatan sendiri.'
+                    ],
+                    '3d_vr' => [
+                        'kognitif' => 'Pemahaman User Experience (UX) di ruang 360 derajat dan prinsip fisika untuk objek dunia virtual.',
+                        'hardskill' => 'Penguasaan Unity/Unreal Engine, optimasi motion sickness, dan koding interaksi VR controller.',
+                        'softskill' => 'Dedikasi tinggi dalam riset kenyamanan pengguna dan kemampuan kolaborasi lintas media (audio/visual).',
+                        'minat' => 'Impian menciptakan Metaverse yang bisa dijelajahi banyak orang dan sangat menikmati konten VR.',
+                        'pengalaman' => 'Pengembangan tur virtual 360/simulasi dan portofolio proyek VR yang siap jalan di headset.'
+                    ],
+                    '3d_game' => [
+                        'kognitif' => 'Logika matematika untuk skor/level dan kemampuan merancang skenario gameplay yang seimbang.',
+                        'hardskill' => 'Penguasaan C#/C++ dalam Game Engine, pengaturan aset animasi, dan perancangan AI untuk musuh.',
+                        'softskill' => 'Ketekunan memperbaiki ratusan bug dan keluwesan menerima masukan/feedback dari para player.',
+                        'minat' => 'Kecintaan mendalam pada industri game dan ambisi merancang game yang dimainkan jutaan orang.',
+                        'pengalaman' => 'Partisipasi aktif dalam Game Jam/komunitas dan publikasi karya game di platform seperti Itch.io.'
+                    ]
+                ];
             @endphp
 
             @foreach($kriteria_list as $krit)
@@ -319,7 +310,7 @@
                     $radar_ideal[] = $cfg['Id'];
                     $is_terpenuhi = $score_100 >= $cfg['Id'];
                 @endphp
-                <div class="kompetensi-row">
+                <div class="kompetensi-row" style="margin-bottom: 25px;">
                     <div class="kompetensi-header">
                         <div class="kompetensi-title">
                             <span class="k-icon {{ $cfg['C'] }}">{{ $cfg['L'] }}</span> {{ $cfg['N'] }}
@@ -334,6 +325,10 @@
                     <div class="bar-bg">
                         <div class="bar-fill {{ $cfg['C'] }}" style="width: {{ $score_100 }}%;"></div>
                     </div>
+                    
+                    <div style="margin-top: 10px; font-size: 11.5px; color: #64748B; background: #F8FAFC; padding: 10px 14px; border-radius: 8px; border-left: 3px solid {{ $cfg['Hex'] }}; line-height: 1.6;">
+                        <strong style="color: #475569;">Interpretasi:</strong> {{ $deskripsi_kriteria[$juara1][$krit] }}
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -347,6 +342,7 @@
             </div>
         </div>
 
+        <!-- JUARA 2 DAN 3 -->
         <h2 style="font-size: 20px; color: #2C3E50; margin-bottom: 15px;"><i class="fa-solid fa-arrow-trend-up" style="color: #5DADE2;"></i> Alternatif Karier Terbaik</h2>
         <div class="alt-grid" style="margin-bottom: 25px;">
             @foreach([$juara2 => 2, $juara3 => 3] as $alt_id => $pos)
@@ -415,13 +411,6 @@
                 </div>
             </div>
         </div>
-
-        <style>
-            details.detail-animasi summary i.arrow-icon { transition: transform 0.3s ease; }
-            details.detail-animasi[open] summary i.arrow-icon { transform: rotate(90deg); }
-            details.detail-animasi[open] summary { background-color: #F8FAFC; }
-            details.detail-animasi summary::-webkit-details-marker { display: none; }
-        </style>
 
         <div class="result-card" style="padding: 0; overflow: hidden; border: 1px solid #EAEDED;">
             <details class="detail-animasi">
@@ -546,8 +535,9 @@
             </div>
         </div>
 
-    </div> <!-- Penutup dari result-container x-data -->
+    </div>
 
+    <!-- SCRIPT TAB DAN RADAR CHART -->
     <script>
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
@@ -566,17 +556,16 @@
                 labels: ['Kognitif', 'Hard Skills', 'Soft Skills', 'Minat', 'Pengalaman'],
                 datasets: [
                     {
-                        label: 'Profilmu',
+                        label: 'Skor Kamu',
                         data: <?php echo json_encode($radar_user); ?>,
                         backgroundColor: 'rgba(142, 68, 173, 0.2)',
-                        borderColor: 'rgba(142, 68, 173, 1)',
-                        pointBackgroundColor: 'rgba(142, 68, 173, 1)',
+                        borderColor: '#8E44AD',
+                        pointBackgroundColor: '#8E44AD',
                         borderWidth: 2,
                     },
                     {
-                        label: 'Profil Ideal Standar',
+                        label: 'Standar Ideal',
                         data: <?php echo json_encode($radar_ideal); ?>,
-                        backgroundColor: 'rgba(149, 165, 166, 0.1)',
                         borderColor: 'rgba(149, 165, 166, 0.5)',
                         borderDash: [5, 5],
                         borderWidth: 2,
@@ -588,35 +577,51 @@
                 responsive: true,
                 scales: {
                     r: {
-                        angleLines: { color: 'rgba(0, 0, 0, 0.05)' },
-                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
-                        pointLabels: { font: { family: "'Poppins', sans-serif", size: 12 }, color: '#7F8C8D' },
-                        ticks: { display: false, min: 0, max: 100 }
+                        ticks: { display: true, stepSize: 20, min: 0, max: 100 },
+                        pointLabels: { font: { size: 13, weight: 'bold' } }
                     }
                 },
-                plugins: { legend: { position: 'bottom', labels: { font: { family: "'Poppins', sans-serif" } } } }
-            }
+                plugins: {
+                    legend: { position: 'bottom' },
+                    // 🔥 INI JURUS UNTUK MEMUNCULKAN ANGKA DI SETIAP TITIK 🔥
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw;
+                            }
+                        }
+                    }
+                }
+            },
+            // 🔥 PLUGIN UNTUK MENAMPILKAN ANGKA DI ATAS TITIK 🔥
+            plugins: [{
+                afterDatasetsDraw: function(chart) {
+                    var ctx = chart.ctx;
+                    chart.data.datasets.forEach(function(dataset, i) {
+                        var meta = chart.getDatasetMeta(i);
+                        if (!meta.hidden && i === 0) { // Hanya untuk dataset pertama (Profilmu)
+                            meta.data.forEach(function(element, index) {
+                                ctx.fillStyle = '#8E44AD';
+                                ctx.font = 'bold 12px Poppins';
+                                ctx.textAlign = 'center';
+                                ctx.fillText(dataset.data[index], element.x, element.y - 10);
+                            });
+                        }
+                    });
+                }
+            }]
         });
     </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Tahan layar loading selama 3 detik (3000 milidetik)
             setTimeout(function() {
                 let loadingScreen = document.getElementById("loading-screen");
                 let resultContainer = document.querySelector(".result-container");
-                
-                // 1. Munculkan hasil rekomendasinya
                 resultContainer.style.display = "block";
-                
-                // 2. Bikin efek loading screen-nya memudar (fade out)
                 loadingScreen.style.opacity = "0"; 
-                
-                // 3. Buang layar loading-nya dari tampilan setelah memudar
-                setTimeout(function() {
-                    loadingScreen.style.display = "none";
-                }, 800);
-                
-            }, 3000); // <-- Waktu delay: 3000 ms = 3 detik
+                setTimeout(function() { loadingScreen.style.display = "none"; }, 800);
+            }, 3000); 
         });
     </script>
 </x-app-layout>
