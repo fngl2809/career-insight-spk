@@ -100,20 +100,16 @@ class QuizController extends Controller
     }
 
     // ==============================================================
-    // 5. FUNGSI PERHITUNGAN SPK & MENAMPILKAN HASIL (Ada Satpamnya)
+    // 5. FUNGSI PERHITUNGAN SPK & MENAMPILKAN HASIL TERBARU
     // ==============================================================
     public function showResult()
     {
-        // 🚨 SATPAM: Cek apakah user ini sudah pernah ngerjain kuesioner?
         $jawaban_db = Assessment::where('user_id', Auth::id())->latest()->first();
 
-        // Kalau belum pernah ngerjain sama sekali
         if (!$jawaban_db) {
-            // Tendang balik ke halaman PANDUAN / WARNING AWAL!
             return redirect()->route('assessment.index')->with('error', 'Ups! Kamu harus baca panduan dan mengerjakan kuesioner terlebih dahulu.');
         }
 
-        // Kalau lolos satpam, ubah data database jadi array untuk dihitung
         $data_jawaban = $jawaban_db->toArray();
 
         // --- MULAI PERHITUNGAN SPK ---
@@ -217,27 +213,25 @@ class QuizController extends Controller
             'detail_pm' => $matriks_pm_total,
             'd_plus' => $d_pos,
             'd_min' => $d_neg,
-            'ahp_final' => $this->ahp_weights[$bidang_ahp_pemenang]
+            'ahp_final' => $this->ahp_weights[$bidang_ahp_pemenang],
+            'is_history' => false // PENANDA UNTUK VIEW
         ]);
     }
 
     // ==============================================================
-    // 6. 🔥 FUNGSI BARU: MESIN WAKTU UNTUK TOMBOL "LIHAT HASIL" 🔥
+    // 6. 🔥 FUNGSI MESIN WAKTU UNTUK TOMBOL "LIHAT HASIL" 🔥
     // ==============================================================
     public function showSpecificResult($id)
     {
-        // 🚨 SATPAM: Cek apakah ID tes ini beneran ada dan milik user yang sedang login?
         $jawaban_db = Assessment::where('id', $id)->where('user_id', Auth::id())->first();
 
-        // Kalau datanya nggak ada (atau dia nyoba buka hasil tes orang lain)
         if (!$jawaban_db) {
-            return redirect()->route('assessment.history')->with('error', 'Ups! Data riwayat asesmen tidak ditemukan atau Anda tidak memiliki akses.');
+            return redirect()->route('assessment.history')->with('error', 'Ups! Data riwayat asesmen tidak ditemukan.');
         }
 
-        // Kalau lolos satpam, ubah data database jadi array untuk dihitung
         $data_jawaban = $jawaban_db->toArray();
 
-        // --- MULAI PERHITUNGAN SPK (RUMUSNYA SAMA PERSIS 100% KAYAK SHOWRESULT) ---
+        // --- MULAI PERHITUNGAN SPK (SAMA PERSIS 100% DENGAN SHOWRESULT) ---
         $alternatif = ['3d_ar', '3d_vr', '3d_game', 'data_analyst', 'data_mining', 'data_science', 'web', 'ai', 'mobile'];
         $kriteria = ['kognitif', 'hardskill', 'softskill', 'minat', 'pengalaman'];
         $sesi_soal = [
@@ -332,14 +326,14 @@ class QuizController extends Controller
         $juara1_key = array_key_first($ranking);
         $bidang_ahp_pemenang = $mapping_ahp[$juara1_key];
 
-        // Lemparkan hasil perhitungan ini kembali ke halaman Result
         return view('result', [
             'ranking' => $ranking,
             'matriks_awal' => $matriks_x,
             'detail_pm' => $matriks_pm_total,
             'd_plus' => $d_pos,
             'd_min' => $d_neg,
-            'ahp_final' => $this->ahp_weights[$bidang_ahp_pemenang]
+            'ahp_final' => $this->ahp_weights[$bidang_ahp_pemenang],
+            'is_history' => true // 🔥 PENANDA INI ADALAH DATA RIWAYAT
         ]);
     }
 
@@ -348,19 +342,19 @@ class QuizController extends Controller
     // ==============================================================
     public function history()
     {
-        // Ambil semua data asesmen milik user yang sedang login
         $all_assessments = Assessment::where('user_id', Auth::id())->latest()->get();
-        
         $history_data = [];
 
         foreach ($all_assessments as $index => $item) {
-            // Kita hitung ulang TOPSIS singkat buat dapet Juara 1 & Skornya
             $data_jawaban = $item->toArray();
             
-            // --- Perhitungan Singkat ---
+            // --- MULAI PERHITUNGAN SPK (SAMA PERSIS 100% JUGA!) ---
             $alternatif = ['3d_ar', '3d_vr', '3d_game', 'data_analyst', 'data_mining', 'data_science', 'web', 'ai', 'mobile'];
             $kriteria = ['kognitif', 'hardskill', 'softskill', 'minat', 'pengalaman'];
-            $sesi_soal = ['3d_ar' => 1, '3d_vr' => 16, '3d_game' => 31, 'data_analyst' => 46, 'data_mining' => 61, 'data_science' => 76, 'web' => 91, 'ai' => 106, 'mobile' => 121];
+            $sesi_soal = [
+                '3d_ar' => 1, '3d_vr' => 16, '3d_game' => 31, 'data_analyst' => 46, 'data_mining' => 61,
+                'data_science' => 76, 'web' => 91, 'ai' => 106, 'mobile' => 121
+            ];
 
             $matriks_x = [];
             foreach ($sesi_soal as $nama_sesi => $start_soal) {
@@ -384,17 +378,52 @@ class QuizController extends Controller
                 }
             }
 
-            // --- Bagian TOPSIS Singkat ---
+            $matriks_r = []; $pembagi = [];
+            foreach ($kriteria as $nama_kriteria) {
+                $sum_sq = 0;
+                foreach ($alternatif as $alt) { $sum_sq += pow($matriks_x[$alt][$nama_kriteria], 2); }
+                $pembagi[$nama_kriteria] = sqrt($sum_sq);
+            }
+            foreach ($alternatif as $alt) {
+                foreach ($kriteria as $nama_kriteria) {
+                    $div = $pembagi[$nama_kriteria] > 0 ? $pembagi[$nama_kriteria] : 1;
+                    $matriks_r[$alt][$nama_kriteria] = $matriks_x[$alt][$nama_kriteria] / $div;
+                }
+            }
+
+            $matriks_y = [];
+            $mapping_ahp = [
+                '3d_ar' => 'bidang_3d', '3d_vr' => 'bidang_3d', '3d_game' => 'bidang_3d',
+                'data_analyst' => 'bidang_data', 'data_mining' => 'bidang_data', 'data_science' => 'bidang_data',
+                'web' => 'bidang_web', 'ai' => 'bidang_ai', 'mobile' => 'bidang_mobile',
+            ];
+
+            foreach ($alternatif as $alt) {
+                $key_ahp = $mapping_ahp[$alt];
+                foreach ($kriteria as $nama_kriteria) {
+                    $bobot_ahp = $this->ahp_weights[$key_ahp][$nama_kriteria];
+                    $matriks_y[$alt][$nama_kriteria] = $matriks_r[$alt][$nama_kriteria] * $bobot_ahp;
+                }
+            }
+
+            $s_pos = []; $s_neg = [];
+            foreach ($kriteria as $nk) {
+                $vals = []; foreach ($alternatif as $alt) { $vals[] = $matriks_y[$alt][$nk]; }
+                $s_pos[$nk] = max($vals); $s_neg[$nk] = min($vals);
+            }
+
             $d_pos = []; $d_neg = []; $ranking = [];
             foreach ($alternatif as $alt) {
                 $sum_p = 0; $sum_n = 0;
                 foreach ($kriteria as $nk) {
-                    $sum_p += pow($matriks_x[$alt][$nk] - 5, 2); 
-                    $sum_n += pow($matriks_x[$alt][$nk] - 1, 2);
+                    $sum_p += pow($matriks_y[$alt][$nk] - $s_pos[$nk], 2);
+                    $sum_n += pow($matriks_y[$alt][$nk] - $s_neg[$nk], 2);
                 }
                 $d_pos[$alt] = sqrt($sum_p); $d_neg[$alt] = sqrt($sum_n);
-                $ranking[$alt] = ($d_pos[$alt] + $d_neg[$alt]) > 0 ? ($d_neg[$alt] / ($d_pos[$alt] + $d_neg[$alt])) : 0;
+                $total_d = $d_pos[$alt] + $d_neg[$alt];
+                $ranking[$alt] = $total_d > 0 ? ($d_neg[$alt] / $total_d) : 0;
             }
+
             arsort($ranking);
             $juara1 = array_key_first($ranking);
             $skor = $ranking[$juara1];
@@ -403,7 +432,7 @@ class QuizController extends Controller
                 'id' => $item->id,
                 'tanggal' => $item->created_at->format('d M Y, H:i'),
                 'rekomendasi' => ucwords(str_replace('_', ' ', $juara1)),
-                'skor' => number_format($skor, 4) // Format jadi 4 angka di belakang koma
+                'skor' => number_format($skor, 4)
             ];
         }
 

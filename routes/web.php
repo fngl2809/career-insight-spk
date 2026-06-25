@@ -27,8 +27,10 @@ Route::middleware('auth')->group(function () {
     // Rute Hasil Rekomendasi Terakhir
     Route::get('/result', [QuizController::class, 'showResult'])->name('result.index');
 
-    // 🔥 RUTE RIWAYAT & DETAIL HASIL MASA LALU (INI YANG TADI HILANG!) 🔥
+    // 🔥 INI RUTE RIWAYAT & DETAIL HASIL YANG HARUS ADA 🔥
     Route::get('/history', [QuizController::class, 'history'])->name('assessment.history');
+    
+    // Rute ini menangkap ID riwayat agar hasil yang muncul TIDAK SALAH
     Route::get('/result/{id}', [QuizController::class, 'showSpecificResult'])->name('result.show');
 });
 

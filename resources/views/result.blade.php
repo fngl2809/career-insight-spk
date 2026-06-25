@@ -804,24 +804,24 @@
             // Cek apakah b_id ada di kamus, jika tidak gunakan pesan default
             $penjelasan = isset($kamus_analisis[$b_id]) ? $kamus_analisis[$b_id] : "Skor $p% pada bidang ini menunjukkan perlunya tinjauan ulang pada materi fundamental untuk meningkatkan kesiapan karier.";
         @endphp
-    <tr>
-        <td style="padding: 15px 0; border-bottom: 1px solid #EAEDED;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                <div style="font-weight: 700; color: #334155;">{{ $i+1 }}. {{ formatNama($b_id) }}</div>
-                <div style="font-weight: 700; color: {{ $kat['color'] }};">{{ $p }}%</div>
-            </div>
-            
-            <div class="bar-bg" style="height: 6px; background: #E2E8F0; border-radius: 3px; margin-bottom: 10px;">
-                <div class="bar-fill" style="width: {{ $p }}%; height: 100%; background: {{ $kat['color'] }}; border-radius: 3px;"></div>
-            </div>
+        <tr>
+            <td style="padding: 15px 0; border-bottom: 1px solid #EAEDED;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <div style="font-weight: 700; color: #334155;">{{ $i+1 }}. {{ formatNama($b_id) }}</div>
+                    <div style="font-weight: 700; color: {{ $kat['color'] }};">{{ $p }}%</div>
+                </div>
+                
+                <div class="bar-bg" style="height: 6px; background: #E2E8F0; border-radius: 3px; margin-bottom: 10px;">
+                    <div class="bar-fill" style="width: {{ $p }}%; height: 100%; background: {{ $kat['color'] }}; border-radius: 3px;"></div>
+                </div>
 
-            <div style="background: #F8FAFC; border-left: 4px solid {{ $kat['color'] }}; padding: 12px; border-radius: 0 4px 4px 0; font-size: 13px; color: #475569; line-height: 1.5;">
-                <strong><i class="fa-solid fa-lightbulb" style="color: {{ $kat['color'] }}; margin-right: 5px;"></i> Analisis Performa:</strong><br>
-                {{ $penjelasan }}
-            </div>
-        </td>
-    </tr>
-@endfor
+                <div style="background: #F8FAFC; border-left: 4px solid {{ $kat['color'] }}; padding: 12px; border-radius: 0 4px 4px 0; font-size: 13px; color: #475569; line-height: 1.5;">
+                    <strong><i class="fa-solid fa-lightbulb" style="color: {{ $kat['color'] }}; margin-right: 5px;"></i> Analisis Performa:</strong><br>
+                    {{ $penjelasan }}
+                </div>
+            </td>
+        </tr>
+    @endfor
 
             </table>
 

@@ -40,12 +40,11 @@
                                 </div>
                             </td>
                             <td class="px-6 py-5 text-center">
-                                <a href="{{ route('result.show', $data['id']) }}" class="inline-flex items-center gap-2 text-[#4298B4] hover:text-[#367d94] font-bold text-sm transition-colors">
-                                    <i class="fa-solid fa-eye text-xs"></i>
-                                    Lihat Hasil
+                                <a href="{{ route('result.show', $data['id']) }}" class="...">
+                                <i class="fa-solid fa-eye text-xs"></i> Lihat Hasil
                                 </a>
                             </td>
-                        </tr>
+                        </tr>   
                         @empty
                         <tr>
                             <td colspan="5" class="px-6 py-12 text-center">
