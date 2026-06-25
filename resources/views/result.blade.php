@@ -783,41 +783,45 @@
             <table class="rank-list">
 
                 @for($i = 3; $i < count($urutan_bidang); $i++)
-            @php
-            $nilai = $matriks_awal[$b_id];
-            // Ini adalah kunci "Pintar": Mencari kriteria mana yang paling rendah secara otomatis
-            asort($nilai); 
-            $kriteria_terendah = key($nilai); // Hasilnya bisa 'kognitif', 'hardskill', dll
-            
-            $pesan_otomatis = [
-                'hardskill' => "perlu pendalaman teknis/hard skill.",
-                'kognitif' => "perlu latihan logika berpikir.",
-                'softskill' => "perlu pengembangan komunikasi dan kerja sama.",
-                'minat' => "perlu eksplorasi minat lebih lanjut.",
-                'pengalaman' => "perlu menambah jam terbang/proyek."
+           @php 
+            $b_id = $urutan_bidang[$i];
+            $p = formatPersen($ranking[$b_id]); 
+            $kat = getKategori($p);
+
+            // KAMUS LENGKAP 9 BIDANG
+            $kamus_analisis = [
+                'data_analyst' => "Skor $p% karena analisis datamu belum kuat di sisi teknis SQL/Excel. Perlu perbanyak latihan studi kasus nyata agar insight yang kamu buat lebih akurat.",
+                'data_mining' => "Skor $p% karena pemahaman alur kerja pengolahan data mentah menjadi informasi (preprocessing) masih perlu diasah. Cobalah pelajari alur CRISP-DM.",
+                'data_science' => "Skor $p% karena dasar statistik dan logika model prediktif perlu diperkuat lagi agar hasil analisis tidak sekadar asumsi.",
+                'ai' => "Skor $p% karena pemahaman tentang cara mesin 'belajar' (algoritma ML) masih perlu pendalaman teori. Fokuslah pada dasar logika pemrograman AI.",
+                'web' => "Skor $p% karena integrasi antara tampilan (frontend) dan database (backend) kamu belum sepenuhnya sinkron. Perbanyak membuat proyek web utuh.",
+                'mobile' => "Skor $p% karena pemahamanmu tentang alur aplikasi mobile (Android/iOS) masih perlu ditingkatkan agar aplikasi lebih stabil dan cepat.",
+                '3d_ar' => "Skor $p% karena manipulasi objek 3D di ruang nyata masih perlu latihan lebih banyak. Cobalah membuat filter AR sederhana untuk memperdalam teknik ini.",
+                '3d_vr' => "Skor $p% karena kamu butuh lebih banyak latihan di simulasi lingkungan virtual agar pengalaman user (UX) terasa lebih nyata dan tidak kaku.",
+                '3d_game' => "Skor $p% karena logika di balik mekanik permainan (game engine) perlu dipelajari lagi agar interaksi karakter terasa lebih natural."
             ];
+
+            // Cek apakah b_id ada di kamus, jika tidak gunakan pesan default
+            $penjelasan = isset($kamus_analisis[$b_id]) ? $kamus_analisis[$b_id] : "Skor $p% pada bidang ini menunjukkan perlunya tinjauan ulang pada materi fundamental untuk meningkatkan kesiapan karier.";
+        @endphp
+    <tr>
+        <td style="padding: 15px 0; border-bottom: 1px solid #EAEDED;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <div style="font-weight: 700; color: #334155;">{{ $i+1 }}. {{ formatNama($b_id) }}</div>
+                <div style="font-weight: 700; color: {{ $kat['color'] }};">{{ $p }}%</div>
+            </div>
             
-            $analisis = "Skor " . $p . "% pada bidang ini karena " . $pesan_otomatis[$kriteria_terendah];
-            @endphp
+            <div class="bar-bg" style="height: 6px; background: #E2E8F0; border-radius: 3px; margin-bottom: 10px;">
+                <div class="bar-fill" style="width: {{ $p }}%; height: 100%; background: {{ $kat['color'] }}; border-radius: 3px;"></div>
+            </div>
 
-                <tr>
-                    <td style="padding: 15px 0; border-bottom: 1px solid #EAEDED;">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                            <div style="font-weight: 700; color: #334155;">{{ $i+1 }}. {{ formatNama($b_id) }}</div>
-                            <div style="font-weight: 700; color: {{ $kat['color'] }};">{{ $p }}%</div>
-                        </div>
-                        
-                        <div class="bar-bg" style="height: 6px; background: #E2E8F0; border-radius: 3px; margin-bottom: 10px;">
-                            <div class="bar-fill" style="width: {{ $p }}%; height: 100%; background: {{ $kat['color'] }}; border-radius: 3px;"></div>
-                        </div>
-
-                        <div style="background: #F8FAFC; border-left: 4px solid {{ $kat['color'] }}; padding: 12px; border-radius: 0 4px 4px 0; font-size: 13px; color: #475569; line-height: 1.5;">
-                            <strong><i class="fa-solid fa-lightbulb" style="color: {{ $kat['color'] }}; margin-right: 5px;"></i> Analisis Performa:</strong><br>
-                            {{ $penjelasan }}
-                        </div>
-                    </td>
-                </tr>
-            @endfor
+            <div style="background: #F8FAFC; border-left: 4px solid {{ $kat['color'] }}; padding: 12px; border-radius: 0 4px 4px 0; font-size: 13px; color: #475569; line-height: 1.5;">
+                <strong><i class="fa-solid fa-lightbulb" style="color: {{ $kat['color'] }}; margin-right: 5px;"></i> Analisis Performa:</strong><br>
+                {{ $penjelasan }}
+            </div>
+        </td>
+    </tr>
+@endfor
 
             </table>
 
