@@ -21,13 +21,13 @@
                         <a href="{{ route('assessment.index') }}" class="px-6 py-3.5 bg-[#88619A] hover:bg-[#725282] text-white font-bold rounded-xl transition-all shadow-md flex items-center gap-2">
                             Mulai Asesmen <i class="fa-solid fa-arrow-right text-xs"></i>
                         </a>
-                        <button class="px-6 py-3.5 bg-white/20 hover:bg-white/30 text-white font-bold rounded-xl transition-all backdrop-blur-md border border-white/30">
-                            Lihat Hasil
-                        </button>
+                        <a href="{{ route('result.index') }}" class="inline-block px-6 py-3 bg-white/20 hover:bg-white/30 text-white rounded-xl font-bold border border-white/30 transition-all duration-300">
+                        Lihat Hasil
+                        </a>
                     </div>
                 </div>
-                <div class="hidden lg:flex w-64 h-64 bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 items-center justify-center p-6">
-                    <img src="{{ asset('images/logo.png') }}" class="w-full opacity-90 drop-shadow-xl" alt="Logo">
+                <div class="relative w-full h-full flex items-center justify-center p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl">
+                    <img src="{{ asset('images/dashboard.png') }}" alt="Ilustrasi Karier IT" class="w-full h-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500">
                 </div>
             </div>
         </section>
@@ -66,29 +66,26 @@
                     <div class="p-6 space-y-2">
                         <h3 class="font-bold text-slate-800">Analisis 360° Potensimu</h3>
                         <p class="text-xs text-slate-500 leading-relaxed">Sistem mengevaluasi kemampuan kognitif, hard skills, soft skills, minat, dan pengalaman secara menyeluruh.</p>
-                        <a href="#" class="text-xs font-bold text-[#4298B4] hover:underline flex items-center gap-1">Pelajari lebih lanjut <i class="fa-solid fa-chevron-right text-[8px]"></i></a>
                     </div>
                 </div>
                 <div class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition-all">
                     <div class="h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <img src="https://plus.unsplash.com/premium_photo-1661963212517-830bbb7d76fc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8dGVjaG5vbG9neSUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute top-4 left-4 px-3 py-1 bg-[#88619A] text-white text-[10px] font-bold rounded-md">Metode SPK</div>
                     </div>
                     <div class="p-6 space-y-2">
                         <h3 class="font-bold text-slate-800">Sistem Pendukung Keputusan Cerdas</h3>
                         <p class="text-xs text-slate-500 leading-relaxed">Menggunakan metode hybrid Profile Matching, AHP, dan TOPSIS untuk menghasilkan rekomendasi akurat.</p>
-                        <a href="#" class="text-xs font-bold text-[#4298B4] hover:underline flex items-center gap-1">Pelajari lebih lanjut <i class="fa-solid fa-chevron-right text-[8px]"></i></a>
                     </div>
                 </div>
                 <div class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition-all">
                     <div class="h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <img src="https://media.istockphoto.com/id/2224818947/id/foto/penyaringan-resume-digital-oleh-profesional-sdm-manajer-sumber-daya-manusia-mengevaluasi.jpg?s=2048x2048&w=is&k=20&c=TW-CCKnDXPfkoCwDuGCsD5Un8slYnn6HWtfbvFQEYm8=" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute top-4 left-4 px-3 py-1 bg-[#FFB800] text-white text-[10px] font-bold rounded-md">9 Jalur Karier</div>
                     </div>
                     <div class="p-6 space-y-2">
                         <h3 class="font-bold text-slate-800">9 Profil Karier IT Unggulan</h3>
                         <p class="text-xs text-slate-500 leading-relaxed">Temukan kecocokanmu dengan karier masa depan: Web Dev, Data Analyst, hingga AI Engineer.</p>
-                        <a href="#" class="text-xs font-bold text-[#4298B4] hover:underline flex items-center gap-1">Pelajari lebih lanjut <i class="fa-solid fa-chevron-right text-[8px]"></i></a>
                     </div>
                 </div>
             </div>
@@ -136,18 +133,33 @@
         </section>
 
         <section class="space-y-4">
-            <div class="flex justify-between items-end">
-                <h2 class="text-xl font-bold text-slate-800">Karier IT yang Tersedia</h2>
-                <a href="#" class="text-xs font-bold text-slate-500 hover:text-[#4298B4]">Lihat Semua →</a>
-            </div>
-            <div class="flex flex-wrap gap-2.5">
-                @foreach(['Web Developer', 'Mobile Developer', 'UI/UX Designer', 'Data Analyst', 'AI Engineer', 'Cybersecurity Specialist', 'Cloud Engineer', 'DevOps Engineer', 'Database Administrator'] as $career)
-                    <span class="px-4 py-2 bg-white rounded-xl shadow-sm border border-slate-100 text-xs font-medium text-slate-600 hover:border-[#4298B4] hover:text-[#4298B4] transition-all cursor-pointer">
-                        {{ $career }}
-                    </span>
-                @endforeach
-            </div>
-        </section>
+    <div class="flex justify-between items-end">
+        <h2 class="text-xl font-bold text-slate-800">Karier IT yang Tersedia</h2>
+    </div>
+    <!-- Ubah gap-2.5 menjadi gap-2 biar jarak antar tombol lebih hemat -->
+    <div class="flex flex-wrap gap-2">
+        @foreach(['Virtual Reality (VR)', 'Augmented Reality (AR)', 'Game Develeloper', 'Data Analyst', 'Data Scientist', 'Data Mining', 'Mobile Developer', 'Web Developer', 'Artificial Intelligence'] as $career)
+            <!-- Ubah px-4 menjadi px-3 biar kotak putihnya tidak terlalu lebar -->
+            <span class="px-3 py-2 bg-white rounded-xl shadow-sm border border-slate-100 text-xs font-medium text-slate-600 hover:border-[#4298B4] hover:text-[#4298B4] transition-all cursor-pointer">
+                {{ $career }}
+            </span>
+        @endforeach
+    </div>
+</section>
+
+<!-- FOOTER DASHBOARD -->
+<footer class="mt-auto py-6 px-6 text-center text-slate-500 transition-all duration-300">
+    <div class="border-t border-slate-200 pt-6">
+        <p class="text-sm font-medium">
+            &copy; 2026 <span class="font-bold text-[#4298B4]">Career Insight</span>. Sistem Pendukung Keputusan Rencana Karier.
+        </p>
+        <p class="text-xs mt-1.5 text-slate-400">
+            Dibuat dengan <i class="fa-solid fa-heart text-red-400 mx-1"></i> oleh <span class="font-semibold text-slate-500">Fiona Anggilia Rahmawati</span> 
+            <br class="md:hidden"> <!-- Biar kalau dibuka di HP, teksnya turun rapi -->
+            <span class="hidden md:inline"> | </span> Program Studi Teknik Informatika, Universitas Darussalam Gontor.
+        </p>
+    </div>
+</footer>
 
     </div>
 </x-app-layout>

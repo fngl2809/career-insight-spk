@@ -7,25 +7,21 @@
     <title>{{ config('app.name', 'Career Insight') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-[#F8FAFC]">
+<body class="font-sans antialiased bg-[#F8FAFC] overflow-y-scroll">
     <div class="flex min-h-screen overflow-hidden" x-data="{ sidebarOpen: true }">
         
-        <aside :class="sidebarOpen ? 'w-72' : 'w-20'" class="bg-white border-r border-gray-100 flex flex-col transition-all duration-300 ease-in-out z-20">
-            <div class="p-6 flex items-center gap-3">
-                <img src="{{ asset('images/logo.png') }}" class="h-10 w-auto" alt="Logo">
-            </div>
+        <!-- Kakak ganti w-25 jadi w-24 karena w-25 itu tidak ada di standar Tailwind -->
+       <aside :class="sidebarOpen ? 'w-72' : 'w-24'" class="w-72 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col transition-all duration-300 ease-in-out z-20">
+    
+        <div :class="sidebarOpen ? 'px-10' : 'px-0 justify-center'" class="px-10 -mt-2 pb-0 flex items-center h-24 overflow-hidden transition-all duration-300">
+            
+            <img src="{{ asset('images/logo.png') }}" 
+                :class="sidebarOpen ? 'h-21 w-auto' : 'h-10 w-auto'" 
+                class="h-21 w-auto object-contain transition-all duration-300" 
+                alt="Logo Career Insight">
+        </div>
 
-            <div class="px-6 py-4 mb-6" x-show="sidebarOpen">
-                <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=4298B4&color=fff" class="h-10 w-10 rounded-full shadow-sm" alt="Avatar">
-                    <div class="overflow-hidden">
-                        <p class="text-sm font-bold text-slate-800 truncate">{{ Auth::user()->name }}</p>
-                        <p class="text-[10px] text-slate-500 font-medium truncate">NIM. {{ Auth::user()->nim }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <nav class="flex-grow px-4 space-y-1.5 text-sm font-medium"> 
+            <nav class="mt-10 flex-grow px-4 space-y-1.5 text-sm font-medium">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl {{ request()->routeIs('dashboard') ? 'bg-[#4298B4]/10 text-[#4298B4] font-bold' : 'text-slate-500 hover:bg-slate-50 transition-colors' }}">
                     <i class="fa-solid fa-house text-base w-5 text-center"></i>
                     <span x-show="sidebarOpen">Beranda</span>

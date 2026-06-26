@@ -40,10 +40,20 @@
                                 </div>
                             </td>
                             <td class="px-6 py-5 text-center">
-                                <a href="{{ route('result.show', $data['id']) }}" class="...">
-                                <i class="fa-solid fa-eye text-xs"></i> Lihat Hasil
+                            <div class="flex items-center justify-center gap-3">
+                                
+                                <a href="{{ route('result.show', $data['id']) }}" class="inline-flex items-center gap-2 text-[#4298B4] hover:text-[#367d94] font-bold text-sm transition-colors" title="Lihat Detail">
+                                    <i class="fa-solid fa-eye"></i> Lihat
                                 </a>
-                            </td>
+                                
+                                <span class="text-slate-300">|</span>
+
+                                <a href="{{ route('result.show', $data['id']) }}?print=yes" target="_blank" class="inline-flex items-center gap-2 text-slate-500 hover:text-slate-800 font-bold text-sm transition-colors" title="Cetak Hasil Ini">
+                                    <i class="fa-solid fa-print"></i> Cetak
+                                </a>
+
+                            </div>
+                        </td>
                         </tr>   
                         @empty
                         <tr>

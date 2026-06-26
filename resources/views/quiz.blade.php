@@ -220,7 +220,7 @@
                                 <label class="flex-1 text-center cursor-pointer relative group">
                                     <input type="radio" name="q{{ $nomor_global }}" value="3" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
                                     <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-slate-300 peer-checked:shadow-md peer-checked:text-slate-700 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
-                                        Netral
+                                        Cukup Setuju
                                     </div>
                                 </label>
 

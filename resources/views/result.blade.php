@@ -23,11 +23,47 @@
         </p>
 
         <style>
-
             @keyframes muter { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
             .result-container { display: none; }
 
+            /* --- CSS CETAK MIRIP FIGMA --- */
+            @media print {
+                /* 1. Atur Kertas dan Paksa Warna Background Muncul */
+                @page { size: A4 portrait; margin: 12mm; }
+                * {
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                    color-adjust: exact !important;
+                }
+                
+                body { background-color: white !important; }
+                body * { visibility: hidden; }
+                
+                /* Sembunyikan elemen web (menu, tombol cetak, loading) */
+                #loading-screen, .no-print, nav, header { display: none !important; }
+                
+                /* 2. Tampilkan Area Cetak */
+                #area-cetak { visibility: visible; position: absolute; left: 0; top: 0; width: 100%; }
+                #area-cetak * { visibility: visible; }
+                .print-only { display: block !important; }
+
+                /* 3. Perkecil Spasi & Ukuran Font agar muat 1-2 Halaman */
+                body { font-size: 10pt !important; }
+                h1, h2, h3, h4 { margin-bottom: 6px !important; }
+                .p-4, .p-6, .p-8 { padding: 12px 16px !important; }
+                .mb-4, .mb-6, .mb-8 { margin-bottom: 12px !important; }
+                .gap-4, .gap-6 { gap: 8px !important; }
+                
+                /* 4. Trik Meringkas Halaman: Sembunyikan teks interpretasi yang panjang saat di-print */
+                /* (Hanya muncul di web, hilang di kertas seperti desain Figma) */
+                p:contains("Interpretasi:"), 
+                .interpretasi-text { 
+                    display: none !important; 
+                }
+
+                /* 5. Jangan sampai kartu terpotong di tengah halaman */
+                .rounded-xl, .bg-white, table { page-break-inside: avoid !important; }
+            }
         </style>
 
     </div>
@@ -334,7 +370,51 @@
 
     @endphp
 
+    <div id="area-cetak">
 
+    <div class="no-print" style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+        <button onclick="window.print()" style="background-color: #4298B4; color: white; padding: 10px 20px; border-radius: 6px; font-weight: bold; border: none; cursor: pointer;">
+            <i class="fa-solid fa-print"></i> Cetak Hasil Laporan
+        </button>
+    </div>
+
+    <!-- KOP SURAT VERSI FIGMA (Hanya muncul saat dicetak) -->
+    <div class="print-only" style="display: none; margin-bottom: 24px; font-family: 'Inter', sans-serif;">
+        
+        <!-- Baris 1: Judul Kiri & Detail Kanan -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid #4298B4; padding-bottom: 12px; margin-bottom: 16px;">
+            <div>
+                <h1 style="font-size: 26pt; font-weight: 800; color: #3182CE; margin: 0; line-height: 1;">Career Insight</h1>
+                <p style="font-size: 9pt; font-weight: 700; color: #9F7AEA; text-transform: uppercase; letter-spacing: 2px; margin: 6px 0 0 0;">Discover Your Best Career Path</p>
+            </div>
+            <div style="text-align: right; color: #334155;">
+                <h2 style="font-size: 12pt; font-weight: 800; margin: 0 0 4px 0; color: #1E293B;">Laporan Hasil Rekomendasi Karier</h2>
+                <p style="font-size: 9pt; margin: 0 0 2px 0;">Tanggal Cetak: {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+                <p style="font-size: 9pt; margin: 0;">Sistem Pendukung Keputusan (SPK)</p>
+            </div>
+        </div>
+
+        <!-- Baris 2: Kotak Identitas Abu-Abu -->
+        <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px 24px; display: flex; justify-content: flex-start; gap: 60px;">
+            <div>
+                <p style="font-size: 8pt; font-weight: 600; color: #64748B; text-transform: uppercase; margin: 0 0 4px 0;">Nama</p>
+                <p style="font-size: 11pt; font-weight: 800; color: #1E293B; margin: 0;">{{ Auth::user()->name }}</p>
+            </div>
+            <div>
+                <p style="font-size: 8pt; font-weight: 600; color: #64748B; text-transform: uppercase; margin: 0 0 4px 0;">NIM</p>
+                <p style="font-size: 11pt; font-weight: 800; color: #1E293B; margin: 0;">{{ Auth::user()->nim ?? '-' }}</p>
+            </div>
+            <div>
+                <p style="font-size: 8pt; font-weight: 600; color: #64748B; text-transform: uppercase; margin: 0 0 4px 0;">Program Studi</p>
+                <p style="font-size: 11pt; font-weight: 800; color: #1E293B; margin: 0;">Teknik Informatika</p>
+            </div>
+            <div>
+                <p style="font-size: 8pt; font-weight: 600; color: #64748B; text-transform: uppercase; margin: 0 0 4px 0;">Tanggal Asesmen</p>
+                <!-- Menampilkan tanggal saat asesmen dikerjakan -->
+                <p style="font-size: 11pt; font-weight: 800; color: #1E293B; margin: 0;">{{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+            </div>
+        </div>
+    </div>
 
     <!-- 🌟 WRAPPER ALPINE UNTUK POP-UP MODAL 🌟 -->
 
@@ -1269,6 +1349,17 @@
 
         });
 
+    </script>
+
+    </div> <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('print') === 'yes') {
+                setTimeout(function() {
+                    window.print();
+                }, 500); 
+            }
+        }
     </script>
 
 </x-app-layout> 
