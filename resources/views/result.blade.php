@@ -850,61 +850,64 @@
 
         <div class="result-card">
 
-            <div class="kompetensi-header">
+    <div class="kompetensi-header">
+        <h2 class="section-title" style="margin: 0;"><i class="fa-solid fa-chart-simple" style="color: #5DADE2;"></i> Peringkat Lengkap Karier</h2>
+        <span style="font-size: 12px; color: #7F8C8D;">Peringkat #4 - #9</span>
+    </div>
 
-                <h2 class="section-title" style="margin: 0;"><i class="fa-solid fa-chart-simple" style="color: #5DADE2;"></i> Peringkat Lengkap Karier</h2>
+    <table class="rank-list" style="width: 100%;">
+        @for($i = 3; $i < count($urutan_bidang); $i++)
+            @php 
+                $b_id = $urutan_bidang[$i];
+                $p = formatPersen($ranking[$b_id]); 
+                $kat = getKategori($p);
 
-                <span style="font-size: 12px; color: #7F8C8D;">Peringkat #4 - #9</span>
+                // KAMUS LENGKAP 9 BIDANG
+                $kamus_analisis = [
+                    'data_analyst' => "Skor $p% karena analisis datamu belum kuat di sisi teknis SQL/Excel. Perlu perbanyak latihan studi kasus nyata agar insight yang kamu buat lebih akurat.",
+                    'data_mining' => "Skor $p% karena pemahaman alur kerja pengolahan data mentah menjadi informasi (preprocessing) masih perlu diasah. Cobalah pelajari alur CRISP-DM.",
+                    'data_science' => "Skor $p% karena dasar statistik dan logika model prediktif perlu diperkuat lagi agar hasil analisis tidak sekadar asumsi.",
+                    'ai' => "Skor $p% karena pemahaman tentang cara mesin 'belajar' (algoritma ML) masih perlu pendalaman teori. Fokuslah pada dasar logika pemrograman AI.",
+                    'web' => "Skor $p% karena integrasi antara tampilan (frontend) dan database (backend) kamu belum sepenuhnya sinkron. Perbanyak membuat proyek web utuh.",
+                    'mobile' => "Skor $p% karena pemahamanmu tentang alur aplikasi mobile (Android/iOS) masih perlu ditingkatkan agar aplikasi lebih stabil dan cepat.",
+                    '3d_ar' => "Skor $p% karena manipulasi objek 3D di ruang nyata masih perlu latihan lebih banyak. Cobalah membuat filter AR sederhana untuk memperdalam teknik ini.",
+                    '3d_vr' => "Skor $p% karena kamu butuh lebih banyak latihan di simulasi lingkungan virtual agar pengalaman user (UX) terasa lebih nyata dan tidak kaku.",
+                    '3d_game' => "Skor $p% karena logika di balik mekanik permainan (game engine) perlu dipelajari lagi agar interaksi karakter terasa lebih natural."
+                ];
 
-            </div>
+                $penjelasan = isset($kamus_analisis[$b_id]) ? $kamus_analisis[$b_id] : "Skor $p% pada bidang ini menunjukkan perlunya tinjauan ulang pada materi fundamental untuk meningkatkan kesiapan karier.";
+            @endphp
+            <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #EAEDED;">
+                    
+                    <div x-data="{ open: false }">
+                        
+                        <div @click="open = !open" class="hover:bg-slate-50 transition-colors p-2 -mx-2 rounded-lg cursor-pointer">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                <div style="font-weight: 700; color: #334155; display: flex; align-items: center; gap: 8px;">
+                                    {{ $i+1 }}. {{ formatNama($b_id) }}
+                                    
+                                    <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300" :class="open ? 'rotate-180' : ''"></i>
+                                </div>
+                                <div style="font-weight: 700; color: {{ $kat['color'] }};">{{ $p }}%</div>
+                            </div>
+                            
+                            <div class="bar-bg" style="height: 6px; background: #E2E8F0; border-radius: 3px;">
+                                <div class="bar-fill" style="width: {{ $p }}%; height: 100%; background: {{ $kat['color'] }}; border-radius: 3px;"></div>
+                            </div>
+                        </div>
 
-           
+                        <div x-show="open" x-transition style="display: none; background: #F8FAFC; border-left: 4px solid {{ $kat['color'] }}; padding: 12px; border-radius: 0 4px 4px 0; font-size: 13px; color: #475569; line-height: 1.5; margin-top: 10px;">
+                            <strong><i class="fa-solid fa-lightbulb" style="color: {{ $kat['color'] }}; margin-right: 5px;"></i> Analisis Performa:</strong><br>
+                            {{ $penjelasan }}
+                        </div>
 
-            <table class="rank-list">
-
-                @for($i = 3; $i < count($urutan_bidang); $i++)
-           @php 
-            $b_id = $urutan_bidang[$i];
-            $p = formatPersen($ranking[$b_id]); 
-            $kat = getKategori($p);
-
-            // KAMUS LENGKAP 9 BIDANG
-            $kamus_analisis = [
-                'data_analyst' => "Skor $p% karena analisis datamu belum kuat di sisi teknis SQL/Excel. Perlu perbanyak latihan studi kasus nyata agar insight yang kamu buat lebih akurat.",
-                'data_mining' => "Skor $p% karena pemahaman alur kerja pengolahan data mentah menjadi informasi (preprocessing) masih perlu diasah. Cobalah pelajari alur CRISP-DM.",
-                'data_science' => "Skor $p% karena dasar statistik dan logika model prediktif perlu diperkuat lagi agar hasil analisis tidak sekadar asumsi.",
-                'ai' => "Skor $p% karena pemahaman tentang cara mesin 'belajar' (algoritma ML) masih perlu pendalaman teori. Fokuslah pada dasar logika pemrograman AI.",
-                'web' => "Skor $p% karena integrasi antara tampilan (frontend) dan database (backend) kamu belum sepenuhnya sinkron. Perbanyak membuat proyek web utuh.",
-                'mobile' => "Skor $p% karena pemahamanmu tentang alur aplikasi mobile (Android/iOS) masih perlu ditingkatkan agar aplikasi lebih stabil dan cepat.",
-                '3d_ar' => "Skor $p% karena manipulasi objek 3D di ruang nyata masih perlu latihan lebih banyak. Cobalah membuat filter AR sederhana untuk memperdalam teknik ini.",
-                '3d_vr' => "Skor $p% karena kamu butuh lebih banyak latihan di simulasi lingkungan virtual agar pengalaman user (UX) terasa lebih nyata dan tidak kaku.",
-                '3d_game' => "Skor $p% karena logika di balik mekanik permainan (game engine) perlu dipelajari lagi agar interaksi karakter terasa lebih natural."
-            ];
-
-            // Cek apakah b_id ada di kamus, jika tidak gunakan pesan default
-            $penjelasan = isset($kamus_analisis[$b_id]) ? $kamus_analisis[$b_id] : "Skor $p% pada bidang ini menunjukkan perlunya tinjauan ulang pada materi fundamental untuk meningkatkan kesiapan karier.";
-        @endphp
-        <tr>
-            <td style="padding: 15px 0; border-bottom: 1px solid #EAEDED;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                    <div style="font-weight: 700; color: #334155;">{{ $i+1 }}. {{ formatNama($b_id) }}</div>
-                    <div style="font-weight: 700; color: {{ $kat['color'] }};">{{ $p }}%</div>
-                </div>
-                
-                <div class="bar-bg" style="height: 6px; background: #E2E8F0; border-radius: 3px; margin-bottom: 10px;">
-                    <div class="bar-fill" style="width: {{ $p }}%; height: 100%; background: {{ $kat['color'] }}; border-radius: 3px;"></div>
-                </div>
-
-                <div style="background: #F8FAFC; border-left: 4px solid {{ $kat['color'] }}; padding: 12px; border-radius: 0 4px 4px 0; font-size: 13px; color: #475569; line-height: 1.5;">
-                    <strong><i class="fa-solid fa-lightbulb" style="color: {{ $kat['color'] }}; margin-right: 5px;"></i> Analisis Performa:</strong><br>
-                    {{ $penjelasan }}
-                </div>
-            </td>
-        </tr>
-    @endfor
-
-            </table>
-
+                    </div>
+                </td>
+            </tr>
+        @endfor
+    </table>
+</div>
 
 
             <div class="legend-box">
@@ -1361,6 +1364,20 @@
             }
         }
     </script>
+
+    <!-- FOOTER DASHBOARD -->
+<footer class="mt-auto py-6 px-6 text-center text-slate-500 transition-all duration-300">
+    <div class="border-t border-slate-200 pt-6">
+        <p class="text-sm font-medium">
+            &copy; 2026 <span class="font-bold text-[#4298B4]">Career Insight</span>. Sistem Pendukung Keputusan Rencana Karier.
+        </p>
+        <p class="text-xs mt-1.5 text-slate-400">
+            Dibuat dengan <i class="fa-solid fa-heart text-red-400 mx-1"></i> oleh <span class="font-semibold text-slate-500">Fiona Anggilia Rahmawati</span> 
+            <br class="md:hidden"> <!-- Biar kalau dibuka di HP, teksnya turun rapi -->
+            <span class="hidden md:inline"> | </span> Program Studi Teknik Informatika, Universitas Darussalam Gontor.
+        </p>
+    </div>
+</footer>
 
 </x-app-layout> 
 
