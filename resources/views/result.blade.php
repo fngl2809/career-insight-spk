@@ -7,6 +7,7 @@
         }
     </style>
 
+    @if(request('print') != 'yes')
     <div id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #F8FAFC; z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease;">
         <div style="position: relative; width: 80px; height: 80px; margin-bottom: 24px;">
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 6px solid #E2E8F0; border-radius: 50%;"></div>
@@ -18,6 +19,7 @@
             Sistem SPK sedang memproses hasil dengan metode<br>Profile Matching, AHP & TOPSIS
         </p>
     </div>
+    @endif
 
     @php
         $kriteria_list = ['kognitif', 'hardskill', 'softskill', 'minat', 'pengalaman'];
@@ -254,7 +256,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <div class="result-container py-6" x-data="{ showDetail: false, detailTitle: '', detailText: '' }">
+    <div class="result-container py-6" style="{{ request('print') == 'yes' ? 'display: block;' : 'display: none;' }}" x-data="{ showDetail: false, detailTitle: '', detailText: '' }">
         
         <div class="no-print" style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
             <button onclick="window.print()" style="background-color: #4298B4; color: white; padding: 10px 20px; border-radius: 6px; font-weight: bold; border: none; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.backgroundColor='#2C3E50'" onmouseout="this.style.backgroundColor='#4298B4'">
@@ -879,14 +881,41 @@
         });
 
         document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(function() {
-                let loadingScreen = document.getElementById("loading-screen");
-                let resultContainer = document.querySelector(".result-container");
-                resultContainer.style.display = "block";
-                loadingScreen.style.opacity = "0";
-                setTimeout(function() { loadingScreen.style.display = "none"; }, 800);
-            }, 3000);
+            const isPrint = new URLSearchParams(window.location.search).get('print') === 'yes';
+            
+            if (isPrint) {
+                // JIKA DARI TOMBOL CETAK RIWAYAT: Langsung buka menu PDF secepat kilat!
+                setTimeout(function() { 
+                    window.print(); 
+                }, 300); 
+            } else {
+                // JIKA DARI ISI KUESIONER: Jalankan loading 3 detik muter-muter
+                setTimeout(function() {
+                    let resultContainer = document.querySelector(".result-container");
+                    if(resultContainer) resultContainer.style.display = "block";
+                    
+                    let loadingScreen = document.getElementById("loading-screen");
+                    if(loadingScreen) {
+                        loadingScreen.style.opacity = "0";
+                        setTimeout(function() { loadingScreen.style.display = "none"; }, 800);
+                    }
+                }, 3000);
+            }
         });
+    </script>
+
+    <script>
+        // Script ini akan berjalan otomatis saat halaman selesai loading
+        window.onload = function() {
+            // Cek apakah di URL ada titipan pesan "?print=yes"
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('print') === 'yes') {
+                // Tunggu sebentar (biar layar loading hilang dulu), lalu otomatis PRINT!
+                setTimeout(function() { 
+                    window.print(); 
+                }, 1000); 
+            }
+        }
     </script>
 
 </x-app-layout>

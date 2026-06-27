@@ -10,15 +10,17 @@
 <body class="font-sans antialiased bg-[#F8FAFC] overflow-y-scroll">
     <div class="flex min-h-screen overflow-hidden" x-data="{ sidebarOpen: true }">
         
-        <aside :class="sidebarOpen ? 'w-72' : 'w-24'" class="flex-shrink-0 bg-white border-r border-gray-100 flex flex-col transition-all duration-300 ease-in-out z-20">
+        <aside class="w-72 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col transition-all duration-300 ease-in-out z-20"
+               :class="{ '!w-24': !sidebarOpen }">
     
-        <div :class="sidebarOpen ? 'px-10' : 'px-0 justify-center'" class="-mt-2 pb-0 flex items-center h-24 overflow-hidden transition-all duration-300">
-            
-            <img src="{{ asset('images/logo.png') }}" 
-                :class="sidebarOpen ? 'h-21 w-auto' : 'h-10 w-auto'" 
-                class="h-21 w-auto object-contain transition-all duration-300" 
-                alt="Logo Career Insight">
-        </div>
+            <div class="px-10 -mt-2 pb-0 flex items-center h-24 overflow-hidden transition-all duration-300"
+                 :class="{ '!px-0 !justify-center': !sidebarOpen }">
+                
+                <img src="{{ asset('images/logo.png') }}" 
+                     class="h-21 w-auto object-contain transition-all duration-300" 
+                     :class="{ '!h-10': !sidebarOpen }"
+                     alt="Logo Career Insight">
+            </div>
 
             <nav class="mt-10 flex-grow px-4 space-y-1.5 text-sm font-medium">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl {{ request()->routeIs('dashboard') ? 'bg-[#4298B4]/10 text-[#4298B4] font-bold' : 'text-slate-500 hover:bg-slate-50 transition-colors' }}">
