@@ -10,10 +10,9 @@
 <body class="font-sans antialiased bg-[#F8FAFC] overflow-y-scroll">
     <div class="flex min-h-screen overflow-hidden" x-data="{ sidebarOpen: true }">
         
-        <!-- Kakak ganti w-25 jadi w-24 karena w-25 itu tidak ada di standar Tailwind -->
-       <aside :class="sidebarOpen ? 'w-72' : 'w-24'" class="w-72 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col transition-all duration-300 ease-in-out z-20">
+        <aside :class="sidebarOpen ? 'w-72' : 'w-24'" class="flex-shrink-0 bg-white border-r border-gray-100 flex flex-col transition-all duration-300 ease-in-out z-20">
     
-        <div :class="sidebarOpen ? 'px-10' : 'px-0 justify-center'" class="px-10 -mt-2 pb-0 flex items-center h-24 overflow-hidden transition-all duration-300">
+        <div :class="sidebarOpen ? 'px-10' : 'px-0 justify-center'" class="-mt-2 pb-0 flex items-center h-24 overflow-hidden transition-all duration-300">
             
             <img src="{{ asset('images/logo.png') }}" 
                 :class="sidebarOpen ? 'h-21 w-auto' : 'h-10 w-auto'" 

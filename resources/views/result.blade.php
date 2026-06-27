@@ -1,5 +1,12 @@
 <x-app-layout>
 
+    <style>
+        @keyframes muter {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
     <div id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #F8FAFC; z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease;">
         <div style="position: relative; width: 80px; height: 80px; margin-bottom: 24px;">
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 6px solid #E2E8F0; border-radius: 50%;"></div>
@@ -703,6 +710,29 @@
                 </div>
                 @endforeach
             </div>
+            
+            
+
+            <!-- Footer Halaman 1 -->
+            <div style="position: absolute; bottom: 12mm; left: 15mm; right: 15mm; font-size: 6.5pt; color: #94A3B8; display: flex; justify-content: space-between; border-top: 1px solid #E2E8F0; padding-top: 8px;">
+                <span>Dicetak dari <strong>Career Insight</strong> &middot; Sistem Pendukung Keputusan Rencana Karier</span>
+                <span>Universitas Darussalam Gontor &middot; Teknik Informatika</span>
+            </div>
+        </div>
+
+        <!-- ================= HALAMAN 2 (DIJAMIN PAS 1 LEMBAR) ================= -->
+        <div class="kertas-a4 page-break">
+            
+            <div style="border-bottom: 1px solid #CBD5E1; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: baseline; gap: 15px;">
+                    <h1 style="font-size: 16pt; font-weight: 800; color: #2980B9; margin: 0;">Career Insight</h1>
+                    <span style="font-size: 8pt; font-weight: 700; color: #9B59B6; text-transform: uppercase; letter-spacing: 1px;">Lanjutan Laporan</span>
+                </div>
+                <div style="text-align: right; font-size: 7.5pt; color: #64748B;">
+                    <p style="margin: 0 0 2px 0;"><strong>{{ Auth::user()->name }}</strong> &middot; NIM {{ Auth::user()->nim ?? '-' }}</p>
+                    <p style="margin: 0;">Teknik Informatika &middot; {{ \Carbon\Carbon::now()->translatedFormat('d M Y') }}</p>
+                </div>
+            </div>
 
             <!-- Peringkat Lengkap -->
             <div style="border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px;">
@@ -729,29 +759,8 @@
                 </div>
             </div>
 
-            <!-- Footer Halaman 1 -->
-            <div style="position: absolute; bottom: 12mm; left: 15mm; right: 15mm; font-size: 6.5pt; color: #94A3B8; display: flex; justify-content: space-between; border-top: 1px solid #E2E8F0; padding-top: 8px;">
-                <span>Dicetak dari <strong>Career Insight</strong> &middot; Sistem Pendukung Keputusan Rencana Karier</span>
-                <span>Universitas Darussalam Gontor &middot; Teknik Informatika</span>
-            </div>
-        </div>
-
-        <!-- ================= HALAMAN 2 (DIJAMIN PAS 1 LEMBAR) ================= -->
-        <div class="kertas-a4 page-break">
-            
-            <div style="border-bottom: 1px solid #CBD5E1; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: baseline; gap: 15px;">
-                    <h1 style="font-size: 16pt; font-weight: 800; color: #2980B9; margin: 0;">Career Insight</h1>
-                    <span style="font-size: 8pt; font-weight: 700; color: #9B59B6; text-transform: uppercase; letter-spacing: 1px;">Lanjutan Laporan</span>
-                </div>
-                <div style="text-align: right; font-size: 7.5pt; color: #64748B;">
-                    <p style="margin: 0 0 2px 0;"><strong>{{ Auth::user()->name }}</strong> &middot; NIM {{ Auth::user()->nim ?? '-' }}</p>
-                    <p style="margin: 0;">Teknik Informatika &middot; {{ \Carbon\Carbon::now()->translatedFormat('d M Y') }}</p>
-                </div>
-            </div>
-
             <!-- 4 KOTAK RINGKASAN ATAS -->
-            <div style="display: flex; border: 1px solid #CBD5E1; border-radius: 12px; margin-bottom: 20px; text-align: center; overflow: hidden;">
+            <div style="display: flex; border: 1px solid #CBD5E1; border-radius: 12px; margin-top: 20px; margin-bottom: 20px; text-align: center; overflow: hidden;">
                 <div style="flex: 1; padding: 15px; border-right: 1px solid #CBD5E1;">
                     <p style="font-size: 7pt; font-weight: 700; color: #64748B; margin: 0 0 5px 0;">REKOMENDASI #1</p>
                     <h2 style="font-size: 16pt; font-weight: 800; color: #1F618D; margin: 0 0 5px 0;">{{ formatNama($juara1) }}</h2>
