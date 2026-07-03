@@ -201,42 +201,42 @@
                                 <span class="text-[#4298B4] mr-2">{{ $nomor_global }}.</span> {{ $pertanyaan }}
                             </h3>
                             
-                            <div class="flex flex-wrap md:flex-nowrap gap-3 md:gap-0 justify-between items-center bg-slate-50 p-2 rounded-xl">
+                            <div class="flex flex-wrap md:flex-nowrap gap-4 mt-4 md:gap-0 justify-between items-center bg-slate-50 p-2 rounded-xl">
                                 
                                 <label class="flex-1 text-center cursor-pointer relative group">
-                                    <input type="radio" name="q{{ $nomor_global }}" value="1" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
-                                    <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-red-200 peer-checked:shadow-md peer-checked:text-red-500 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
-                                        Sangat Tidak Setuju
-                                    </div>
-                                </label>
-                            
-                                <label class="flex-1 text-center cursor-pointer relative group">
-                                    <input type="radio" name="q{{ $nomor_global }}" value="2" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
-                                    <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-orange-200 peer-checked:shadow-md peer-checked:text-orange-500 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
-                                        Tidak Setuju
-                                    </div>
-                                </label>
+                                <input type="radio" name="q{{ $nomor_global }}" value="1" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
+                                <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-red-100 peer-checked:border-red-500 peer-checked:text-red-700 peer-checked:shadow-sm flex items-center justify-center h-full">
+                                    Sangat Tidak Setuju
+                                </div>
+                            </label>
 
-                                <label class="flex-1 text-center cursor-pointer relative group">
-                                    <input type="radio" name="q{{ $nomor_global }}" value="3" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
-                                    <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-slate-300 peer-checked:shadow-md peer-checked:text-slate-700 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
-                                        Cukup Setuju
-                                    </div>
-                                </label>
+                            <label class="flex-1 text-center cursor-pointer relative group">
+                                <input type="radio" name="q{{ $nomor_global }}" value="2" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
+                                <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-orange-100 peer-checked:border-orange-500 peer-checked:text-orange-700 peer-checked:shadow-sm flex items-center justify-center h-full">
+                                    Tidak Setuju
+                                </div>
+                            </label>
 
-                                <label class="flex-1 text-center cursor-pointer relative group">
-                                    <input type="radio" name="q{{ $nomor_global }}" value="4" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
-                                    <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-[#4298B4]/40 peer-checked:shadow-md peer-checked:text-[#4298B4] text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
-                                        Setuju
-                                    </div>
-                                </label>
+                            <label class="flex-1 text-center cursor-pointer relative group">
+                                <input type="radio" name="q{{ $nomor_global }}" value="3" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
+                                <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-amber-100 peer-checked:border-amber-500 peer-checked:text-amber-700 peer-checked:shadow-sm flex items-center justify-center h-full">
+                                    Cukup Setuju
+                                </div>
+                            </label>
 
-                                <label class="flex-1 text-center cursor-pointer relative group">
-                                    <input type="radio" name="q{{ $nomor_global }}" value="5" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
-                                    <div class="px-2 py-4 rounded-xl border border-transparent peer-checked:bg-white peer-checked:border-emerald-200 peer-checked:shadow-md peer-checked:text-emerald-600 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-white">
-                                        Sangat Setuju
-                                    </div>
-                                </label>
+                            <label class="flex-1 text-center cursor-pointer relative group">
+                                <input type="radio" name="q{{ $nomor_global }}" value="4" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
+                                <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-blue-100 peer-checked:border-blue-500 peer-checked:text-blue-700 peer-checked:shadow-sm flex items-center justify-center h-full">
+                                    Setuju
+                                </div>
+                            </label>
+
+                            <label class="flex-1 text-center cursor-pointer relative group">
+                                <input type="radio" name="q{{ $nomor_global }}" value="5" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
+                                <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-emerald-100 peer-checked:border-emerald-500 peer-checked:text-emerald-700 peer-checked:shadow-sm flex items-center justify-center h-full">
+                                    Sangat Setuju
+                                </div>
+                            </label>
 
                             </div>
                         </div>
