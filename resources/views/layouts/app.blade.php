@@ -7,10 +7,10 @@
     <title>{{ config('app.name', 'Career Insight') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-[#F8FAFC] overflow-y-scroll">
+<body class="font-sans antialiased bg-slate-100 overflow-y-scroll">
     <div class="flex min-h-screen overflow-hidden" x-data="{ sidebarOpen: true }">
         
-        <aside class="w-72 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col transition-all duration-300 ease-in-out z-20"
+       <aside class="w-72 flex-shrink-0 bg-white shadow-[4px_0_24px_rgba(0,0,0,0.05)] flex flex-col transition-all duration-300 ease-in-out z-40"
                :class="{ '!w-24': !sidebarOpen }">
     
             <div class="px-10 -mt-2 pb-0 flex items-center h-24 overflow-hidden transition-all duration-300"
@@ -45,8 +45,8 @@
             </nav>
         </aside>
 
-        <main class="flex-grow overflow-y-auto h-screen bg-[#F8FAFC]">
-            <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 px-8 py-4 flex justify-between items-center border-b border-gray-100">
+        <main class="flex-grow overflow-y-auto h-screen bg-slate-100">
+           <header class="bg-white/80 backdrop-blur-md sticky top-0 z-30 px-8 py-4 flex justify-between items-center shadow-sm">
                 <button @click="sidebarOpen = !sidebarOpen" class="text-slate-500 hover:text-[#4298B4] transition-colors focus:outline-none">
                     <i class="fa-solid fa-bars-staggered text-xl"></i>
                 </button>
