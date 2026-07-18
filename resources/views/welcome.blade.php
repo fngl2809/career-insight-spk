@@ -48,7 +48,6 @@
             <a href="#beranda" class="nav-link text-[#3B8AA7] transition-colors duration-300">Beranda</a>
             <a href="#cara-kerja" class="nav-link hover:text-[#3B8AA7] transition-colors duration-300">Cara kerja</a>
             <a href="#jalur-karier" class="nav-link hover:text-[#3B8AA7] transition-colors duration-300">9 Jalur karier</a>
-            <a href="#tentang" class="nav-link hover:text-[#3B8AA7] transition-colors duration-300">Tentang</a>
         </div>
 
         <!-- Action Button -->
