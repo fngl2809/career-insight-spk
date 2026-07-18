@@ -355,14 +355,16 @@
         </div>
     </section>
 
-    <!-- CTA BANNER -->
+<!-- CTA BANNER -->
     <section class="bg-gradient-to-r from-[#88619A] to-[#6A4C78] text-white py-20 px-6 text-center">
         <div class="max-w-3xl mx-auto space-y-6">
             <div class="text-4xl mb-4">🚀</div>
             <h2 class="text-3xl md:text-4xl font-extrabold leading-tight">Hanya butuh beberapa menit untuk memetakan masa depanmu.</h2>
             <p class="text-white/80 text-sm md:text-base mb-8">Jawab 135 pertanyaan dan dapatkan rekomendasi karier IT yang dipersonalisasi khusus untukmu.</p>
-            <a href="{{ route('login') }}" class="inline-flex bg-white/20 hover:bg-white/30 border border-white/40 backdrop-blur-sm text-white px-8 py-3.5 rounded-xl font-bold transition-all items-center gap-2">
-                📊 Mulai Asesmen Sekarang
+            
+            <!-- Tombol CTA yang baru: Warna Kuning Emas yang Mencolok! -->
+            <a href="{{ route('login') }}" class="inline-flex bg-[#F4C856] text-slate-900 hover:bg-[#FDE08B] hover:scale-105 shadow-xl shadow-black/20 px-8 py-3.5 rounded-xl font-black transition-all duration-300 items-center gap-2">
+                Mulai Asesmen Sekarang &rarr;
             </a>
         </div>
     </section>
@@ -373,14 +375,18 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-10 pb-10 border-b border-white/10">
                 <!-- Left Footer Info -->
                 <div class="space-y-4">
-                    <div class="flex items-center gap-2">
-                        <img src="{{ asset('images/logo.png') }}" class="h-6 opacity-80" alt="Logo">
-                        <span class="text-white font-extrabold text-lg">Career Insight</span>
+                    <!-- Bagian ini yang diubah (Teks putih bersih + Ikon) -->
+                    <div class="flex items-center gap-3">
+                        <div class="h-9 w-9 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
+                            <i class="fa-solid fa-compass text-[#F4C856] text-lg"></i>
+                        </div>
+                        <span class="text-white font-extrabold text-xl tracking-wide">Career Insight</span>
                     </div>
+                    <!-- Tulisan di bawahnya tetap sama -->
                     <div class="text-xs leading-relaxed">
                         <p>Sistem Pendukung Keputusan Rencana Karier</p>
                         <p>Teknik Informatika — Universitas Darussalam Gontor</p>
-                        <p class="mt-2 text-slate-500">&copy; 2026</p>
+                        <p class="mt-2 text-slate-500">&copy; 2026 Fiona Anggilia Rahmawati</p>
                     </div>
                 </div>
                 
