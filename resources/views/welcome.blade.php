@@ -11,9 +11,8 @@
 
     <!-- TOPBAR: 100 Tahun Gontor -->
     <div class="bg-[#1F5064] text-white text-xs md:text-sm text-center py-2.5 font-medium flex items-center justify-center gap-2 px-4 shadow-sm relative z-50">
-        <span>🕌 Dalam rangka memperingati</span>
+        <span>Dalam rangka memperingati</span>
         <span class="font-bold text-[#F4C856]">100 Tahun Pondok Modern Darussalam Gontor 1926 – 2026</span>
-        <span>🎓</span>
     </div>
 
     <!-- NAVBAR UTAMA -->
@@ -57,8 +56,8 @@
                     Masuk Dashboard &rarr;
                 </a>
             @else
-                <a href="{{ route('login') }}" class="bg-[#2B6C86] text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-[#3B8AA7] transition-all flex items-center gap-2">
-                    Mulai asesmen &rarr;
+                <a href="{{ route('login') }}" class="bg-[#2B6C86] text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-[#3B8AA7] transition-all flex items-center justify-center">
+                Masuk / Daftar
                 </a>
             @endauth
         </div>
@@ -88,8 +87,7 @@
                 </h1>
                 
                 <div class="bg-white/10 border border-white/20 rounded-lg p-3 inline-flex items-center gap-3 backdrop-blur-sm">
-                    <span class="text-lg">🎓</span>
-                    <span class="text-xs md:text-sm text-white/90 leading-tight">Sistem rekomendasi resmi untuk mahasiswa Teknik Informatika —<br>Universitas Darussalam Gontor</span>
+                    <span class="text-xs md:text-sm text-white/90 leading-tight">Sistem rekomendasi resmi untuk mahasiswa Teknik Informatika - <br>Universitas Darussalam Gontor</span>
                 </div>
                 
                 <p class="text-white/90 text-base md:text-lg leading-relaxed max-w-lg">
@@ -97,8 +95,8 @@
                 </p>
                 
                 <div class="flex flex-wrap gap-4 pt-2">
-                    <a href="{{ route('login') }}" class="bg-white text-[#3B8AA7] px-8 py-3.5 rounded-xl font-bold hover:bg-slate-100 hover:scale-105 transition-all duration-300 flex items-center gap-2 shadow-lg shadow-black/10">
-                        Mulai Asesmen &rarr;
+                    <a href="{{ route('login') }}" class="bg-white text-[#3B8AA7] px-8 py-3.5 rounded-xl font-bold hover:bg-slate-100 hover:scale-105 transition-all duration-300 flex items-center justify-center shadow-lg shadow-black/10">
+                    Mulai Asesmen
                     </a>
                     <a href="#cara-kerja" class="bg-white/10 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-white/20 transition-all border border-white/30 backdrop-blur-sm">
                         Lihat Cara Kerja
@@ -219,7 +217,7 @@
                     </div>
                     <div class="p-6 space-y-2">
                         <h3 class="font-bold text-slate-800">Analisis 360° Potensimu</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">Sistem mengevaluasi kemampuan kognitif, hard skills, soft skills, minat, dan pengalaman secara menyeluruh.</p>
+                        <p class="text-xs text-slate-500 leading-relaxed">Sistem mengevaluasi kemampuan kognitif, hardskills, softskills, minat, dan pengalaman secara menyeluruh.</p>
                     </div>
                 </div>
                 <div class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition-all">
@@ -268,7 +266,7 @@
                     <div class="flex-shrink-0 w-10 h-10 rounded-full bg-[#F0F7FA] text-[#4298B4] font-black flex items-center justify-center text-lg">2</div>
                     <div>
                         <h4 class="font-bold text-slate-800 text-base mb-1.5">Isi asesmen kompetensi</h4>
-                        <p class="text-sm text-slate-500 leading-relaxed">Jawab 135 pertanyaan terstruktur mencakup 5 dimensi: kognitif, hard skills, soft skills, minat, dan pengalaman.</p>
+                        <p class="text-sm text-slate-500 leading-relaxed">Jawab 135 pertanyaan terstruktur mencakup 5 dimensi: kognitif, hardskills, softskills, minat, dan pengalaman.</p>
                     </div>
                 </div>
                 <div class="flex gap-5">
@@ -364,7 +362,7 @@
             
             <!-- Tombol CTA yang baru: Warna Kuning Emas yang Mencolok! -->
             <a href="{{ route('login') }}" class="inline-flex bg-[#F4C856] text-slate-900 hover:bg-[#FDE08B] hover:scale-105 shadow-xl shadow-black/20 px-8 py-3.5 rounded-xl font-black transition-all duration-300 items-center gap-2">
-                Mulai Asesmen Sekarang &rarr;
+                Mulai Asesmen Sekarang
             </a>
         </div>
     </section>
@@ -386,7 +384,7 @@
                     <div class="text-xs leading-relaxed">
                         <p>Sistem Pendukung Keputusan Rencana Karier</p>
                         <p>Teknik Informatika — Universitas Darussalam Gontor</p>
-                        <p class="mt-2 text-slate-500">&copy; 2026 Fiona Anggilia Rahmawati</p>
+                        <p class="mt-2 text-slate-500">&copy; 2026 </p>
                     </div>
                 </div>
                 
@@ -396,13 +394,13 @@
                     <div class="text-xs">
                         <p class="text-white font-bold mb-0.5">Universitas Darussalam Gontor</p>
                         <p>Fakultas Sains & Teknologi</p>
-                        <p class="text-[#F4C856] font-bold mt-1">✨ 100 Tahun Gontor 1926–2026</p>
+                        <p class="text-[#F4C856] font-bold mt-1"> 100 Tahun Gontor 1926–2026</p>
                     </div>
                 </div>
             </div>
             
             <div class="text-center text-[10px] text-slate-500">
-                Sistem ini dikembangkan sebagai karya tulis ilmiah (skripsi) Program Studi Teknik Informatika UNIDA Gontor 🕌 Gontor 100 Tahun - 1926–2026
+                Sistem ini dikembangkan sebagai karya tulis ilmiah (skripsi) Program Studi Teknik Informatika UNIDA Gontor
             </div>
         </div>
     </footer>
