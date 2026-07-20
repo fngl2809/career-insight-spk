@@ -356,7 +356,6 @@
 <!-- CTA BANNER -->
     <section class="bg-gradient-to-r from-[#88619A] to-[#6A4C78] text-white py-20 px-6 text-center">
         <div class="max-w-3xl mx-auto space-y-6">
-            <div class="text-4xl mb-4">🚀</div>
             <h2 class="text-3xl md:text-4xl font-extrabold leading-tight">Hanya butuh beberapa menit untuk memetakan masa depanmu.</h2>
             <p class="text-white/80 text-sm md:text-base mb-8">Jawab 135 pertanyaan dan dapatkan rekomendasi karier IT yang dipersonalisasi khusus untukmu.</p>
             
