@@ -14,7 +14,7 @@
                     <p class="text-[11px] text-white/80 font-semibold tracking-wide uppercase">{{ now()->translatedFormat('l, d F Y') }} — Teknik Informatika — UNIDA Gontor</p>
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Halo, {{ explode(' ', Auth::user()->name)[0] }}! 👋</h1>
                     <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 text-emerald-100 rounded-md text-xs font-semibold backdrop-blur-sm mt-2 border border-emerald-500/30">
-                        <i class="fa-solid fa-check-square"></i> Asesmen terakhir: 15 Juli 2026
+                        <i class="fa-solid fa-check-square"></i> Asesmen terakhir: {{ $tanggalTerakhir }}
                     </div>
                 </div>
                 <div class="z-10 mt-6 md:mt-0 flex flex-col items-center">
@@ -40,7 +40,7 @@
                 </div>
                 <div class="bg-white p-6 rounded-[20px] border border-slate-100 shadow-sm">
                     <span class="text-xs text-slate-500 font-semibold mb-1 block">Total asesmen</span>
-                    <div class="text-3xl font-black text-[#4298B4] tracking-tight">3&times;</div>
+                    <div class="text-3xl font-black text-[#4298B4] tracking-tight">{{ $totalAsesmen }}&times;</div>
                     <span class="text-xs font-medium text-slate-400 mt-1 block">Sudah pernah mengisi</span>
                 </div>
             </section>
@@ -55,7 +55,7 @@
                     <div class="bg-[#247091] rounded-[20px] p-6 text-white flex justify-between items-center mb-6 shadow-inner">
                         <div>
                             <span class="inline-block px-2.5 py-1 bg-amber-500 text-white text-[10px] font-extrabold rounded-md mb-2 tracking-wide uppercase"><i class="fa-solid fa-medal mr-1"></i> Peringkat #1</span>
-                            <h2 class="text-3xl font-bold tracking-tight">Data Science</h2>
+                            <h2 class="text-3xl font-bold tracking-tight">{{ $rekomendasiUtama }}</h2>
                             <p class="text-xs text-white/80 mt-1">Sangat cocok dengan profilmu</p>
                         </div>
                         <div class="w-20 h-20 rounded-full bg-white/10 border-[4px] border-white/20 flex flex-col items-center justify-center font-bold shadow-lg">
@@ -66,7 +66,7 @@
                     <div class="flex gap-3 text-center mt-auto">
                         <div class="flex-1 py-3 px-2 border-2 border-emerald-400 bg-emerald-50/50 rounded-xl">
                             <div class="text-[10px] font-bold text-emerald-600/70 mb-1">#1</div>
-                            <div class="font-bold text-emerald-900 text-sm">Data Science</div>
+                            <div class="font-bold text-emerald-900 text-sm">{{ $rekomendasiUtama }}</div>
                             <div class="text-emerald-500 font-bold mt-1 text-lg">87%</div>
                         </div>
                         <div class="flex-1 py-3 px-2 border border-slate-100 rounded-xl">
@@ -86,7 +86,7 @@
                 <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-6">
                     <div class="flex items-center gap-2 mb-6">
                         <i class="fa-solid fa-chart-column text-[#4298B4] text-sm"></i>
-                        <span class="text-xs font-semibold text-slate-500">Skor kamu vs standar ideal — Data Science</span>
+                        <span class="text-xs font-semibold text-slate-500">Skor kamu vs standar ideal — {{ $rekomendasiUtama }}</span>
                     </div>
                     <div class="space-y-5">
                         {{-- Bar 1 --}}

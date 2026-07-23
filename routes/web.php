@@ -10,15 +10,36 @@ Route::get('/', function () {
 })->name('home');
 
 // 2. HALAMAN BERANDA SISTEM (Private - Harus login)
-// 2. HALAMAN BERANDA SISTEM (Private - Harus login)
 Route::get('/dashboard', function () {
-    // Mengecek langsung ke database apakah user ini sudah punya riwayat hasil
-    // PENTING: Ganti 'nama_tabel_hasil_kamu' dengan nama tabel aslimu
-    $hasAssessment = \Illuminate\Support\Facades\DB::table('assessments')
-                    ->where('user_id', \Illuminate\Support\Facades\Auth::id())
-                    ->exists();
+    $userId = \Illuminate\Support\Facades\Auth::id();
 
-    return view('dashboard', compact('hasAssessment'));
+    // Cek apakah user punya data di tabel assessments
+    $hasAssessment = \Illuminate\Support\Facades\DB::table('assessments')
+                        ->where('user_id', $userId)
+                        ->exists();
+
+    $data = [
+        'hasAssessment' => $hasAssessment,
+    ];
+
+    if ($hasAssessment) {
+        // 1. Hitung total asesmen (Biar tampil 15x, 2x, dll sesuai riwayat)
+        $data['totalAsesmen'] = \Illuminate\Support\Facades\DB::table('assessments')
+                                    ->where('user_id', $userId)
+                                    ->count();
+
+        // 2. Ambil data yang paling baru (terakhir diisi)
+        $latest = \Illuminate\Support\Facades\DB::table('assessments')
+                        ->where('user_id', $userId)
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+
+        // 3. Format tanggal dan ambil hasil rekomendasinya
+        $data['tanggalTerakhir'] = \Carbon\Carbon::parse($latest->created_at)->translatedFormat('d F Y');
+        $data['rekomendasiUtama'] = $latest->hasil_rekomendasi ?? 'Belum ada'; 
+    }
+
+    return view('dashboard', $data);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
