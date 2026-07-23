@@ -85,17 +85,113 @@ class QuizController extends Controller
     ];
 
     // ==============================================================
-    // 4. FUNGSI PENYIMPANAN DATA (Hanya Simpan, Lalu Pindah Halaman)
+    // 4. FUNGSI PENYIMPANAN DATA (Hitung SPK & Simpan Permanen)
     // ==============================================================
     public function store(Request $request)
     {
         $data_jawaban = $request->except('_token');
         $data_jawaban['user_id'] = Auth::id();
+
+        // --- 1. LAKUKAN PERHITUNGAN SPK SAAT TOMBOL SUBMIT DITEKAN ---
+        $alternatif = ['3d_ar', '3d_vr', '3d_game', 'data_analyst', 'data_mining', 'data_science', 'web', 'ai', 'mobile'];
+        $kriteria = ['kognitif', 'hardskill', 'softskill', 'minat', 'pengalaman'];
+        $sesi_soal = [
+            '3d_ar' => 1, '3d_vr' => 16, '3d_game' => 31, 'data_analyst' => 46, 'data_mining' => 61,
+            'data_science' => 76, 'web' => 91, 'ai' => 106, 'mobile' => 121
+        ];
+
+        $matriks_x = [];
+
+        foreach ($sesi_soal as $nama_sesi => $start_soal) {
+            foreach ($kriteria as $idx_kriteria => $nama_kriteria) {
+                $total_cf = 0; $count_cf = 0; $total_sf = 0; $count_sf = 0;
+                for ($offset = 0; $offset < 3; $offset++) {
+                    $q_id = 'q' . ($start_soal + ($idx_kriteria * 3) + $offset);
+                    if (isset($data_jawaban[$q_id])) {
+                        $gap = $data_jawaban[$q_id] - $this->profile_targets[$q_id]['target'];
+                        $bobot = $this->gap_mapping[$gap] ?? 0;
+                        if ($this->profile_targets[$q_id]['type'] == 'CF') {
+                            $total_cf += $bobot; $count_cf++;
+                        } else {
+                            $total_sf += $bobot; $count_sf++;
+                        }
+                    }
+                }
+                $ncf = ($count_cf > 0) ? ($total_cf / $count_cf) : 0;
+                $nsf = ($count_sf > 0) ? ($total_sf / $count_sf) : 0;
+                $matriks_x[$nama_sesi][$nama_kriteria] = ($this->persentase_cf * $ncf) + ($this->persentase_sf * $nsf);
+            }
+        }
+
+        $matriks_r = []; $pembagi = [];
+        foreach ($kriteria as $nama_kriteria) {
+            $sum_sq = 0;
+            foreach ($alternatif as $alt) { $sum_sq += pow($matriks_x[$alt][$nama_kriteria], 2); }
+            $pembagi[$nama_kriteria] = sqrt($sum_sq);
+        }
+        foreach ($alternatif as $alt) {
+            foreach ($kriteria as $nama_kriteria) {
+                $div = $pembagi[$nama_kriteria] > 0 ? $pembagi[$nama_kriteria] : 1;
+                $matriks_r[$alt][$nama_kriteria] = $matriks_x[$alt][$nama_kriteria] / $div;
+            }
+        }
+
+        $matriks_y = [];
+        $mapping_ahp = [
+            '3d_ar' => 'bidang_3d', '3d_vr' => 'bidang_3d', '3d_game' => 'bidang_3d',
+            'data_analyst' => 'bidang_data', 'data_mining' => 'bidang_data', 'data_science' => 'bidang_data',
+            'web' => 'bidang_web', 'ai' => 'bidang_ai', 'mobile' => 'bidang_mobile',
+        ];
+
+        foreach ($alternatif as $alt) {
+            $key_ahp = $mapping_ahp[$alt];
+            foreach ($kriteria as $nama_kriteria) {
+                $bobot_ahp = $this->ahp_weights[$key_ahp][$nama_kriteria];
+                $matriks_y[$alt][$nama_kriteria] = $matriks_r[$alt][$nama_kriteria] * $bobot_ahp;
+            }
+        }
+
+        $s_pos = []; $s_neg = [];
+        foreach ($kriteria as $nk) {
+            $vals = []; foreach ($alternatif as $alt) { $vals[] = $matriks_y[$alt][$nk]; }
+            $s_pos[$nk] = max($vals); $s_neg[$nk] = min($vals);
+        }
+
+        $d_pos = []; $d_neg = []; $ranking = [];
+        foreach ($alternatif as $alt) {
+            $sum_p = 0; $sum_n = 0;
+            foreach ($kriteria as $nk) {
+                $sum_p += pow($matriks_y[$alt][$nk] - $s_pos[$nk], 2);
+                $sum_n += pow($matriks_y[$alt][$nk] - $s_neg[$nk], 2);
+            }
+            $d_pos[$alt] = sqrt($sum_p); $d_neg[$alt] = sqrt($sum_n);
+            $total_d = $d_pos[$alt] + $d_neg[$alt];
+            
+            // Konversi nilai TOPSIS jadi persentase (0 - 100) biar mudah ditampilkan
+            $skor_topsis = $total_d > 0 ? ($d_neg[$alt] / $total_d) : 0;
+            $ranking[$alt] = round($skor_topsis * 100); 
+        }
+
+        // Urutkan dari persentase terbesar ke terkecil
+        arsort($ranking);
+        $juara1_key = array_key_first($ranking);
+
+        // --- 2. KEMAS DATA DETAIL SKOR UNTUK DISIMPAN KE KOLOM JSON ---
+        $detail_skor = [
+            'ranking_lengkap' => $ranking, // Menyimpan nilai 87%, 74%, dll
+            'skor_kriteria' => $matriks_x[$juara1_key] // Menyimpan nilai kognitif dkk khusus untuk juara 1
+        ];
+
+        // --- 3. MASUKKAN KE DATABASE BERSAMA JAWABAN MENTAH ---
+        // Rapikan teks (contoh: 'data_science' jadi 'Data Science')
+        $data_jawaban['hasil_rekomendasi'] = ucwords(str_replace('_', ' ', $juara1_key));
         
-        // Simpan jawaban baru ke Database
+        // Simpan format JSON ke kolom baru yang kita buat di tahap sebelumnya
+        $data_jawaban['detail_skor'] = $detail_skor; 
+
         Assessment::create($data_jawaban);
 
-        // Setelah simpan, langsung tendang ke rute Hasil Rekomendasi
+        // --- 4. SELESAI! TENDANG KE HALAMAN HASIL ---
         return redirect()->route('result.index');
     }
 

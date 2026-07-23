@@ -9,8 +9,12 @@ class Assessment extends Model
 {
     use HasFactory;
 
-    // Sihir untuk mengizinkan Laravel mengisi semua 135 kolom data secara massal
     protected $guarded = [];
+
+    // Tambahkan kodingan ini:
+    protected $casts = [
+        'detail_skor' => 'array',
+    ];
 
     public function user()
     {

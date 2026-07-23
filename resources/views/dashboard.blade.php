@@ -1,20 +1,18 @@
 <x-app-layout>
     <div class="max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
 
-        {{-- Ganti variabel $hasAssessment ini dengan yang dilempar dari Controller --}}
         @if($hasAssessment ?? false)
-
-            <!-- ============================================================== -->
-            <!-- STATE 1: JIKA USER SUDAH MENGISI ASESMEN (SESUAI GAMBAR 3) -->
-            <!-- ============================================================== -->
-
+            <!-- ========================================== -->
+            <!-- STATE 1: JIKA USER SUDAH MENGISI ASESMEN   -->
+            <!-- ========================================== -->
+            
             {{-- HEADER HASIL --}}
             <section class="bg-gradient-to-r from-[#1B5470] to-[#247091] rounded-[24px] p-8 flex flex-col md:flex-row justify-between items-start md:items-center text-white shadow-md relative overflow-hidden">
                 <div class="z-10 space-y-2">
                     <p class="text-[11px] text-white/80 font-semibold tracking-wide uppercase">{{ now()->translatedFormat('l, d F Y') }} — Teknik Informatika — UNIDA Gontor</p>
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Halo, {{ explode(' ', Auth::user()->name)[0] }}! 👋</h1>
                     <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 text-emerald-100 rounded-md text-xs font-semibold backdrop-blur-sm mt-2 border border-emerald-500/30">
-                        <i class="fa-solid fa-check-square"></i> Asesmen terakhir: {{ $tanggalTerakhir }}
+                        <i class="fa-solid fa-check-square"></i> Asesmen terakhir: {{ $tanggalTerakhir ?? '-' }}
                     </div>
                 </div>
                 <div class="z-10 mt-6 md:mt-0 flex flex-col items-center">
@@ -30,17 +28,17 @@
             <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-white p-6 rounded-[20px] border border-slate-100 shadow-sm">
                     <span class="text-xs text-slate-500 font-semibold mb-1 block">Kecocokan tertinggi</span>
-                    <div class="text-3xl font-black text-emerald-500 tracking-tight">87%</div>
-                    <span class="text-xs font-medium text-slate-400 mt-1 block">Data Science</span>
+                    <div class="text-3xl font-black text-emerald-500 tracking-tight">{{ $top3[0]['skor'] ?? 0 }}%</div>
+                    <span class="text-xs font-medium text-slate-400 mt-1 block">{{ $rekomendasiUtama ?? '-' }}</span>
                 </div>
                 <div class="bg-white p-6 rounded-[20px] border border-slate-100 shadow-sm">
                     <span class="text-xs text-slate-500 font-semibold mb-1 block">Kompetensi terpenuhi</span>
-                    <div class="text-3xl font-black text-[#88619A] tracking-tight">2 <span class="text-xl text-slate-300 font-bold">/ 5</span></div>
-                    <span class="text-xs font-medium text-slate-400 mt-1 block">Hard skills and minat</span>
+                    <div class="text-3xl font-black text-[#88619A] tracking-tight">{{ $jumlahTerpenuhi ?? 0 }} <span class="text-xl text-slate-300 font-bold">/ 5</span></div>
+                    <span class="text-xs font-medium text-slate-400 mt-1 block">{{ $teksTerpenuhi ?? '-' }}</span>
                 </div>
                 <div class="bg-white p-6 rounded-[20px] border border-slate-100 shadow-sm">
                     <span class="text-xs text-slate-500 font-semibold mb-1 block">Total asesmen</span>
-                    <div class="text-3xl font-black text-[#4298B4] tracking-tight">{{ $totalAsesmen }}&times;</div>
+                    <div class="text-3xl font-black text-[#4298B4] tracking-tight">{{ $totalAsesmen ?? 0 }}&times;</div>
                     <span class="text-xs font-medium text-slate-400 mt-1 block">Sudah pernah mengisi</span>
                 </div>
             </section>
@@ -55,30 +53,22 @@
                     <div class="bg-[#247091] rounded-[20px] p-6 text-white flex justify-between items-center mb-6 shadow-inner">
                         <div>
                             <span class="inline-block px-2.5 py-1 bg-amber-500 text-white text-[10px] font-extrabold rounded-md mb-2 tracking-wide uppercase"><i class="fa-solid fa-medal mr-1"></i> Peringkat #1</span>
-                            <h2 class="text-3xl font-bold tracking-tight">{{ $rekomendasiUtama }}</h2>
+                            <h2 class="text-3xl font-bold tracking-tight">{{ $rekomendasiUtama ?? '-' }}</h2>
                             <p class="text-xs text-white/80 mt-1">Sangat cocok dengan profilmu</p>
                         </div>
                         <div class="w-20 h-20 rounded-full bg-white/10 border-[4px] border-white/20 flex flex-col items-center justify-center font-bold shadow-lg">
-                            <span class="text-2xl leading-none">87</span>
+                            <span class="text-2xl leading-none">{{ $top3[0]['skor'] ?? 0 }}</span>
                             <span class="text-[8px] tracking-wider">% COCOK</span>
                         </div>
                     </div>
                     <div class="flex gap-3 text-center mt-auto">
-                        <div class="flex-1 py-3 px-2 border-2 border-emerald-400 bg-emerald-50/50 rounded-xl">
-                            <div class="text-[10px] font-bold text-emerald-600/70 mb-1">#1</div>
-                            <div class="font-bold text-emerald-900 text-sm">{{ $rekomendasiUtama }}</div>
-                            <div class="text-emerald-500 font-bold mt-1 text-lg">87%</div>
+                        @foreach($top3 ?? [] as $index => $item)
+                        <div class="flex-1 py-3 px-2 {{ $index == 0 ? 'border-2 border-emerald-400 bg-emerald-50/50' : 'border border-slate-100' }} rounded-xl">
+                            <div class="text-[10px] font-bold {{ $index == 0 ? 'text-emerald-600/70' : 'text-slate-400' }} mb-1">#{{ $index + 1 }}</div>
+                            <div class="font-bold {{ $index == 0 ? 'text-emerald-900' : 'text-slate-700' }} text-sm line-clamp-1">{{ $item['nama'] }}</div>
+                            <div class="{{ $index == 0 ? 'text-emerald-500' : 'text-[#4298B4]' }} font-bold mt-1 text-lg">{{ $item['skor'] }}%</div>
                         </div>
-                        <div class="flex-1 py-3 px-2 border border-slate-100 rounded-xl">
-                            <div class="text-[10px] font-bold text-slate-400 mb-1">#2</div>
-                            <div class="font-bold text-slate-700 text-sm">AI</div>
-                            <div class="text-[#4298B4] font-bold mt-1 text-lg">74%</div>
-                        </div>
-                        <div class="flex-1 py-3 px-2 border border-slate-100 rounded-xl">
-                            <div class="text-[10px] font-bold text-slate-400 mb-1">#3</div>
-                            <div class="font-bold text-slate-700 text-sm">Data Mining</div>
-                            <div class="text-[#4298B4] font-bold mt-1 text-lg">61%</div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
@@ -86,64 +76,35 @@
                 <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-6">
                     <div class="flex items-center gap-2 mb-6">
                         <i class="fa-solid fa-chart-column text-[#4298B4] text-sm"></i>
-                        <span class="text-xs font-semibold text-slate-500">Skor kamu vs standar ideal — {{ $rekomendasiUtama }}</span>
+                        <span class="text-xs font-semibold text-slate-500">Skor kamu vs standar ideal — {{ $rekomendasiUtama ?? '-' }}</span>
                     </div>
                     <div class="space-y-5">
-                        {{-- Bar 1 --}}
+                        @php
+                            $kriteriaList = [
+                                ['nama' => 'Kognitif', 'skor' => $skorKognitif ?? 0, 'warna' => 'bg-[#4298B4]'],
+                                ['nama' => 'Hard Skills', 'skor' => $skorHardskill ?? 0, 'warna' => 'bg-[#88619A]'],
+                                ['nama' => 'Soft Skills', 'skor' => $skorSoftskill ?? 0, 'warna' => 'bg-amber-400'],
+                                ['nama' => 'Minat', 'skor' => $skorMinat ?? 0, 'warna' => 'bg-[#e67e22]'],
+                                ['nama' => 'Pengalaman', 'skor' => $skorPengalaman ?? 0, 'warna' => 'bg-emerald-500'],
+                            ];
+                        @endphp
+
+                        @foreach($kriteriaList as $k)
                         <div>
                             <div class="flex justify-between text-xs mb-2">
-                                <span class="font-bold text-slate-700">Kognitif</span>
+                                <span class="font-bold text-slate-700">{{ $k['nama'] }}</span>
                                 <div class="space-x-2">
-                                    <span class="font-bold text-slate-800">82/90</span>
-                                    <span class="text-[10px] text-amber-500 font-bold bg-amber-50 px-2 py-0.5 rounded">Perlu Ditingkatkan</span>
+                                    <span class="font-bold text-slate-800">{{ $k['skor'] }}%</span>
+                                    @if($k['skor'] >= 80)
+                                        <span class="text-[10px] text-emerald-500 font-bold bg-emerald-50 px-2 py-0.5 rounded"><i class="fa-solid fa-check"></i> Terpenuhi</span>
+                                    @else
+                                        <span class="text-[10px] text-amber-500 font-bold bg-amber-50 px-2 py-0.5 rounded">Perlu Ditingkatkan</span>
+                                    @endif
                                 </div>
                             </div>
-                            <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="bg-[#4298B4] h-1.5 rounded-full" style="width: 82%"></div></div>
+                            <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="{{ $k['warna'] }} h-1.5 rounded-full" style="width: {{ $k['skor'] }}%"></div></div>
                         </div>
-                        {{-- Bar 2 --}}
-                        <div>
-                            <div class="flex justify-between text-xs mb-2">
-                                <span class="font-bold text-slate-700">Hard Skills</span>
-                                <div class="space-x-2">
-                                    <span class="font-bold text-slate-800">90/85</span>
-                                    <span class="text-[10px] text-emerald-500 font-bold bg-emerald-50 px-2 py-0.5 rounded"><i class="fa-solid fa-check"></i> Terpenuhi</span>
-                                </div>
-                            </div>
-                            <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="bg-[#88619A] h-1.5 rounded-full" style="width: 100%"></div></div>
-                        </div>
-                        {{-- Bar 3 --}}
-                        <div>
-                            <div class="flex justify-between text-xs mb-2">
-                                <span class="font-bold text-slate-700">Soft Skills</span>
-                                <div class="space-x-2">
-                                    <span class="font-bold text-slate-800">76/80</span>
-                                    <span class="text-[10px] text-amber-500 font-bold bg-amber-50 px-2 py-0.5 rounded">Perlu Ditingkatkan</span>
-                                </div>
-                            </div>
-                            <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="bg-amber-400 h-1.5 rounded-full" style="width: 76%"></div></div>
-                        </div>
-                        {{-- Bar 4 --}}
-                        <div>
-                            <div class="flex justify-between text-xs mb-2">
-                                <span class="font-bold text-slate-700">Minat</span>
-                                <div class="space-x-2">
-                                    <span class="font-bold text-slate-800">92/88</span>
-                                    <span class="text-[10px] text-emerald-500 font-bold bg-emerald-50 px-2 py-0.5 rounded"><i class="fa-solid fa-check"></i> Terpenuhi</span>
-                                </div>
-                            </div>
-                            <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="bg-[#e67e22] h-1.5 rounded-full" style="width: 100%"></div></div>
-                        </div>
-                        {{-- Bar 5 --}}
-                        <div>
-                            <div class="flex justify-between text-xs mb-2">
-                                <span class="font-bold text-slate-700">Pengalaman</span>
-                                <div class="space-x-2">
-                                    <span class="font-bold text-slate-800">68/75</span>
-                                    <span class="text-[10px] text-amber-500 font-bold bg-amber-50 px-2 py-0.5 rounded">Perlu Ditingkatkan</span>
-                                </div>
-                            </div>
-                            <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="bg-emerald-500 h-1.5 rounded-full" style="width: 68%"></div></div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </section>
@@ -157,106 +118,84 @@
                         <span class="text-xs font-semibold text-slate-500">Tingkat kecocokan dari 9 jalur karier</span>
                     </div>
                     <div class="grid grid-cols-2 gap-3 mb-4">
-                        {{-- Item 1 --}}
+                        @foreach(array_slice($semuaJalur ?? [], 0, 6) as $index => $item)
+                            @php
+                                if($item['skor'] >= 80) { $warna = 'emerald'; $label = 'Sangat Cocok'; }
+                                elseif($item['skor'] >= 60) { $warna = 'blue'; $label = 'Cocok'; }
+                                elseif($item['skor'] >= 40) { $warna = 'amber'; $label = 'Cukup'; }
+                                else { $warna = 'rose'; $label = 'Kurang'; }
+                                
+                                $hex = $warna == 'emerald' ? '#10b981' : ($warna == 'blue' ? '#4298B4' : ($warna == 'amber' ? '#fbbf24' : '#fb7185'));
+                            @endphp
                         <div class="border border-slate-100 rounded-xl p-3">
-                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#1 Data Science</p>
-                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="bg-emerald-500 h-1 rounded-full" style="width:87%"></div></div>
+                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#{{ $index + 1 }} {{ $item['nama'] }}</p>
+                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="h-1 rounded-full bg-{{ $warna }}-500" style="width:{{ $item['skor'] }}%; background-color: {{ $hex }}"></div></div>
                             <div class="flex justify-between items-center">
-                                <span class="font-extrabold text-emerald-600 text-sm">87%</span>
-                                <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">Sangat Cocok</span>
+                                <span class="font-extrabold text-{{ $warna }}-600 text-sm" style="color: {{ $hex }}">{{ $item['skor'] }}%</span>
+                                <span class="text-[9px] font-bold text-{{ $warna }}-600 bg-{{ $warna }}-50 px-2 py-0.5 rounded border border-{{ $warna }}-100">{{ $label }}</span>
                             </div>
                         </div>
-                        {{-- Item 2 --}}
-                        <div class="border border-slate-100 rounded-xl p-3">
-                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#2 AI</p>
-                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="bg-[#4298B4] h-1 rounded-full" style="width:74%"></div></div>
-                            <div class="flex justify-between items-center">
-                                <span class="font-extrabold text-[#4298B4] text-sm">74%</span>
-                                <span class="text-[9px] font-bold text-[#4298B4] bg-blue-50 px-2 py-0.5 rounded border border-blue-100">Cocok</span>
-                            </div>
-                        </div>
-                        {{-- Item 3 --}}
-                        <div class="border border-slate-100 rounded-xl p-3">
-                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#3 Data Mining</p>
-                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="bg-[#4298B4] h-1 rounded-full" style="width:61%"></div></div>
-                            <div class="flex justify-between items-center">
-                                <span class="font-extrabold text-[#4298B4] text-sm">61%</span>
-                                <span class="text-[9px] font-bold text-[#4298B4] bg-blue-50 px-2 py-0.5 rounded border border-blue-100">Cocok</span>
-                            </div>
-                        </div>
-                        {{-- Item 4 --}}
-                        <div class="border border-slate-100 rounded-xl p-3">
-                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#4 Web Dev</p>
-                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="bg-amber-400 h-1 rounded-full" style="width:55%"></div></div>
-                            <div class="flex justify-between items-center">
-                                <span class="font-extrabold text-amber-500 text-sm">55%</span>
-                                <span class="text-[9px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">Cukup</span>
-                            </div>
-                        </div>
-                        {{-- Item 5 --}}
-                        <div class="border border-slate-100 rounded-xl p-3">
-                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#5 Mobile Dev</p>
-                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="bg-amber-400 h-1 rounded-full" style="width:50%"></div></div>
-                            <div class="flex justify-between items-center">
-                                <span class="font-extrabold text-amber-500 text-sm">50%</span>
-                                <span class="text-[9px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">Cukup</span>
-                            </div>
-                        </div>
-                        {{-- Item 6 --}}
-                        <div class="border border-slate-100 rounded-xl p-3">
-                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#6 3D / AR</p>
-                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="bg-rose-400 h-1 rounded-full" style="width:38%"></div></div>
-                            <div class="flex justify-between items-center">
-                                <span class="font-extrabold text-rose-500 text-sm">38%</span>
-                                <span class="text-[9px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-100">Kurang</span>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="text-center mt-auto pt-2 border-t border-slate-50">
                         <a href="{{ route('result.index') }}" class="text-[11px] font-semibold text-[#4298B4] hover:text-[#247091] transition-colors">+3 jalur lainnya - Lihat hasil lengkap &rarr;</a>
                     </div>
                 </div>
 
-                {{-- Kanan Bawah: Saran Pengembangan --}}
+                {{-- Kanan Bawah: Saran Pengembangan Dinamis --}}
                 <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-6">
                     <div class="flex items-center gap-2 mb-5">
                         <i class="fa-solid fa-lightbulb text-amber-400 text-sm"></i>
                         <span class="text-xs font-semibold text-slate-500">Berdasarkan kompetensi yang perlu ditingkatkan</span>
                     </div>
                     <div class="space-y-4">
-                        {{-- Saran 1 --}}
+                        @if(($skorKognitif ?? 0) < 80)
                         <div class="border-l-4 border-[#4298B4] bg-[#4298B4]/5 rounded-r-xl p-4 flex gap-4">
                             <div class="mt-0.5"><i class="fa-solid fa-brain text-pink-400 text-lg"></i></div>
                             <div>
-                                <h6 class="text-xs font-extrabold text-slate-800">Tingkatkan Kognitif (skor 82/90)</h6>
-                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Pelajari algoritma clustering atau perancangan eksperimen akurasi model lebih dalam.</p>
+                                <h6 class="text-xs font-extrabold text-slate-800">Tingkatkan Kognitif (skor {{ $skorKognitif ?? 0 }}%)</h6>
+                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Pelajari dasar teori dan pemahaman logika algoritma yang dibutuhkan untuk jalur karier ini.</p>
                             </div>
                         </div>
-                        {{-- Saran 2 --}}
+                        @endif
+
+                        @if(($skorHardskill ?? 0) < 80)
+                        <div class="border-l-4 border-[#88619A] bg-[#88619A]/5 rounded-r-xl p-4 flex gap-4">
+                            <div class="mt-0.5"><i class="fa-solid fa-code text-[#88619A] text-lg"></i></div>
+                            <div>
+                                <h6 class="text-xs font-extrabold text-slate-800">Tingkatkan Hardskill (skor {{ $skorHardskill ?? 0 }}%)</h6>
+                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Perbanyak latihan *coding* atau praktik langsung menggunakan *tools* yang sesuai dengan fokus karier IT-mu.</p>
+                            </div>
+                        </div>
+                        @endif
+
+                        @if(($skorSoftskill ?? 0) < 80)
                         <div class="border-l-4 border-amber-400 bg-amber-50 rounded-r-xl p-4 flex gap-4">
                             <div class="mt-0.5"><i class="fa-solid fa-handshake text-amber-400 text-lg"></i></div>
                             <div>
-                                <h6 class="text-xs font-extrabold text-slate-800">Asah Soft Skills (skor 76/80)</h6>
-                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Latih kemampuan problem solving kreatif dan komunikasi data kepada orang non-teknis.</p>
+                                <h6 class="text-xs font-extrabold text-slate-800">Asah Soft Skills (skor {{ $skorSoftskill ?? 0 }}%)</h6>
+                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Latih kemampuan *problem solving* kreatif, manajemen waktu, dan komunikasi tim.</p>
                             </div>
                         </div>
-                        {{-- Saran 3 --}}
+                        @endif
+                        
+                        @if(($skorKognitif ?? 0) >= 80 && ($skorHardskill ?? 0) >= 80 && ($skorSoftskill ?? 0) >= 80)
                         <div class="border-l-4 border-emerald-500 bg-emerald-50 rounded-r-xl p-4 flex gap-4">
-                            <div class="mt-0.5"><i class="fa-solid fa-briefcase text-slate-600 text-lg"></i></div>
+                            <div class="mt-0.5"><i class="fa-solid fa-star text-emerald-500 text-lg"></i></div>
                             <div>
-                                <h6 class="text-xs font-extrabold text-slate-800">Tambah Pengalaman (skor 68/75)</h6>
-                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Ikuti kompetisi Kaggle atau bangun portofolio analisis spasial/pemetaan K-Means aktif di GitHub.</p>
+                                <h6 class="text-xs font-extrabold text-slate-800">Kompetensi Sangat Baik!</h6>
+                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Pertahankan nilai baikmu. Fokus eksplorasi portofolio agar lebih siap terjun ke dunia industri.</p>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
             </section>
 
-
         @else
-            <!-- ============================================================== -->
-            <!-- STATE 2: JIKA USER BELUM MENGISI ASESMEN (SESUAI GAMBAR 2) -->
-            <!-- ============================================================== -->
+            <!-- ========================================== -->
+            <!-- STATE 2: JIKA USER BELUM MENGISI ASESMEN   -->
+            <!-- ========================================== -->
 
             {{-- HEADER BELUM ASESMEN --}}
             <section class="bg-gradient-to-r from-[#1B5470] to-[#247091] rounded-[24px] p-8 text-white shadow-md relative overflow-hidden">
@@ -317,7 +256,7 @@
                             <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Ranking karier IT dari yang paling cocok sampai kurang cocok dengan profilmu.</p>
                         </div>
                     </div>
-                    <div class="flex gap-4 items-start border-l-2 border-[#4298B4] pl-4 -ml-[18px]"> {{-- aksen garis pinggir seperti mockup --}}
+                    <div class="flex gap-4 items-start border-l-2 border-[#4298B4] pl-4 -ml-[18px]">
                         <div class="mt-1"><i class="fa-solid fa-chart-pie text-[#4298B4] text-lg"></i></div>
                         <div>
                             <h5 class="font-bold text-slate-800 text-sm">Analisis Kompetensi</h5>
@@ -334,7 +273,7 @@
                 </div>
             </section>
 
-            {{-- GRID 9 JALUR KARIER (BAGIAN BAWAH YANG HILANG KEMARIN) --}}
+            {{-- GRID 9 JALUR KARIER --}}
             <section class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-8 mt-2">
                 <div class="flex items-center gap-2 mb-6">
                     <i class="fa-solid fa-folder-open text-amber-400"></i>
@@ -363,7 +302,6 @@
                     <a href="{{ route('assessment.index') }}" class="text-xs font-bold text-slate-300 hover:text-slate-400 transition-colors inline-block">Isi Asesmen untuk Melihat Hasilmu &rarr;</a>
                 </div>
             </section>
-
         @endif
 
     </div>
