@@ -1,165 +1,370 @@
 <x-app-layout>
-    <div class="max-w-7xl mx-auto space-y-10 pb-12 px-4 sm:px-6 lg:px-8 pt-6">
-        
-        <section class="relative bg-gradient-to-br from-[#4298B4] to-[#2B6A80] rounded-[32px] p-10 md:p-14 overflow-hidden shadow-xl shadow-[#4298B4]/10">
-            <div class="absolute top-[-10%] right-[-5%] w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-[-10%] left-[-5%] w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
 
-            <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-10">
-                <div class="space-y-5 max-w-2xl text-center md:text-left">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 text-white text-xs font-bold tracking-widest uppercase backdrop-blur-md border border-white/30">
-                        <i class="fa-solid fa-shield-halved"></i> Sistem Pendukung Keputusan Karier
-                    </div>
-                    <h1 class="text-3xl md:text-5xl font-extrabold text-white leading-tight">
-                        Halo, {{ explode(' ', Auth::user()->name)[0] }}! 👋<br>
-                        <span class="text-white/90 text-2xl md:text-4xl block mt-1 font-bold">Temukan Karier IT Terbaikmu Bersama Career Insight.</span>
-                    </h1>
-                    <p class="text-white/80 text-base leading-relaxed">
-                        Platform rekomendasi karier berbasis SPK yang menganalisis kompetensi, minat, dan kepribadianmu untuk menentukan jalur karier IT yang paling sesuai.
-                    </p>
-                    <div class="flex flex-wrap gap-4 justify-center md:justify-start pt-2">
-                        <a href="{{ route('assessment.index') }}" class="px-6 py-3.5 bg-[#88619A] hover:bg-[#725282] text-white font-bold rounded-xl transition-all shadow-md flex items-center gap-2">
-                            Mulai Asesmen <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </a>
-                        <a href="{{ route('result.index') }}" class="inline-block px-6 py-3 bg-white/20 hover:bg-white/30 text-white rounded-xl font-bold border border-white/30 transition-all duration-300">
-                        Lihat Hasil
-                        </a>
-                    </div>
-                </div>
-                <div class="relative w-full h-full flex items-center justify-center p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl">
-                    <img src="{{ asset('images/dashboard.png') }}" alt="Ilustrasi Karier IT" class="w-full h-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500">
-                </div>
-            </div>
-        </section>
+        {{-- Ganti variabel $hasAssessment ini dengan yang dilempar dari Controller --}}
+        @if($hasAssessment ?? false)
 
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center space-y-2 hover:shadow-md transition-all">
-                <span class="text-5xl font-black text-[#4298B4]">9</span>
-                <span class="text-sm font-bold text-slate-800">Jalur Karier</span>
-                <p class="text-xs text-slate-400">Pilihan profesi IT rekomendasi</p>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center space-y-2 hover:shadow-md transition-all">
-                <span class="text-5xl font-black text-[#88619A]">5</span>
-                <span class="text-sm font-bold text-slate-800">Kriteria Penilaian</span>
-                <p class="text-xs text-slate-400">Dimensi kompetensi analisis</p>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center space-y-2 hover:shadow-md transition-all">
-                <span class="text-5xl font-black text-[#4298B4]">135</span>
-                <span class="text-sm font-bold text-slate-800">Total Pertanyaan</span>
-                <p class="text-xs text-slate-400">Pertanyaan terstruktur asesmen</p>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center space-y-2 hover:shadow-md transition-all">
-                <span class="text-5xl font-black text-[#FFB800]">91%</span>
-                <span class="text-sm font-bold text-slate-800">Akurasi Rata-rata</span>
-                <p class="text-xs text-slate-400">Tingkat akurasi validasi sistem</p>
-            </div>
-        </section>
+            <!-- ============================================================== -->
+            <!-- STATE 1: JIKA USER SUDAH MENGISI ASESMEN (SESUAI GAMBAR 3) -->
+            <!-- ============================================================== -->
 
-        <section class="space-y-6">
-            <h2 class="text-2xl font-bold text-slate-800">Bagaimana Career Insight Bekerja?</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition-all">
-                    <div class="h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute top-4 left-4 px-3 py-1 bg-[#4298B4] text-white text-[10px] font-bold rounded-md">Analisis 360</div>
-                    </div>
-                    <div class="p-6 space-y-2">
-                        <h3 class="font-bold text-slate-800">Analisis 360° Potensimu</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">Sistem mengevaluasi kemampuan kognitif, hard skills, soft skills, minat, dan pengalaman secara menyeluruh.</p>
+            {{-- HEADER HASIL --}}
+            <section class="bg-gradient-to-r from-[#1B5470] to-[#247091] rounded-[24px] p-8 flex flex-col md:flex-row justify-between items-start md:items-center text-white shadow-md relative overflow-hidden">
+                <div class="z-10 space-y-2">
+                    <p class="text-[11px] text-white/80 font-semibold tracking-wide uppercase">{{ now()->translatedFormat('l, d F Y') }} — Teknik Informatika — UNIDA Gontor</p>
+                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Halo, {{ explode(' ', Auth::user()->name)[0] }}! 👋</h1>
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 text-emerald-100 rounded-md text-xs font-semibold backdrop-blur-sm mt-2 border border-emerald-500/30">
+                        <i class="fa-solid fa-check-square"></i> Asesmen terakhir: 15 Juli 2026
                     </div>
                 </div>
-                <div class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition-all">
-                    <div class="h-48 overflow-hidden relative">
-                        <img src="https://plus.unsplash.com/premium_photo-1661963212517-830bbb7d76fc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8dGVjaG5vbG9neSUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute top-4 left-4 px-3 py-1 bg-[#88619A] text-white text-[10px] font-bold rounded-md">Metode SPK</div>
+                <div class="z-10 mt-6 md:mt-0 flex flex-col items-center">
+                    <div class="w-16 h-16 bg-[#88619A] rounded-full flex items-center justify-center text-2xl font-bold border-[3px] border-white/20 shadow-lg">
+                        {{ substr(Auth::user()->name, 0, 1) }}
                     </div>
-                    <div class="p-6 space-y-2">
-                        <h3 class="font-bold text-slate-800">Sistem Pendukung Keputusan Cerdas</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">Menggunakan metode hybrid Profile Matching, AHP, dan TOPSIS untuk menghasilkan rekomendasi akurat.</p>
-                    </div>
+                    <span class="text-[10px] font-semibold mt-2 text-white/90">{{ Auth::user()->name }}</span>
                 </div>
-                <div class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition-all">
-                    <div class="h-48 overflow-hidden relative">
-                        <img src="https://media.istockphoto.com/id/2224818947/id/foto/penyaringan-resume-digital-oleh-profesional-sdm-manajer-sumber-daya-manusia-mengevaluasi.jpg?s=2048x2048&w=is&k=20&c=TW-CCKnDXPfkoCwDuGCsD5Un8slYnn6HWtfbvFQEYm8=" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute top-4 left-4 px-3 py-1 bg-[#FFB800] text-white text-[10px] font-bold rounded-md">9 Jalur Karier</div>
-                    </div>
-                    <div class="p-6 space-y-2">
-                        <h3 class="font-bold text-slate-800">9 Profil Karier IT Unggulan</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed">Temukan kecocokanmu dengan karier masa depan: Web Dev, Data Analyst, hingga AI Engineer.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl"></div>
+            </section>
 
-        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-            <div class="bg-white p-8 rounded-[24px] shadow-sm border border-slate-100 space-y-6">
-                <div>
-                    <span class="text-[10px] font-bold text-[#4298B4] uppercase tracking-widest">Metode SPK</span>
-                    <h2 class="text-xl font-bold text-slate-800 mt-1">Metode SPK yang digunakan</h2>
+            {{-- STATISTIK SINGKAT --}}
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-6 rounded-[20px] border border-slate-100 shadow-sm">
+                    <span class="text-xs text-slate-500 font-semibold mb-1 block">Kecocokan tertinggi</span>
+                    <div class="text-3xl font-black text-emerald-500 tracking-tight">87%</div>
+                    <span class="text-xs font-medium text-slate-400 mt-1 block">Data Science</span>
                 </div>
-                <div class="space-y-4">
-                    <div class="flex items-start gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-                        <div class="h-10 w-10 bg-[#4298B4]/10 text-[#4298B4] rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-file-contract"></i></div>
+                <div class="bg-white p-6 rounded-[20px] border border-slate-100 shadow-sm">
+                    <span class="text-xs text-slate-500 font-semibold mb-1 block">Kompetensi terpenuhi</span>
+                    <div class="text-3xl font-black text-[#88619A] tracking-tight">2 <span class="text-xl text-slate-300 font-bold">/ 5</span></div>
+                    <span class="text-xs font-medium text-slate-400 mt-1 block">Hard skills and minat</span>
+                </div>
+                <div class="bg-white p-6 rounded-[20px] border border-slate-100 shadow-sm">
+                    <span class="text-xs text-slate-500 font-semibold mb-1 block">Total asesmen</span>
+                    <div class="text-3xl font-black text-[#4298B4] tracking-tight">3&times;</div>
+                    <span class="text-xs font-medium text-slate-400 mt-1 block">Sudah pernah mengisi</span>
+                </div>
+            </section>
+
+            {{-- GRID UTAMA ATAS: HASIL & ANALISIS --}}
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {{-- Kiri Atas: Peringkat Utama --}}
+                <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-6 flex flex-col">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-trophy text-amber-500 text-sm"></i>
+                    </div>
+                    <div class="bg-[#247091] rounded-[20px] p-6 text-white flex justify-between items-center mb-6 shadow-inner">
                         <div>
-                            <h4 class="font-bold text-slate-800 text-sm">1. Profile Matching</h4>
-                            <p class="text-xs text-slate-500 mt-0.5">Membandingkan profil kompetensimu dengan profil ideal setiap karier IT.</p>
+                            <span class="inline-block px-2.5 py-1 bg-amber-500 text-white text-[10px] font-extrabold rounded-md mb-2 tracking-wide uppercase"><i class="fa-solid fa-medal mr-1"></i> Peringkat #1</span>
+                            <h2 class="text-3xl font-bold tracking-tight">Data Science</h2>
+                            <p class="text-xs text-white/80 mt-1">Sangat cocok dengan profilmu</p>
+                        </div>
+                        <div class="w-20 h-20 rounded-full bg-white/10 border-[4px] border-white/20 flex flex-col items-center justify-center font-bold shadow-lg">
+                            <span class="text-2xl leading-none">87</span>
+                            <span class="text-[8px] tracking-wider">% COCOK</span>
                         </div>
                     </div>
-                    <div class="flex items-start gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-                        <div class="h-10 w-10 bg-[#88619A]/10 text-[#88619A] rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-chart-pie"></i></div>
-                        <div>
-                            <h4 class="font-bold text-slate-800 text-sm">2. AHP</h4>
-                            <p class="text-xs text-slate-500 mt-0.5">Menentukan bobot kepentingan setiap kriteria secara konsisten.</p>
+                    <div class="flex gap-3 text-center mt-auto">
+                        <div class="flex-1 py-3 px-2 border-2 border-emerald-400 bg-emerald-50/50 rounded-xl">
+                            <div class="text-[10px] font-bold text-emerald-600/70 mb-1">#1</div>
+                            <div class="font-bold text-emerald-900 text-sm">Data Science</div>
+                            <div class="text-emerald-500 font-bold mt-1 text-lg">87%</div>
                         </div>
-                    </div>
-                    <div class="flex items-start gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-                        <div class="h-10 w-10 bg-[#FFB800]/10 text-[#FFB800] rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-bullseye"></i></div>
-                        <div>
-                            <h4 class="font-bold text-slate-800 text-sm">3. TOPSIS</h4>
-                            <p class="text-xs text-slate-500 mt-0.5">Meranking karier berdasarkan kedekatan solusi ideal positif.</p>
+                        <div class="flex-1 py-3 px-2 border border-slate-100 rounded-xl">
+                            <div class="text-[10px] font-bold text-slate-400 mb-1">#2</div>
+                            <div class="font-bold text-slate-700 text-sm">AI</div>
+                            <div class="text-[#4298B4] font-bold mt-1 text-lg">74%</div>
+                        </div>
+                        <div class="flex-1 py-3 px-2 border border-slate-100 rounded-xl">
+                            <div class="text-[10px] font-bold text-slate-400 mb-1">#3</div>
+                            <div class="font-bold text-slate-700 text-sm">Data Mining</div>
+                            <div class="text-[#4298B4] font-bold mt-1 text-lg">61%</div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="bg-gradient-to-br from-[#88619A] to-[#6A4B78] p-8 rounded-[24px] text-white flex flex-col justify-center items-center text-center space-y-4 shadow-xl shadow-[#88619A]/20">
-                <div class="h-14 w-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md border border-white/20"><i class="fa-solid fa-rocket text-xl"></i></div>
-                <h2 class="text-2xl font-bold leading-tight">Hanya butuh beberapa menit untuk memetakan masa depanmu.</h2>
-                <p class="text-white/80 text-sm leading-relaxed">Jawab 135 pertanyaan dan dapatkan rekomendasi karier IT yang dipersonalisasi khusus untukmu.</p>
-                <a href="{{ route('assessment.index') }}" class="w-full py-3 bg-white text-[#88619A] font-bold rounded-xl hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 shadow-md">
-                    <i class="fa-solid fa-compass"></i> Mulai Eksplorasi Karier
+                {{-- Kanan Atas: Skor vs Ideal --}}
+                <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-6">
+                    <div class="flex items-center gap-2 mb-6">
+                        <i class="fa-solid fa-chart-column text-[#4298B4] text-sm"></i>
+                        <span class="text-xs font-semibold text-slate-500">Skor kamu vs standar ideal — Data Science</span>
+                    </div>
+                    <div class="space-y-5">
+                        {{-- Bar 1 --}}
+                        <div>
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="font-bold text-slate-700">Kognitif</span>
+                                <div class="space-x-2">
+                                    <span class="font-bold text-slate-800">82/90</span>
+                                    <span class="text-[10px] text-amber-500 font-bold bg-amber-50 px-2 py-0.5 rounded">Perlu Ditingkatkan</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="bg-[#4298B4] h-1.5 rounded-full" style="width: 82%"></div></div>
+                        </div>
+                        {{-- Bar 2 --}}
+                        <div>
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="font-bold text-slate-700">Hard Skills</span>
+                                <div class="space-x-2">
+                                    <span class="font-bold text-slate-800">90/85</span>
+                                    <span class="text-[10px] text-emerald-500 font-bold bg-emerald-50 px-2 py-0.5 rounded"><i class="fa-solid fa-check"></i> Terpenuhi</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="bg-[#88619A] h-1.5 rounded-full" style="width: 100%"></div></div>
+                        </div>
+                        {{-- Bar 3 --}}
+                        <div>
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="font-bold text-slate-700">Soft Skills</span>
+                                <div class="space-x-2">
+                                    <span class="font-bold text-slate-800">76/80</span>
+                                    <span class="text-[10px] text-amber-500 font-bold bg-amber-50 px-2 py-0.5 rounded">Perlu Ditingkatkan</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="bg-amber-400 h-1.5 rounded-full" style="width: 76%"></div></div>
+                        </div>
+                        {{-- Bar 4 --}}
+                        <div>
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="font-bold text-slate-700">Minat</span>
+                                <div class="space-x-2">
+                                    <span class="font-bold text-slate-800">92/88</span>
+                                    <span class="text-[10px] text-emerald-500 font-bold bg-emerald-50 px-2 py-0.5 rounded"><i class="fa-solid fa-check"></i> Terpenuhi</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="bg-[#e67e22] h-1.5 rounded-full" style="width: 100%"></div></div>
+                        </div>
+                        {{-- Bar 5 --}}
+                        <div>
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="font-bold text-slate-700">Pengalaman</span>
+                                <div class="space-x-2">
+                                    <span class="font-bold text-slate-800">68/75</span>
+                                    <span class="text-[10px] text-amber-500 font-bold bg-amber-50 px-2 py-0.5 rounded">Perlu Ditingkatkan</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="bg-emerald-500 h-1.5 rounded-full" style="width: 68%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {{-- GRID UTAMA BAWAH: 9 JALUR & SARAN --}}
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-2">
+                {{-- Kiri Bawah: Tingkat Kecocokan 9 Jalur --}}
+                <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-6 flex flex-col">
+                    <div class="flex items-center gap-2 mb-5">
+                        <i class="fa-solid fa-clipboard-list text-rose-400 text-sm"></i>
+                        <span class="text-xs font-semibold text-slate-500">Tingkat kecocokan dari 9 jalur karier</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        {{-- Item 1 --}}
+                        <div class="border border-slate-100 rounded-xl p-3">
+                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#1 Data Science</p>
+                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="bg-emerald-500 h-1 rounded-full" style="width:87%"></div></div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-emerald-600 text-sm">87%</span>
+                                <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">Sangat Cocok</span>
+                            </div>
+                        </div>
+                        {{-- Item 2 --}}
+                        <div class="border border-slate-100 rounded-xl p-3">
+                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#2 AI</p>
+                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="bg-[#4298B4] h-1 rounded-full" style="width:74%"></div></div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-[#4298B4] text-sm">74%</span>
+                                <span class="text-[9px] font-bold text-[#4298B4] bg-blue-50 px-2 py-0.5 rounded border border-blue-100">Cocok</span>
+                            </div>
+                        </div>
+                        {{-- Item 3 --}}
+                        <div class="border border-slate-100 rounded-xl p-3">
+                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#3 Data Mining</p>
+                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="bg-[#4298B4] h-1 rounded-full" style="width:61%"></div></div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-[#4298B4] text-sm">61%</span>
+                                <span class="text-[9px] font-bold text-[#4298B4] bg-blue-50 px-2 py-0.5 rounded border border-blue-100">Cocok</span>
+                            </div>
+                        </div>
+                        {{-- Item 4 --}}
+                        <div class="border border-slate-100 rounded-xl p-3">
+                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#4 Web Dev</p>
+                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="bg-amber-400 h-1 rounded-full" style="width:55%"></div></div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-amber-500 text-sm">55%</span>
+                                <span class="text-[9px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">Cukup</span>
+                            </div>
+                        </div>
+                        {{-- Item 5 --}}
+                        <div class="border border-slate-100 rounded-xl p-3">
+                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#5 Mobile Dev</p>
+                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="bg-amber-400 h-1 rounded-full" style="width:50%"></div></div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-amber-500 text-sm">50%</span>
+                                <span class="text-[9px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">Cukup</span>
+                            </div>
+                        </div>
+                        {{-- Item 6 --}}
+                        <div class="border border-slate-100 rounded-xl p-3">
+                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#6 3D / AR</p>
+                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="bg-rose-400 h-1 rounded-full" style="width:38%"></div></div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-extrabold text-rose-500 text-sm">38%</span>
+                                <span class="text-[9px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-100">Kurang</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-auto pt-2 border-t border-slate-50">
+                        <a href="{{ route('result.index') }}" class="text-[11px] font-semibold text-[#4298B4] hover:text-[#247091] transition-colors">+3 jalur lainnya - Lihat hasil lengkap &rarr;</a>
+                    </div>
+                </div>
+
+                {{-- Kanan Bawah: Saran Pengembangan --}}
+                <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-6">
+                    <div class="flex items-center gap-2 mb-5">
+                        <i class="fa-solid fa-lightbulb text-amber-400 text-sm"></i>
+                        <span class="text-xs font-semibold text-slate-500">Berdasarkan kompetensi yang perlu ditingkatkan</span>
+                    </div>
+                    <div class="space-y-4">
+                        {{-- Saran 1 --}}
+                        <div class="border-l-4 border-[#4298B4] bg-[#4298B4]/5 rounded-r-xl p-4 flex gap-4">
+                            <div class="mt-0.5"><i class="fa-solid fa-brain text-pink-400 text-lg"></i></div>
+                            <div>
+                                <h6 class="text-xs font-extrabold text-slate-800">Tingkatkan Kognitif (skor 82/90)</h6>
+                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Pelajari algoritma clustering atau perancangan eksperimen akurasi model lebih dalam.</p>
+                            </div>
+                        </div>
+                        {{-- Saran 2 --}}
+                        <div class="border-l-4 border-amber-400 bg-amber-50 rounded-r-xl p-4 flex gap-4">
+                            <div class="mt-0.5"><i class="fa-solid fa-handshake text-amber-400 text-lg"></i></div>
+                            <div>
+                                <h6 class="text-xs font-extrabold text-slate-800">Asah Soft Skills (skor 76/80)</h6>
+                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Latih kemampuan problem solving kreatif dan komunikasi data kepada orang non-teknis.</p>
+                            </div>
+                        </div>
+                        {{-- Saran 3 --}}
+                        <div class="border-l-4 border-emerald-500 bg-emerald-50 rounded-r-xl p-4 flex gap-4">
+                            <div class="mt-0.5"><i class="fa-solid fa-briefcase text-slate-600 text-lg"></i></div>
+                            <div>
+                                <h6 class="text-xs font-extrabold text-slate-800">Tambah Pengalaman (skor 68/75)</h6>
+                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Ikuti kompetisi Kaggle atau bangun portofolio analisis spasial/pemetaan K-Means aktif di GitHub.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        @else
+            <!-- ============================================================== -->
+            <!-- STATE 2: JIKA USER BELUM MENGISI ASESMEN (SESUAI GAMBAR 2) -->
+            <!-- ============================================================== -->
+
+            {{-- HEADER BELUM ASESMEN --}}
+            <section class="bg-gradient-to-r from-[#1B5470] to-[#247091] rounded-[24px] p-8 text-white shadow-md relative overflow-hidden">
+                <p class="text-[11px] text-white/80 font-semibold mb-3 tracking-wide">{{ now()->translatedFormat('l, d F Y') }} — Teknik Informatika — UNIDA Gontor</p>
+                <h1 class="text-4xl font-extrabold mb-2 tracking-tight">Halo, {{ explode(' ', Auth::user()->name)[0] }} 👋</h1>
+                <p class="text-sm text-white/90 max-w-xl mb-6 leading-relaxed">
+                    Kamu belum pernah mengisi asesmen. Isi sekarang buat dapat rekomendasi karier yang paling sesuai sama kompetensimu.
+                </p>
+                <a href="{{ route('assessment.index') }}" class="inline-flex items-center gap-2 px-6 py-2.5 bg-white/10 hover:bg-white/20 border border-white/30 rounded-lg text-sm font-bold transition-all shadow-sm">
+                    Mulai asesmen pertamamu &rarr;
                 </a>
-            </div>
-        </section>
+                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+            </section>
 
-        <section class="space-y-4">
-    <div class="flex justify-between items-end">
-        <h2 class="text-xl font-bold text-slate-800">Karier IT yang Tersedia</h2>
-    </div>
-    <!-- Ubah gap-2.5 menjadi gap-2 biar jarak antar tombol lebih hemat -->
-    <div class="flex flex-wrap gap-2">
-        @foreach(['Virtual Reality (VR)', 'Augmented Reality (AR)', 'Game Develeloper', 'Data Analyst', 'Data Scientist', 'Data Mining', 'Mobile Developer', 'Web Developer', 'Artificial Intelligence'] as $career)
-            <!-- Ubah px-4 menjadi px-3 biar kotak putihnya tidak terlalu lebar -->
-            <span class="px-3 py-2 bg-white rounded-xl shadow-sm border border-slate-100 text-xs font-medium text-slate-600 hover:border-[#4298B4] hover:text-[#4298B4] transition-all cursor-pointer">
-                {{ $career }}
-            </span>
-        @endforeach
-    </div>
-</section>
+            {{-- APA YANG DIDAPAT --}}
+            <section>
+                <h3 class="text-sm font-bold text-slate-700 mb-3">Apa yang bakal kamu dapat</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-5 rounded-[20px] border border-slate-100 shadow-sm flex flex-col justify-center">
+                        <i class="fa-solid fa-bullseye text-2xl text-rose-400 mb-3"></i>
+                        <h4 class="font-bold text-slate-800 text-sm">Rekomendasi karier</h4>
+                        <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Peringkat jalur karier paling cocok pakai AHP dan TOPSIS</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-[20px] border border-slate-100 shadow-sm flex flex-col justify-center">
+                        <i class="fa-solid fa-chart-column text-2xl text-[#4298B4] mb-3"></i>
+                        <h4 class="font-bold text-slate-800 text-sm">Analisis kompetensi</h4>
+                        <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Perbandingan skormu vs standar ideal tiap profesi</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-[20px] border border-slate-100 shadow-sm flex flex-col justify-center">
+                        <i class="fa-solid fa-lightbulb text-2xl text-amber-400 mb-3"></i>
+                        <h4 class="font-bold text-slate-800 text-sm">Saran pengembangan</h4>
+                        <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Langkah konkret buat naikin skor yang masih kurang</p>
+                    </div>
+                </div>
+            </section>
 
-<!-- FOOTER DASHBOARD -->
-<footer class="mt-auto py-6 px-6 text-center text-slate-500 transition-all duration-300">
-    <div class="border-t border-slate-200 pt-6">
-        <p class="text-sm font-medium">
-            &copy; 2026 <span class="font-bold text-[#4298B4]">Career Insight</span>. Sistem Pendukung Keputusan Rencana Karier.
-        </p>
-        <p class="text-xs mt-1.5 text-slate-400">
-            Dibuat dengan <i class="fa-solid fa-heart text-red-400 mx-1"></i> oleh <span class="font-semibold text-slate-500">Fiona Anggilia Rahmawati</span> 
-            <br class="md:hidden"> <!-- Biar kalau dibuka di HP, teksnya turun rapi -->
-            <span class="hidden md:inline"> | </span> Program Studi Teknik Informatika, Universitas Darussalam Gontor.
-        </p>
-    </div>
-</footer>
+            {{-- BANNER UNGU --}}
+            <section class="bg-gradient-to-r from-[#7A508A] to-[#88619A] rounded-2xl p-6 flex items-center gap-6 text-white shadow-sm">
+                <i class="fa-solid fa-bullseye text-5xl opacity-50 hidden md:block ml-4"></i>
+                <div>
+                    <h3 class="font-extrabold text-base mb-1">Mulai petakan karier IT-mu sekarang!</h3>
+                    <p class="text-[11px] text-white/90 leading-relaxed max-w-4xl">Sistem ini dirancang khusus untuk mahasiswa Teknik Informatika UNIDA Gontor agar bisa menemukan jalur karier yang paling sesuai dengan potensi dan minatmu. Hanya butuh beberapa menit!</p>
+                </div>
+            </section>
+
+            {{-- KOTAK KOSONG DAN FITUR --}}
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-10 flex flex-col items-center justify-center text-center">
+                    <i class="fa-solid fa-mailbox text-4xl text-slate-200 mb-4"></i>
+                    <h4 class="font-bold text-slate-800 text-sm">Belum ada data asesmen</h4>
+                    <p class="text-xs text-slate-500 mt-2 max-w-[250px] leading-relaxed">Kamu belum pernah mengisi kuesioner. Isi sekarang untuk mendapatkan rekomendasi karier terbaik!</p>
+                </div>
+                <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-8 flex flex-col justify-center space-y-7">
+                    <div class="flex gap-4 items-start">
+                        <div class="mt-1"><i class="fa-solid fa-trophy text-amber-500 text-lg"></i></div>
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-sm">Rekomendasi Karier</h5>
+                            <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Ranking karier IT dari yang paling cocok sampai kurang cocok dengan profilmu.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start border-l-2 border-[#4298B4] pl-4 -ml-[18px]"> {{-- aksen garis pinggir seperti mockup --}}
+                        <div class="mt-1"><i class="fa-solid fa-chart-pie text-[#4298B4] text-lg"></i></div>
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-sm">Analisis Kompetensi</h5>
+                            <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Tahu mana kompetensimu yang sudah terpenuhi dan mana yang perlu ditingkatkan.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start border-l-2 border-emerald-500 pl-4 -ml-[18px]">
+                        <div class="mt-1"><i class="fa-solid fa-print text-[#88619A] text-lg"></i></div>
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-sm">Laporan Resmi</h5>
+                            <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Hasil rekomendasi bisa dicetak sebagai laporan resmi lengkap dengan analisis.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {{-- GRID 9 JALUR KARIER (BAGIAN BAWAH YANG HILANG KEMARIN) --}}
+            <section class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-8 mt-2">
+                <div class="flex items-center gap-2 mb-6">
+                    <i class="fa-solid fa-folder-open text-amber-400"></i>
+                    <p class="text-xs text-slate-500 font-medium">Isi asesmen untuk mengetahui tingkat kecocokanmu dengan semua jalur berikut.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    @php
+                        $jalurList = ['Web Development', 'Data Science', 'Artificial Intelligence', 'Data Mining', 'Data Analyst', 'Mobile Development', '3D / AR', '3D / VR', '3D Game Dev'];
+                    @endphp
+                    
+                    @foreach($jalurList as $index => $jalur)
+                    <div class="border border-slate-100 rounded-2xl p-5 hover:border-slate-200 transition-colors">
+                        <p class="text-[10px] text-slate-400 font-semibold mb-1">Jalur {{ $index + 1 }}</p>
+                        <h5 class="font-bold text-slate-700 text-sm">{{ $jalur }}</h5>
+                        <div class="flex items-center gap-2 mt-3">
+                            <div class="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
+                            <p class="text-[10px] text-slate-400 font-medium">Belum dianalisis</p>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+
+                <div class="border border-dashed border-slate-200 rounded-xl p-5 text-center bg-slate-50/50">
+                    <p class="text-[11px] text-slate-500 mb-3">Semua jalur di atas akan dianalisis setelah kamu mengisi kuesioner asesmen.</p>
+                    <a href="{{ route('assessment.index') }}" class="text-xs font-bold text-slate-300 hover:text-slate-400 transition-colors inline-block">Isi Asesmen untuk Melihat Hasilmu &rarr;</a>
+                </div>
+            </section>
+
+        @endif
 
     </div>
 </x-app-layout>

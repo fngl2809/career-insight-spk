@@ -10,8 +10,15 @@ Route::get('/', function () {
 })->name('home');
 
 // 2. HALAMAN BERANDA SISTEM (Private - Harus login)
+// 2. HALAMAN BERANDA SISTEM (Private - Harus login)
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    // Mengecek langsung ke database apakah user ini sudah punya riwayat hasil
+    // PENTING: Ganti 'nama_tabel_hasil_kamu' dengan nama tabel aslimu
+    $hasAssessment = \Illuminate\Support\Facades\DB::table('assessments')
+                    ->where('user_id', \Illuminate\Support\Facades\Auth::id())
+                    ->exists();
+
+    return view('dashboard', compact('hasAssessment'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
