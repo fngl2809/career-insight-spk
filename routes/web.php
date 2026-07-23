@@ -63,7 +63,19 @@ Route::get('/dashboard', function () {
             if($data['skorPengalaman'] >= 80) { $terpenuhi++; $namaTerpenuhi[] = 'Pengalaman'; }
             
             $data['jumlahTerpenuhi'] = $terpenuhi;
-            $data['teksTerpenuhi'] = count($namaTerpenuhi) > 0 ? implode(', ', array_slice($namaTerpenuhi, 0, 2)) : 'Perlu diasah';
+            
+            // Logika teks kompetensi yang rapi
+            if ($terpenuhi == 5) {
+                $data['teksTerpenuhi'] = 'Semua aspek terpenuhi!';
+            } elseif ($terpenuhi > 0) {
+                $teks = implode(', ', array_slice($namaTerpenuhi, 0, 2));
+                $data['teksTerpenuhi'] = $terpenuhi > 2 ? $teks . ', dll' : $teks;
+            } else {
+                $data['teksTerpenuhi'] = 'Belum ada yang terpenuhi';
+            }
+
+            // Ambil peringkat 2 dan 3 saja untuk kotak bawah
+            $data['peringkatSelanjutnya'] = array_slice($formattedRanking, 1, 2);
 
         } else {
             // Fallback kalau JSON kosong (data lama)

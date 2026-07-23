@@ -15,12 +15,6 @@
                         <i class="fa-solid fa-check-square"></i> Asesmen terakhir: {{ $tanggalTerakhir ?? '-' }}
                     </div>
                 </div>
-                <div class="z-10 mt-6 md:mt-0 flex flex-col items-center">
-                    <div class="w-16 h-16 bg-[#88619A] rounded-full flex items-center justify-center text-2xl font-bold border-[3px] border-white/20 shadow-lg">
-                        {{ substr(Auth::user()->name, 0, 1) }}
-                    </div>
-                    <span class="text-[10px] font-semibold mt-2 text-white/90">{{ Auth::user()->name }}</span>
-                </div>
                 <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl"></div>
             </section>
 
@@ -62,11 +56,11 @@
                         </div>
                     </div>
                     <div class="flex gap-3 text-center mt-auto">
-                        @foreach($top3 ?? [] as $index => $item)
-                        <div class="flex-1 py-3 px-2 {{ $index == 0 ? 'border-2 border-emerald-400 bg-emerald-50/50' : 'border border-slate-100' }} rounded-xl">
-                            <div class="text-[10px] font-bold {{ $index == 0 ? 'text-emerald-600/70' : 'text-slate-400' }} mb-1">#{{ $index + 1 }}</div>
-                            <div class="font-bold {{ $index == 0 ? 'text-emerald-900' : 'text-slate-700' }} text-sm line-clamp-1">{{ $item['nama'] }}</div>
-                            <div class="{{ $index == 0 ? 'text-emerald-500' : 'text-[#4298B4]' }} font-bold mt-1 text-lg">{{ $item['skor'] }}%</div>
+                        @foreach($peringkatSelanjutnya ?? [] as $index => $item)
+                        <div class="flex-1 py-3 px-2 border border-slate-100 rounded-xl hover:border-[#4298B4] transition-colors">
+                            <div class="text-[10px] font-bold text-slate-400 mb-1">Peringkat #{{ $index + 2 }}</div>
+                            <div class="font-bold text-slate-700 text-sm line-clamp-1">{{ $item['nama'] }}</div>
+                            <div class="text-[#4298B4] font-bold mt-1 text-lg">{{ $item['skor'] }}%</div>
                         </div>
                         @endforeach
                     </div>
