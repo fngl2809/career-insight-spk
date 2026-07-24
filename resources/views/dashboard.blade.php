@@ -70,16 +70,16 @@
                 <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-6">
                     <div class="flex items-center gap-2 mb-6">
                         <i class="fa-solid fa-chart-column text-[#4298B4] text-sm"></i>
-                        <span class="text-xs font-semibold text-slate-500">Skor kamu vs standar ideal — {{ $rekomendasiUtama ?? '-' }}</span>
+                        <span class="text-xs font-semibold text-slate-500">Skor kamu vs standar ideal — {{ $rekomendasiUtama }}</span>
                     </div>
                     <div class="space-y-5">
                         @php
                             $kriteriaList = [
-                                ['nama' => 'Kognitif', 'skor' => $skorKognitif ?? 0, 'warna' => 'bg-[#4298B4]'],
-                                ['nama' => 'Hard Skills', 'skor' => $skorHardskill ?? 0, 'warna' => 'bg-[#88619A]'],
-                                ['nama' => 'Soft Skills', 'skor' => $skorSoftskill ?? 0, 'warna' => 'bg-amber-400'],
-                                ['nama' => 'Minat', 'skor' => $skorMinat ?? 0, 'warna' => 'bg-[#e67e22]'],
-                                ['nama' => 'Pengalaman', 'skor' => $skorPengalaman ?? 0, 'warna' => 'bg-emerald-500'],
+                                ['nama' => 'Kognitif', 'skor' => $skorKognitif ?? 0, 'ideal' => $ideal['kognitif'] ?? 80, 'warna' => 'bg-[#4298B4]'],
+                                ['nama' => 'Hard Skills', 'skor' => $skorHardskill ?? 0, 'ideal' => $ideal['hardskill'] ?? 80, 'warna' => 'bg-[#88619A]'],
+                                ['nama' => 'Soft Skills', 'skor' => $skorSoftskill ?? 0, 'ideal' => $ideal['softskill'] ?? 80, 'warna' => 'bg-amber-400'],
+                                ['nama' => 'Minat', 'skor' => $skorMinat ?? 0, 'ideal' => $ideal['minat'] ?? 80, 'warna' => 'bg-[#e67e22]'],
+                                ['nama' => 'Pengalaman', 'skor' => $skorPengalaman ?? 0, 'ideal' => $ideal['pengalaman'] ?? 80, 'warna' => 'bg-emerald-500'],
                             ];
                         @endphp
 
@@ -89,7 +89,7 @@
                                 <span class="font-bold text-slate-700">{{ $k['nama'] }}</span>
                                 <div class="space-x-2">
                                     <span class="font-bold text-slate-800">{{ $k['skor'] }}%</span>
-                                    @if($k['skor'] >= 80)
+                                    @if($k['skor'] >= $k['ideal'])
                                         <span class="text-[10px] text-emerald-500 font-bold bg-emerald-50 px-2 py-0.5 rounded"><i class="fa-solid fa-check"></i> Terpenuhi</span>
                                     @else
                                         <span class="text-[10px] text-amber-500 font-bold bg-amber-50 px-2 py-0.5 rounded">Perlu Ditingkatkan</span>
@@ -103,36 +103,47 @@
                 </div>
             </section>
 
-            {{-- GRID UTAMA BAWAH: 9 JALUR & SARAN --}}
+            {{-- GRID UTAMA BAWAH: LANGKAH SELANJUTNYA & SARAN --}}
             <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-2">
-                {{-- Kiri Bawah: Tingkat Kecocokan 9 Jalur --}}
+                
+                {{-- Kiri Bawah: Langkah Selanjutnya (Aman dari Validasi) --}}
                 <div class="bg-white rounded-[24px] border border-slate-100 shadow-sm p-6 flex flex-col">
-                    <div class="flex items-center gap-2 mb-5">
-                        <i class="fa-solid fa-clipboard-list text-rose-400 text-sm"></i>
-                        <span class="text-xs font-semibold text-slate-500">Tingkat kecocokan dari 9 jalur karier</span>
+                    <div class="flex items-center gap-2 mb-6">
+                        <i class="fa-solid fa-person-walking-arrow-right text-[#4298B4] text-sm"></i>
+                        <span class="text-xs font-semibold text-slate-500">Langkah selanjutnya untukmu</span>
                     </div>
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        @foreach(array_slice($semuaJalur ?? [], 0, 6) as $index => $item)
-                            @php
-                                if($item['skor'] >= 80) { $warna = 'emerald'; $label = 'Sangat Cocok'; }
-                                elseif($item['skor'] >= 60) { $warna = 'blue'; $label = 'Cocok'; }
-                                elseif($item['skor'] >= 40) { $warna = 'amber'; $label = 'Cukup'; }
-                                else { $warna = 'rose'; $label = 'Kurang'; }
-                                
-                                $hex = $warna == 'emerald' ? '#10b981' : ($warna == 'blue' ? '#4298B4' : ($warna == 'amber' ? '#fbbf24' : '#fb7185'));
-                            @endphp
-                        <div class="border border-slate-100 rounded-xl p-3">
-                            <p class="text-[10px] text-slate-400 font-semibold mb-1">#{{ $index + 1 }} {{ $item['nama'] }}</p>
-                            <div class="w-full bg-slate-100 rounded-full h-1 mb-2.5"><div class="h-1 rounded-full bg-{{ $warna }}-500" style="width:{{ $item['skor'] }}%; background-color: {{ $hex }}"></div></div>
-                            <div class="flex justify-between items-center">
-                                <span class="font-extrabold text-{{ $warna }}-600 text-sm" style="color: {{ $hex }}">{{ $item['skor'] }}%</span>
-                                <span class="text-[9px] font-bold text-{{ $warna }}-600 bg-{{ $warna }}-50 px-2 py-0.5 rounded border border-{{ $warna }}-100">{{ $label }}</span>
+                    
+                    <div class="space-y-5">
+                        {{-- Langkah 1: Ditambahin border ungu dan margin kiri biar sejajar --}}
+                        <div class="flex gap-4 items-start border-l-2 border-[#88619A] pl-4 -ml-[19px]">
+                            <div class="mt-0.5"><i class="fa-solid fa-print text-[#88619A] text-xl"></i></div>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm">1. Cetak Laporan Rekomendasi</h5>
+                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Simpan hasil asesmen ini dalam bentuk PDF lewat menu riwayat sebagai dokumentasi pribadimu.</p>
                             </div>
                         </div>
-                        @endforeach
+                        
+                        {{-- Langkah 2 --}}
+                        <div class="flex gap-4 items-start border-l-2 border-[#4298B4] pl-4 -ml-[19px]">
+                            <div class="mt-0.5"><i class="fa-solid fa-comments text-[#4298B4] text-xl"></i></div>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm">2. Konsultasi Akademik</h5>
+                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Bawa dan diskusikan hasil SPK ini saat bimbingan dengan Pak Widya atau dosen lainnya untuk menyelaraskan fokus tugas akhirmu secara terarah.</p>
+                            </div>
+                        </div>
+                        
+                        {{-- Langkah 3 --}}
+                        <div class="flex gap-4 items-start border-l-2 border-emerald-500 pl-4 -ml-[19px]">
+                            <div class="mt-0.5"><i class="fa-solid fa-magnifying-glass text-emerald-500 text-xl"></i></div>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm">3. Eksplorasi Mandiri</h5>
+                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Gunakan hasil ini sebagai acuan untuk mulai mencari tahu tren industri dan lowongan kerja terkait.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-center mt-auto pt-2 border-t border-slate-50">
-                        <a href="{{ route('result.index') }}" class="text-[11px] font-semibold text-[#4298B4] hover:text-[#247091] transition-colors">+3 jalur lainnya - Lihat hasil lengkap &rarr;</a>
+                    
+                    <div class="text-center mt-auto pt-5 border-t border-slate-50">
+                        <a href="{{ route('assessment.history') }}" class="text-[11px] font-semibold text-[#4298B4] hover:text-[#247091] transition-colors">Buka menu Riwayat Asesmen &rarr;</a>
                     </div>
                 </div>
 
@@ -143,7 +154,7 @@
                         <span class="text-xs font-semibold text-slate-500">Berdasarkan kompetensi yang perlu ditingkatkan</span>
                     </div>
                     <div class="space-y-4">
-                        @if(($skorKognitif ?? 0) < 80)
+                        @if(($skorKognitif ?? 0) < ($ideal['kognitif'] ?? 80))
                         <div class="border-l-4 border-[#4298B4] bg-[#4298B4]/5 rounded-r-xl p-4 flex gap-4">
                             <div class="mt-0.5"><i class="fa-solid fa-brain text-pink-400 text-lg"></i></div>
                             <div>
@@ -153,7 +164,7 @@
                         </div>
                         @endif
 
-                        @if(($skorHardskill ?? 0) < 80)
+                        @if(($skorHardskill ?? 0) < ($ideal['hardskill'] ?? 80))
                         <div class="border-l-4 border-[#88619A] bg-[#88619A]/5 rounded-r-xl p-4 flex gap-4">
                             <div class="mt-0.5"><i class="fa-solid fa-code text-[#88619A] text-lg"></i></div>
                             <div>
@@ -163,7 +174,7 @@
                         </div>
                         @endif
 
-                        @if(($skorSoftskill ?? 0) < 80)
+                        @if(($skorSoftskill ?? 0) < ($ideal['softskill'] ?? 80))
                         <div class="border-l-4 border-amber-400 bg-amber-50 rounded-r-xl p-4 flex gap-4">
                             <div class="mt-0.5"><i class="fa-solid fa-handshake text-amber-400 text-lg"></i></div>
                             <div>
@@ -173,7 +184,7 @@
                         </div>
                         @endif
                         
-                        @if(($skorKognitif ?? 0) >= 80 && ($skorHardskill ?? 0) >= 80 && ($skorSoftskill ?? 0) >= 80)
+                        @if(($jumlahTerpenuhi ?? 0) == 5)
                         <div class="border-l-4 border-emerald-500 bg-emerald-50 rounded-r-xl p-4 flex gap-4">
                             <div class="mt-0.5"><i class="fa-solid fa-star text-emerald-500 text-lg"></i></div>
                             <div>
@@ -184,6 +195,7 @@
                         @endif
                     </div>
                 </div>
+
             </section>
 
         @else

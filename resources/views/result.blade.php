@@ -326,11 +326,14 @@
             <h2 class="section-title">Analisis Kompetensi</h2>
             <p style="color: #7F8C8D; font-size: 13px; margin-top: -15px; margin-bottom: 25px;">Nilai kamu vs. nilai ideal profesi {{ formatNama($juara1) }}</p>
 
-            @foreach($kriteria_list as $krit)
+           @foreach($kriteria_list as $krit)
                 @php
                     $cfg = $bar_config[$krit];
                     $score_100 = round(($nilai_user[$krit] / 5.0) * 100);
-                    $is_terpenuhi = $score_100 >= $cfg['Id'];
+                    
+                    // KUNCI PERBAIKAN: Ambil nilai ideal dinamis dari Controller
+                    $ideal_score = $ideal[$krit] ?? $cfg['Id']; 
+                    $is_terpenuhi = $score_100 >= $ideal_score;
                 @endphp
                 <div class="kompetensi-row" style="margin-bottom: 25px;">
                     <div class="kompetensi-header">
@@ -338,7 +341,8 @@
                             <span class="k-icon {{ $cfg['C'] }}">{{ $cfg['L'] }}</span> {{ $cfg['N'] }}
                         </div>
                         <div class="k-stats">
-                            <strong>{{ $score_100 }}</strong> / {{ $cfg['Id'] }} ideal
+                            {{-- Ganti $cfg['Id'] jadi $ideal_score --}}
+                            <strong>{{ $score_100 }}</strong> / {{ $ideal_score }} ideal
                             <span class="badge" style="background: {{ $is_terpenuhi ? '#E9F7EF' : '#FEF9E7' }}; color: {{ $is_terpenuhi ? '#27AE60' : '#F39C12' }};">
                                 {{ $is_terpenuhi ? '✓ Terpenuhi' : 'Perlu Ditingkatkan' }}
                             </span>
@@ -857,7 +861,7 @@
                 labels: ['Kognitif', 'Hard Skills', 'Soft Skills', 'Minat', 'Pengalaman'],
                 datasets: [
                     { label: 'Skor Kamu', data: <?php echo json_encode($radar_user); ?>, backgroundColor: 'rgba(142, 68, 173, 0.2)', borderColor: '#8E44AD', pointBackgroundColor: '#8E44AD', borderWidth: 2 },
-                    { label: 'Standar Ideal', data: <?php echo json_encode($radar_ideal); ?>, borderColor: 'rgba(149, 165, 166, 0.5)', borderDash: [5, 5], borderWidth: 2, pointRadius: 0 }
+                    { label: 'Standar Ideal', data: [ {{ $ideal['kognitif'] ?? 80 }}, {{ $ideal['hardskill'] ?? 80 }}, {{ $ideal['softskill'] ?? 80 }}, {{ $ideal['minat'] ?? 80 }}, {{ $ideal['pengalaman'] ?? 80 }} ], borderColor: 'rgba(149, 165, 166, 0.5)', borderDash: [5, 5], borderWidth: 2, pointRadius: 0 }
                 ]
             },
             options: {
