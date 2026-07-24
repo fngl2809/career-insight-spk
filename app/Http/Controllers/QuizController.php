@@ -467,7 +467,7 @@ class QuizController extends Controller
 
         $data_jawaban = $jawaban_db->toArray();
 
-        // --- MULAI PERHITUNGAN SPK (100% SAMA DENGAN SHOWRESULT) ---
+        // --- MULAI PERHITUNGAN SPK ---
         $alternatif = ['3d_ar', '3d_vr', '3d_game', 'data_analyst', 'data_mining', 'data_science', 'web', 'ai', 'mobile'];
         $kriteria = ['kognitif', 'hardskill', 'softskill', 'minat', 'pengalaman'];
         $sesi_soal = [
@@ -572,14 +572,21 @@ class QuizController extends Controller
         $skorMinat = round((($skorKriteria['minat'] ?? 0) / 5) * 100);
         $skorPengalaman = round((($skorKriteria['pengalaman'] ?? 0) / 5) * 100);
 
-        // --- KAMUS NILAI IDEAL DINAMIS ---
-        // Default 80, tapi khusus Mobile kita samakan dengan screenshot riwayatmu
-        $ideal = ['kognitif' => 80, 'hardskill' => 80, 'softskill' => 80, 'minat' => 80, 'pengalaman' => 80];
-        
-        if ($juara1_key == 'mobile') {
-            $ideal = ['kognitif' => 90, 'hardskill' => 85, 'softskill' => 80, 'minat' => 88, 'pengalaman' => 75];
-        }
-        // Catatan: Jika profesi lain punya target ideal spesifik, tambahkan "elseif" di sini nanti.
+        // --- KAMUS NILAI IDEAL DINAMIS (YANG BERSIH & AKURAT) ---
+         // --- KAMUS NILAI IDEAL DINAMIS (FINAL & AKURAT 100% DARI PAKAR) ---
+        $semua_ideal = [
+            '3d_ar'        => ['kognitif' => 87, 'hardskill' => 87, 'softskill' => 87, 'minat' => 93, 'pengalaman' => 60],
+            '3d_vr'        => ['kognitif' => 73, 'hardskill' => 87, 'softskill' => 100, 'minat' => 93, 'pengalaman' => 73],
+            '3d_game'      => ['kognitif' => 93, 'hardskill' => 93, 'softskill' => 73, 'minat' => 100, 'pengalaman' => 73],
+            'data_analyst' => ['kognitif' => 93, 'hardskill' => 80, 'softskill' => 87, 'minat' => 87, 'pengalaman' => 67],
+            'data_mining'  => ['kognitif' => 80, 'hardskill' => 80, 'softskill' => 80, 'minat' => 87, 'pengalaman' => 80],
+            'data_science' => ['kognitif' => 80, 'hardskill' => 73, 'softskill' => 80, 'minat' => 80, 'pengalaman' => 80],
+            'web'          => ['kognitif' => 87, 'hardskill' => 87, 'softskill' => 80, 'minat' => 73, 'pengalaman' => 73],
+            'ai'           => ['kognitif' => 100, 'hardskill' => 80, 'softskill' => 73, 'minat' => 67, 'pengalaman' => 73],
+            'mobile'       => ['kognitif' => 100, 'hardskill' => 80, 'softskill' => 80, 'minat' => 67, 'pengalaman' => 87],
+        ];
+
+        $ideal = $semua_ideal[$juara1_key] ?? ['kognitif' => 80, 'hardskill' => 80, 'softskill' => 80, 'minat' => 80, 'pengalaman' => 80];
 
         // Hitung Kriteria Terpenuhi berdasarkan nilai ideal dinamis
         $terpenuhi = 0; 
@@ -604,7 +611,7 @@ class QuizController extends Controller
             'skorSoftskill' => $skorSoftskill,
             'skorMinat' => $skorMinat,
             'skorPengalaman' => $skorPengalaman,
-            'ideal' => $ideal, // Variabel baru dikirim ke view
+            'ideal' => $ideal,
             'jumlahTerpenuhi' => $terpenuhi,
             'teksTerpenuhi' => $teksTerpenuhi
         ]);

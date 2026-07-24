@@ -5,13 +5,15 @@
         <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-8">
             <div class="flex justify-between items-end mb-4">
                 <div>
-                    <h2 class="text-xl font-bold text-[#4298B4]" x-text="`Eksplorasi Tahap ${currentStep} dari 9`"></h2>
+                    <!-- Berubah jadi dari 27 Tahap -->
+                    <h2 class="text-xl font-bold text-[#4298B4]" x-text="`Eksplorasi Tahap ${currentStep} dari 27`"></h2>
                     <p class="text-sm text-slate-500 mt-1" x-text="getJudulSesi()"></p>
                 </div>
-                <div class="text-sm font-bold text-slate-600" x-text="`${Math.round((currentStep - 1) * 11.11)}% selesai`"></div>
+                <!-- Progress bar dihitung per tahap (100% / 26 step pergerakan) -->
+                <div class="text-sm font-bold text-slate-600" x-text="`${Math.round((currentStep - 1) * 3.846)}% selesai`"></div>
             </div>
             <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                <div class="bg-gradient-to-r from-[#4298B4] to-[#88619A] h-2.5 rounded-full transition-all duration-500 ease-out" :style="`width: ${(currentStep - 1) * 11.11}%`"></div>
+                <div class="bg-gradient-to-r from-[#4298B4] to-[#88619A] h-2.5 rounded-full transition-all duration-500 ease-out" :style="`width: ${(currentStep - 1) * 3.846}%`"></div>
             </div>
         </div>
 
@@ -130,7 +132,7 @@
                             "Saya pernah mengikuti kompetisi data (seperti Kaggle atau Satria Data)",
                             "Saya memiliki portofolio koding data di GitHub yang aktif"
                         ],
-                        // SESI 7: WEB (Masih Kosong / Dummy)
+                        // SESI 7: WEB
                         7 => [
                             "Saya memahami alur kerja pengiriman data dari browser ke server",
                             "Saya mampu merancang skema database relasional yang optimal",
@@ -166,7 +168,7 @@
                             "Saya pernah mengikuti kursus sertifikasi AI dari platform kredibel",
                             "Saya memiliki repositori GitHub yang berisi proyek implementasi AI"
                         ],
-                        // SESI 9: MOBILE (Ini yang barusan kamu kirim)
+                        // SESI 9: MOBILE
                         9 => [
                             "Saya memahami siklus hidup aplikasi mobile (Activity Life Cycle)",
                             "Saya mampu merancang navigasi aplikasi yang simpel namun intuitif",
@@ -185,71 +187,86 @@
                             "Saya memiliki sertifikat pelatihan terkait pengembangan aplikasi mobile"
                         ]
                     ];
+
+                    $global_step = 1; // Menghitung dari halaman 1 sampai 27
+                    $q_number = 1; // Menghitung nomor soal dari 1 sampai 135
                 @endphp
 
                 @foreach($semua_sesi as $nomor_sesi => $pertanyaan_sesi)
                     
-                    <div x-show="currentStep === {{ $nomor_sesi }}" style="display: {{ $nomor_sesi == 1 ? 'block' : 'none' }};" class="space-y-6">
-                        
-                        @foreach($pertanyaan_sesi as $index => $pertanyaan)
-                        @php
-                            $nomor_global = (($nomor_sesi - 1) * 15) + $index + 1;
-                        @endphp
-                        
-                        <div id="q-{{ $nomor_global }}" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:border-[#4298B4]/50 transition-all duration-300 question-card scroll-mt-[100px]">
-                            <h3 class="text-lg font-bold text-slate-800 mb-6 leading-relaxed">
-                                <span class="text-[#4298B4] mr-2">{{ $nomor_global }}.</span> {{ $pertanyaan }}
-                            </h3>
+                    @php
+                        // Memecah 15 soal menjadi 3 bagian (masing-masing 5 soal)
+                        $chunks = array_chunk($pertanyaan_sesi, 5);
+                    @endphp
+
+                    @foreach($chunks as $chunkIndex => $chunk)
+                        <!-- Menampilkan hanya tahap yang aktif -->
+                        <div x-show="currentStep === {{ $global_step }}" style="display: {{ $global_step == 1 ? 'block' : 'none' }};" class="space-y-6">
                             
-                            <div class="flex flex-wrap md:flex-nowrap gap-4 mt-4 md:gap-0 justify-between items-center bg-slate-50 p-2 rounded-xl">
+                            @foreach($chunk as $pertanyaan)
+                            
+                                <div id="q-{{ $q_number }}" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:border-[#4298B4]/50 transition-all duration-300 question-card scroll-mt-[100px]">
+                                    <h3 class="text-lg font-bold text-slate-800 mb-6 leading-relaxed">
+                                        <span class="text-[#4298B4] mr-2">{{ $q_number }}.</span> {{ $pertanyaan }}
+                                    </h3>
+                                    
+                                    <div class="flex flex-wrap md:flex-nowrap gap-4 mt-4 md:gap-0 justify-between items-center bg-slate-50 p-2 rounded-xl">
+                                        
+                                        <label class="flex-1 text-center cursor-pointer relative group">
+                                            <input type="radio" name="q{{ $q_number }}" value="1" class="peer sr-only" @change="autoScroll({{ $q_number }})">
+                                            <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-red-100 peer-checked:border-red-500 peer-checked:text-red-700 peer-checked:shadow-sm flex items-center justify-center h-full">
+                                                Sangat Tidak Setuju
+                                            </div>
+                                        </label>
+
+                                        <label class="flex-1 text-center cursor-pointer relative group">
+                                            <input type="radio" name="q{{ $q_number }}" value="2" class="peer sr-only" @change="autoScroll({{ $q_number }})">
+                                            <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-orange-100 peer-checked:border-orange-500 peer-checked:text-orange-700 peer-checked:shadow-sm flex items-center justify-center h-full">
+                                                Tidak Setuju
+                                            </div>
+                                        </label>
+
+                                        <label class="flex-1 text-center cursor-pointer relative group">
+                                            <input type="radio" name="q{{ $q_number }}" value="3" class="peer sr-only" @change="autoScroll({{ $q_number }})">
+                                            <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-amber-100 peer-checked:border-amber-500 peer-checked:text-amber-700 peer-checked:shadow-sm flex items-center justify-center h-full">
+                                                Cukup Setuju
+                                            </div>
+                                        </label>
+
+                                        <label class="flex-1 text-center cursor-pointer relative group">
+                                            <input type="radio" name="q{{ $q_number }}" value="4" class="peer sr-only" @change="autoScroll({{ $q_number }})">
+                                            <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-blue-100 peer-checked:border-blue-500 peer-checked:text-blue-700 peer-checked:shadow-sm flex items-center justify-center h-full">
+                                                Setuju
+                                            </div>
+                                        </label>
+
+                                        <label class="flex-1 text-center cursor-pointer relative group">
+                                            <input type="radio" name="q{{ $q_number }}" value="5" class="peer sr-only" @change="autoScroll({{ $q_number }})">
+                                            <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-emerald-100 peer-checked:border-emerald-500 peer-checked:text-emerald-700 peer-checked:shadow-sm flex items-center justify-center h-full">
+                                                Sangat Setuju
+                                            </div>
+                                        </label>
+
+                                    </div>
+                                </div>
                                 
-                                <label class="flex-1 text-center cursor-pointer relative group">
-                                <input type="radio" name="q{{ $nomor_global }}" value="1" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
-                                <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-red-100 peer-checked:border-red-500 peer-checked:text-red-700 peer-checked:shadow-sm flex items-center justify-center h-full">
-                                    Sangat Tidak Setuju
-                                </div>
-                            </label>
-
-                            <label class="flex-1 text-center cursor-pointer relative group">
-                                <input type="radio" name="q{{ $nomor_global }}" value="2" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
-                                <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-orange-100 peer-checked:border-orange-500 peer-checked:text-orange-700 peer-checked:shadow-sm flex items-center justify-center h-full">
-                                    Tidak Setuju
-                                </div>
-                            </label>
-
-                            <label class="flex-1 text-center cursor-pointer relative group">
-                                <input type="radio" name="q{{ $nomor_global }}" value="3" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
-                                <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-amber-100 peer-checked:border-amber-500 peer-checked:text-amber-700 peer-checked:shadow-sm flex items-center justify-center h-full">
-                                    Cukup Setuju
-                                </div>
-                            </label>
-
-                            <label class="flex-1 text-center cursor-pointer relative group">
-                                <input type="radio" name="q{{ $nomor_global }}" value="4" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
-                                <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-blue-100 peer-checked:border-blue-500 peer-checked:text-blue-700 peer-checked:shadow-sm flex items-center justify-center h-full">
-                                    Setuju
-                                </div>
-                            </label>
-
-                            <label class="flex-1 text-center cursor-pointer relative group">
-                                <input type="radio" name="q{{ $nomor_global }}" value="5" class="peer sr-only" @change="autoScroll({{ $nomor_global }}, {{ $nomor_sesi }})">
-                                <div class="px-2 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 font-bold text-sm transition-all duration-300 hover:bg-slate-100 hover:border-slate-200 peer-checked:bg-emerald-100 peer-checked:border-emerald-500 peer-checked:text-emerald-700 peer-checked:shadow-sm flex items-center justify-center h-full">
-                                    Sangat Setuju
-                                </div>
-                            </label>
-
-                            </div>
+                                @php $q_number++; @endphp
+                                
+                            @endforeach
+                            
                         </div>
+                        
+                        @php $global_step++; @endphp
+                        
+                    @endforeach
 
-                        @endforeach
-                    </div>
                 @endforeach
 
             </div>
 
             <div class="mt-12 text-center pb-8">
                 <button type="button" @click="nextStep()" class="px-16 py-5 bg-[#C9BBCF] hover:bg-[#A993B4] text-white text-xl font-bold rounded-2xl transition-all shadow-xl shadow-slate-200 mx-auto block w-full md:w-auto">
-                    <span x-text="currentStep < 9 ? `Lanjut: Tahap ${currentStep + 1} →` : 'Kirim Jawaban & Hitung Potensi'"></span>
+                    <span x-text="currentStep < 27 ? `Lanjut: Tahap ${currentStep + 1} →` : 'Kirim Jawaban & Hitung Potensi'"></span>
                 </button>
             </div>
 
@@ -260,13 +277,15 @@
     <script>
         function assessmentForm() {
             return {
-                currentStep: 1,
+                currentStep: 1, // Sekarang dari 1 sampai 27
                 
                 initForm() {
                     window.scrollTo(0, 0);
                 },
 
                 getJudulSesi() {
+                    // Karena 1 sesi dipecah jadi 3 step, kita deteksi sesinya dari pembagian step
+                    let sesiAsli = Math.ceil(this.currentStep / 3);
                     const judul = {
                         1: "Sesi 1: Menemukan Potensimu",
                         2: "Sesi 2: Menjelajah Dimensi Baru",
@@ -278,11 +297,12 @@
                         8: "Sesi 8: Mengeksplorasi Logika Sistem",
                         9: "Sesi 9: Menghubungkan Dunia",
                     };
-                    return judul[this.currentStep] || `Sesi ${this.currentStep}`;
+                    return judul[sesiAsli] || `Sesi ${sesiAsli}`;
                 },
 
-                autoScroll(currentIndex, currentSesi) {
-                    let batasBawah = currentSesi * 15;
+                autoScroll(currentIndex) {
+                    // Cek kelipatan 5 untuk auto-scroll, supaya nggak bablas ke halaman berikutnya
+                    let batasBawah = this.currentStep * 5;
                     
                     if (currentIndex < batasBawah) {
                         let nextIndex = currentIndex + 1;
@@ -301,49 +321,41 @@
                 },
 
                 nextStep() {
-                    let startIndex = ((this.currentStep - 1) * 15) + 1;
-                    let endIndex = this.currentStep * 15;
+                    // Logika dinamis: Mengecek tepat 5 nomor sesuai currentStep
+                    let startIndex = ((this.currentStep - 1) * 5) + 1;
+                    let endIndex = this.currentStep * 5;
                     
-                    // 🔥 Keranjang penampung nomor soal yang kosong
                     let nomorKosong = [];
 
-                    // Cek semua soal dari awal sampai akhir sesi ini secara serentak
                     for (let i = startIndex; i <= endIndex; i++) {
                         let dijawab = document.querySelector(`input[name="q${i}"]:checked`);
                         
                         if (!dijawab) {
-                            // Masukin nomor soal ke keranjang
                             nomorKosong.push(i);
                             
-                            // Kasih efek merah ke semua kartu soal yang belum diisi
                             let elemenKosong = document.getElementById(`q-${i}`);
                             if (elemenKosong) {
                                 elemenKosong.classList.add('ring-2', 'ring-red-500', 'bg-red-50');
                                 setTimeout(() => {
                                     elemenKosong.classList.remove('ring-2', 'ring-red-500', 'bg-red-50');
-                                }, 2500); // Efek merah bertahan 2.5 detik biar user sempat melihat
+                                }, 2500); 
                             }
                         }
                     }
 
-                    // 🚨 Jika isi keranjang ada isinya (artinya ada soal yang kosong)
                     if (nomorKosong.length > 0) {
-                        // Otomatis scroll layar ke soal kosong pertama yang paling atas
                         let elemenPertamaKosong = document.getElementById(`q-${nomorKosong[0]}`);
                         if (elemenPertamaKosong) {
                             elemenPertamaKosong.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
                         
-                        // Satukan nomor pakai koma (Contoh: "2, 5, 10")
                         let daftarNomor = nomorKosong.join(', ');
-                        
-                        // Tampilkan pesan alert borongan sekaligus!
                         alert(`Eitss, tunggu dulu! Soal nomor ${daftarNomor} belum kamu isi tuh. Yuk lengkapi dulu!`);
-                        return; // Hentikan proses, jangan lanjut ke sesi berikutnya dulu!
+                        return; 
                     }
 
-                    // JIKA SEMUA SOAL SUDAH TERISI AMAN, BARU BOLEH LANJUT
-                    if (this.currentStep < 9) {
+                    // JIKA 5 SOAL SUDAH TERISI, LANJUT KE STEP BERIKUTNYA
+                    if (this.currentStep < 27) {
                         this.currentStep++;
                         
                         setTimeout(() => {
@@ -352,7 +364,7 @@
                         }, 150);
                         
                     } else {
-                        // Jika sudah di sesi 9 dan semua terisi, langsung kirim ke backend
+                        // Jika sudah di step 27, kirim form
                         document.getElementById('quizForm').submit();
                     }
                 }

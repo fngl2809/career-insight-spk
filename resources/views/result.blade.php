@@ -860,8 +860,25 @@
             data: {
                 labels: ['Kognitif', 'Hard Skills', 'Soft Skills', 'Minat', 'Pengalaman'],
                 datasets: [
-                    { label: 'Skor Kamu', data: <?php echo json_encode($radar_user); ?>, backgroundColor: 'rgba(142, 68, 173, 0.2)', borderColor: '#8E44AD', pointBackgroundColor: '#8E44AD', borderWidth: 2 },
-                    { label: 'Standar Ideal', data: [ {{ $ideal['kognitif'] ?? 80 }}, {{ $ideal['hardskill'] ?? 80 }}, {{ $ideal['softskill'] ?? 80 }}, {{ $ideal['minat'] ?? 80 }}, {{ $ideal['pengalaman'] ?? 80 }} ], borderColor: 'rgba(149, 165, 166, 0.5)', borderDash: [5, 5], borderWidth: 2, pointRadius: 0 }
+                    { 
+                        label: 'Skor Kamu', 
+                        data: <?php echo json_encode($radar_user); ?>, 
+                        backgroundColor: 'rgba(142, 68, 173, 0.2)', 
+                        borderColor: '#8E44AD', 
+                        pointBackgroundColor: '#8E44AD', 
+                        borderWidth: 2 
+                    },
+                    { 
+                        label: 'Standar Ideal', 
+                        // KITA KEMBALIKAN KE VARIABEL ASLI MILIKMU YANG AMAN:
+                        data: <?php echo json_encode($radar_ideal); ?>, 
+                        backgroundColor: 'rgba(149, 165, 166, 0.2)', 
+                        borderColor: '#95A5A6', 
+                        borderDash: [5, 5], 
+                        borderWidth: 2, 
+                        pointRadius: 3, 
+                        pointBackgroundColor: '#95A5A6' 
+                    }
                 ]
             },
             options: {

@@ -183,6 +183,26 @@
                             </div>
                         </div>
                         @endif
+
+                        @if(($skorMinat ?? 0) < ($ideal['minat'] ?? 80))
+                        <div class="border-l-4 border-[#e67e22] bg-[#e67e22]/5 rounded-r-xl p-4 flex gap-4">
+                            <div class="mt-0.5"><i class="fa-solid fa-heart text-[#e67e22] text-lg"></i></div>
+                            <div>
+                                <h6 class="text-xs font-extrabold text-slate-800">Tingkatkan Minat (skor {{ $skorMinat ?? 0 }}%)</h6>
+                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Perbanyak eksplorasi dan cari tahu lebih dalam mengenai tren serta rahasia di balik Big Data.</p>
+                            </div>
+                        </div>
+                        @endif
+
+                        @if(($skorPengalaman ?? 0) < ($ideal['pengalaman'] ?? 80))
+                        <div class="border-l-4 border-emerald-500 bg-emerald-50 rounded-r-xl p-4 flex gap-4">
+                            <div class="mt-0.5"><i class="fa-solid fa-briefcase text-emerald-500 text-lg"></i></div>
+                            <div>
+                                <h6 class="text-xs font-extrabold text-slate-800">Perbanyak Pengalaman (skor {{ $skorPengalaman ?? 0 }}%)</h6>
+                                <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">Mulai kerjakan proyek riset data kecil-kecilan, atau bangun portofolio penggunaan tools mining.</p>
+                            </div>
+                        </div>
+                        @endif
                         
                         @if(($jumlahTerpenuhi ?? 0) == 5)
                         <div class="border-l-4 border-emerald-500 bg-emerald-50 rounded-r-xl p-4 flex gap-4">
